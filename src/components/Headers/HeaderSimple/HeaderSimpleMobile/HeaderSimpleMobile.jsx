@@ -10,6 +10,8 @@ import { useAdapters } from '../../../../adapters/AdaptersContext.jsx'
 import { useCategories } from '../../../../context/SiteConfigContext.jsx'
 
 export default function HeaderSimpleMobile({ settings = {}, categories: propCategories }) {
+  const { Link, Image } = useAdapters()
+  const categoriesFromCtx = useCategories()
   const {
     siteName, logoUrl, iconUrl, logoAlt, logo,
     primaryColor, secondaryColor, backgroundColor, textColor,
@@ -19,7 +21,7 @@ export default function HeaderSimpleMobile({ settings = {}, categories: propCate
   } = settings
 
   const resolvedLogo = resolveLogoSrc(logoUrl, logo)
-  const categories   = propCategories ?? useCategories()
+  const categories   = propCategories ?? categoriesFromCtx
 
   const inlineStyle = {
     backgroundColor,
