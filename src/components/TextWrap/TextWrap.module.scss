@@ -1,0 +1,72 @@
+@use "../../styles/index.scss" as *;
+
+.container {
+  background-color: var(--surface-color, #ffffff);
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.body {
+  padding: 12px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.headline {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--text-color, #252523);
+  line-height: 1.25;
+  margin: 0;
+
+  @include respond(desktop) {
+    font-size: 1.6rem;
+  }
+}
+
+.category {
+  color: var(--primary-color, #4bac48);
+}
+
+.descripcion {
+  font-size: 0.85rem;
+  color: var(--text-color, #252523);
+  opacity: 0.7;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.autor {
+  font-size: 0.78rem;
+  color: var(--text-color, #252523);
+  opacity: 0.5;
+}
+
+// variante importante
+.important {
+  .image {
+    aspect-ratio: 16 / 7;
+  }
+
+  .headline {
+    font-size: 1.6rem;
+
+    @include respond(desktop) {
+      font-size: 2.2rem;
+    }
+  }
+}

@@ -1,0 +1,102 @@
+.banner {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-height: 68px;
+  max-height: 387px;
+  overflow: hidden;
+  padding: 16px;
+  gap: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+// ── Preview de video ────────────────────────────────────────
+.preview {
+  flex-shrink: 0;
+  aspect-ratio: 16 / 9;
+  max-height: 10vh;
+  overflow: hidden;
+  position: relative;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none;
+  display: block;
+}
+
+// ── Info ────────────────────────────────────────────────────
+.info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-inter, Inter, sans-serif);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-titulo, inherit);
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.9;
+}
+
+// ── Acciones ────────────────────────────────────────────────
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 7px 9px;
+  opacity: 0.65;
+  transition: opacity 0.15s;
+  line-height: 1;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+
+  &:hover { opacity: 1; }
+}

@@ -1,0 +1,64 @@
+@use "../../../styles/index.scss" as *;
+
+.container {
+  width: 100%;
+  max-width: 1376px;
+}
+
+.grid {
+  display: grid;
+  gap: 20px;
+
+  @media (min-width: 1000px) {
+    gap: 30px;
+  }
+}
+
+.gridNormal {
+  grid-template-areas:
+    "hero"
+    "recommended"
+    "feed";
+
+  @media (min-width: 1000px) {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: "recommended hero hero feed";
+  }
+}
+
+.gridFeatured {
+  grid-template-areas:
+    "hero"
+    "recommended"
+    "feed";
+
+  @media (min-width: 1000px) {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: "recommended hero hero feed";
+  }
+}
+
+.gridCategoriaDos {
+  grid-template-areas:
+    "hero"
+    "recommended"
+    "feed";
+
+  @media (min-width: 1000px) {
+    gap: 15px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: "recommended feed hero hero";
+  }
+}
+
+.item {
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+
+  @media (min-width: 1000px) {
+    padding: 0;
+  }
+}

@@ -1,0 +1,116 @@
+@use "../../styles/index" as *;
+
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+
+  @include respond(tablet) {
+    min-height: 75vh;
+  }
+
+  @include respond(desktop) {
+    min-height: 75vh;
+  }
+}
+
+.img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(0 0 0 / .5) 0%, rgb(0 0 0 / .5) .01%, #000 67.03%);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 0 10% 2.5rem;
+  text-align: center;
+  color: #fff;
+
+  @include respond(tablet) {
+    max-width: 80%;
+    margin: 40px auto;
+    padding: 0px;
+  }
+
+  @include respond(desktop) {
+    padding: 0px;
+    max-width: 70%;
+    max-width: 1010px;
+    margin: 40px auto;
+  }
+}
+
+.breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.9rem;
+  margin-bottom: 0.9rem;
+  font-family: var(--font-inter), Inter, sans-serif;
+  color: #fff;
+  letter-spacing: 0.02em;
+  font-size: .875em;
+    font-weight: 300;
+    line-height: 1.25rem;
+
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+.sep {
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+.titulo {
+  font-size: 2.25em;
+  font-weight: 700;
+  line-height: 1.3em;
+  margin: 0 0 1rem;
+  text-align: center;
+
+  @include respond(tablet) {
+    font-size: 3.75rem;
+    font-weight: 700;
+    line-height: 1.3em;
+    margin: 0 0 1rem;
+  }
+
+  @include respond(desktop) {
+    font-size: 3.75rem;
+    font-weight: 700;
+    line-height: 1.3em;
+    margin: 0 0 1rem;
+  }
+}
+
+.copete {
+  color: rgb(255, 255, 255);
+  margin: 0 auto;
+  font-size: 1.125rem;
+  line-height: 1.3em;
+  padding-top: 1.875rem;
+  font-weight: 400;
+  font-family: var(--font-inter), Inter, sans-serif;
+
+  @include respond(tablet) {
+    font-size: 1.125rem;
+    line-height: 1.3em;
+    padding-top: 1.875rem;
+  }
+}

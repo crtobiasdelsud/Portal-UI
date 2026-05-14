@@ -1,0 +1,256 @@
+@use "../../../styles/index" as *;
+
+.labelLogo{
+
+}
+
+.bottom{
+  height: 75px;
+  border-top: 3px solid var(--primary-color, #0D1333);
+  background-color: var(--secondary-color, #0D1333);
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 17px; 
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+  
+  color: white;
+    font-family: var(--font-inter, Inter, sans-serif);
+}
+
+.fullcontainer{
+  color: white;
+
+}
+
+.container {
+  width: 100%;
+  padding: 20px 30px 20px 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: var(--secondary-color, #0D1333);
+  box-sizing: border-box;
+  margin-top: auto;
+  min-height: 268px;
+  color: white;
+}
+
+// ── MAIN ROW (2 columns) ──────────────────────────────────────────────────────
+.mainRow {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @media (min-width: $tablet) {
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+    justify-content: center;
+  }
+}
+
+// ── LEFT COL: logo + slogan + legal ──────────────────────────────────────────
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+
+  @media (min-width: $tablet) {
+    align-items: flex-start;
+  }
+}
+
+// ── RIGHT COL: nav on top, social+links below ────────────────────────────────
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+  
+
+  @media (min-width: $tablet) {
+    align-items: start;
+    width: 100%;
+  height: 100%;
+  justify-content: center;
+  }
+}
+
+// ── Social + links row ────────────────────────────────────────────────────────
+.socialRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+
+  @media (min-width: $tablet) {
+    border-top: 1px solid white;
+    padding-top: 20px;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+// ── Logo ──────────────────────────────────────────────────────────────────────
+.logoWrap {
+  display: flex;
+  justify-content: center;
+}
+
+.logoImg {
+  height: 53px;
+  object-fit: contain;
+}
+
+// ── Slogan ────────────────────────────────────────────────────────────────────
+.slogan {
+  margin: 0;
+  font-family: var(--font-inter, Inter, sans-serif);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+
+  @media (min-width: $tablet) {
+    text-align: left;
+  }
+}
+
+// ── Categorías ────────────────────────────────────────────────────────────────
+.nav {
+  width: 80%;
+}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0px 15px;
+
+  @media (min-width: $tablet) {
+    justify-content: flex-start;
+    gap: 15px 15px;
+  }
+}
+
+.navLink {
+  text-decoration: none;
+  font-family: var(--font-inter, Inter, sans-serif);
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: inherit;
+  opacity: 1;
+  transition: opacity 0.15s;
+  
+
+  &:hover { opacity: 1; }
+}
+
+// ── Divider ───────────────────────────────────────────────────────────────────
+.divider {
+  width: 100%;
+  border: none;
+  margin: 0;
+}
+
+// ── Legal ─────────────────────────────────────────────────────────────────────
+.legal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: $tablet) {
+    align-items: flex-start;
+  }
+}
+
+.legalRow {
+  margin: 0;
+  font-family: var(--font-inter, Inter, sans-serif);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+    opacity: 1;
+
+  strong {
+    font-weight: 500;
+  }
+
+  @media (min-width: $tablet) {
+    text-align: left;
+  }
+}
+
+// ── Social ────────────────────────────────────────────────────────────────────
+.social {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+
+  @media (min-width: $tablet) {
+    justify-content: flex-start;
+  }
+
+  a {
+    color: white;
+  }
+}
+
+
+
+// ── Static links ──────────────────────────────────────────────────────────────
+.staticLinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px 0;
+
+  @media (min-width: $tablet) {
+    justify-content: flex-start;
+  }
+}
+
+.staticItem {
+  display: flex;
+  align-items: center;
+}
+
+.staticSep {
+  padding: 0 5px;
+    opacity: 1;
+  font-size: 0.72rem;
+  user-select: none;
+}
+
+.staticLink {
+  font-family: var(--font-inter, Inter, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: inherit;
+  text-decoration: none;
+    opacity: 1;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+
+  &:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+}

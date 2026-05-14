@@ -1,77 +1,71 @@
 # Changelog
 
-## 0.3.0 — 2026-05-14
+## 1.0.0 — 2026-05-14
 
-Migración completa de componentes del portal a la librería.
+Migración 100% completa. Paridad total entre portal y CMS — todos los
+componentes "espejo" viven en este paquete; las apps sólo tienen data widgets
+(thin wrappers que fetchean + renderizan el View).
+
+### Fase 2 completa — Vistas puras
+- **UI primitives**: `AspectImage`, `FocalImage`, `Icon`, `IconSmall`,
+  `PageWrapper`, `ToolTip`
+- **DateTime** + helper `getFechaHora()`
+- **SiteConfigContext** — `SiteConfigProvider`, `PreviewThemeProvider`,
+  `useSiteConfig`, `useTheme`, `useRawConfig`, `useCategories`,
+  `useBanners`, `useComputed`, `useInfoPages`
+- **AuthorBlock** (×4), **Breadcrumb** (×5), **ShareBlock** (×2)
+- **Cards**: `ArticleCard` (con tooltip), `Bajada` (×2)
+- **Headers**: `HeaderSimpleSwitch` (con `forceMode` para CMS preview),
+  `HeaderSimpleDesktop`, `HeaderSimpleDesktopCompact`, `HeaderSimpleMobile`,
+  `HeaderSimpleAmp` + sub-componentes (`CategoriesBar`, `LiveBanner`,
+  `MenuDrawer`, `HeaderSwitch`, `SearchTrigger`, `DrawerContext`)
+- **Footers**: `FooterSimple`
+- **Blocks**: `BlockColumns`, `BlockColumnsBajada`, `BlockMain`,
+  `BlockMainNarrow`, `BlockMainSidebar`, `BlockStack`, `WidgetErrorBoundary`
+- **Article-detail**: `ArticleHero` (×8 variants V0/V0Tablet/V0Desktop/V1-V5),
+  `ArticleHeroFull`, `ArticleSidebar`
+- **EditorOutput / EditorOutputFull** — renderer de Editor.js (server + client),
+  con soporte AMP. Exporta `EditorBlocks` para uso aislado.
+- **Speech**: `SpeechProvider`, `SpeechProviderWrapper`, `SpeechButton`,
+  `SpeechPlayerBar`, hook `useSpeech` — Web Speech API + contexto propio
 
 ### Fase 3 — Split data/view en widgets que tocan red
-- **FeedView** + variants V1/V2 — `next/link` → `useAdapters().Link`
-- **HeroView** — `next/link/image` → `useAdapters()`
-- **RecommendedView** — usa `ArticleCard` interno del paquete
-- **CabezalView** + 18 variants top-level + CardCabezal (9 sub-variants)
-  - Routing por `tipo` extraído de `Cabezal.jsx`
-  - `LoQueSeLee` convertido a view pura (recibe `article` ya resuelto)
-  - Caso especial `loQueSeLee` se pasa por prop `article` (no `articles[]`)
+- **FeedView** + variants V1/V2
+- **HeroView**
+- **RecommendedView** (usa el `ArticleCard` interno)
+- **CabezalView** + 18 variants top-level + 9 sub-variants de `CardCabezal`
+- **BannerView** + **BannerDisplay** (client, tracking via adapter fetcher)
+- **ClimaView**
+- **TextWrapView** + **ArticleBodyView** — renderean un artículo via `EditorOutput`
+- **DolarTicker** + **DolarTickerOriginal** — auto-fetchean su data internamente
 
-La capa de datos (`Feed.jsx`, `Hero.jsx`, `Recommended.jsx`, `Cabezal.jsx`)
-queda en cada app:
-- Portal (Next): async server components con `claimArticles()`/`claimWithFetch()`
-- CMS (Vite): client components con `useState`/`useEffect`
+### Adapter pattern
+- `useAdapters().Link` / `.Image` / `.fetcher` para que el paquete no dependa
+  de Next/Vite directamente
+- `MenuDrawer` cambió `router.push` por `<form action="/search">` nativo
+  para no necesitar useRouter
+- Logos legacy de Mendoza incluidos en `components/Headers/HeaderSimple/_logos/`
+  (TODO: quitar cuando todos los sites usen `logoUrl` directo)
 
-### Fases 4 + 5 — Article pool con scope explícito
+### Utils & constants exportados
+- `getFechaHora`, `contrastRatio`, `hexToCssFilter`, `ensureContrast`,
+  `IMAGE_SIZES`
 
-(Cambios en las apps consumidoras — la API `createArticlePool` /
-`ArticlePoolProvider` del paquete ya estaba desde la 0.1.0; estas fases
-arreglan cómo cada app la usa.)
+### Article pool
+- `createArticlePool(fetcher, opts?)` — factory pura
+- `ArticlePoolProvider` + `useArticlePool()` — uso client-side
+- `useArticles({ limit, endpoint?, categoria? })` — hook universal
 
-- **Portal** — `articlePool.js` ahora es factory pura. Home llama a
-  `setupHomePool()` para inicializar el tracker en el slot request-scoped
-  (vía `React.cache()`). Otras pantallas (ArticleDetail, ArticleDetailFull,
-  Category, etc.) no llaman → widgets caen al camino sin dedupe.
-- **CMS** — `EditableHomePreview` envuelve el modo lector con
-  `<ArticlePoolProvider key={...}>`. Cambiar de config o entrar/salir del
-  modo lector remonta el provider → tracker nuevo. `EditableArticlePreview`
-  no usa provider → cada widget fetchea independiente (match con el portal).
-- Eliminado el singleton `tracker` global y `resetPool()` manual del CMS.
+## 0.3.0 — 2026-05-14
 
-### Fase 6 — Limpieza
-- Borrado código muerto en `cms-editor-front/src/previewHome/` (Next
-  artifacts que no corrían en Vite: `app/`, `pages/`, `screens/`, `Home/`,
-  `services/`, `mocks/`, `modules/`, `types/`, `utils/`, `registry/`,
-  `layouts/`, `layout.jsx`, `previewApi.js`).
-- Borrado `previewHome/lib/{font,head,navigation,baseUrl,buildArticleMetadata,
-  normalizeArticle,sitemap}.js` (shims Next-only sin consumidores).
-- Borrado `previewHome/constants/imageSizes.js` y `previewHome/hooks/useArticles.js`
-  — ahora exportados desde `@crtobias/portal-ui`.
+Phase 3 — Feed/Hero/Recommended/Cabezal split data/view inicial. Apps consumen
+via shims de 1 línea para no tocar 40+ callers.
 
 ## 0.2.0 — 2026-05-14
 
-Fase 2 del plan — Views puras migradas desde `editor-template-front`.
-
-- **UI primitives**: `AspectImage`, `FocalImage`, `Icon`, `IconSmall`,
-  `PageWrapper`, `ToolTip`
-- **DateTime** + helper `getFechaHora()` (`/utils/fechaHora.js`)
-- **SiteConfigContext** — `SiteConfigProvider`, `PreviewThemeProvider`,
-  `useSiteConfig`, `useTheme`, `useRawConfig`, `useCategories`, `useBanners`,
-  `useComputed`, `useInfoPages`
-- **AuthorBlock** (4 variants), **Breadcrumb** (5 variants), **ShareBlock**
-  (2 variants) — `next/link` reemplazado por `useAdapters().Link`
-- **Cards**: `ArticleCard` (con tooltip), `Bajada` (2 variants)
-- `IMAGE_SIZES` constant exportada
-- SCSS partials compartidos en `/styles/{mixins,variables}/` para que los
-  `@use "../../../styles/index"` de los componentes resuelvan dentro del paquete
-
-Las dos apps consumen el paquete a través de shims de 1 línea
-(`export { X as default } from '@crtobias/portal-ui'`) ubicados en los
-paths originales, de modo que los 43+ callers no necesitan tocarse en
-este pase. Cleanup futuro: search/replace de los imports y borrar los shims.
+Phase 2 inicial: UI primitives + DateTime + SiteConfigContext + AuthorBlock/
+Breadcrumb/ShareBlock + Cards.
 
 ## 0.1.0 — 2026-05-14
 
-Setup inicial del paquete.
-
-- `AdaptersProvider` + `useAdapters()` — inyección de `Image`, `Link`, `fetcher`
-- `ArticlePoolProvider` + `useArticlePool()` + `createArticlePool()` — dedupe
-  de artículos por scope explícito (no más singleton global tipo `React.cache`)
-- `useArticles()` — hook universal que respeta el provider si existe
-- Estructura `src/{adapters,data,components}/` lista para migrar componentes
+Setup — adapters, article pool, scaffold.

@@ -1,0 +1,40 @@
+@use "../../../../styles/index" as *;
+
+.root {
+  background: var(--surface-color, #f0f0f0);
+  height: auto;
+  max-height: none;
+}
+
+.imgWrap {
+  aspect-ratio: 16 / 9;
+  flex: none;
+}
+
+.text {
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.volanta {
+  align-self: flex-start;
+  background: transparent;
+  color: var(--primary-color, #b1043f);
+  padding: 0;
+  font-family: "Inter", "Helvetica", Arial, sans-serif;
+  font-size: 1em;
+  font-weight: 500;
+  line-height: 1.7625rem;
+  color: #B1043F;
+
+  @include respond(tablet) {
+    font-size: 24px;
+    font-weight: 700;
+  }
+}
+
+.titulo {
+  color: #1a1a1a;
+  font-size: clamp(32px, 5vw, 60px);
+}

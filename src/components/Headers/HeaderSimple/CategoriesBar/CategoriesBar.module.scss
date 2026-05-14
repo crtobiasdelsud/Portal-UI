@@ -1,0 +1,112 @@
+.bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 15px 25px;
+  overflow: hidden;
+  box-sizing: border-box;
+  height: 61px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.15);
+  }
+}
+
+.scrollBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 8px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  img { width: 16px; height: 16px; }
+  &:hover { opacity: 0.6; }
+}
+
+.searchBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 8px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--text-color);
+  margin-left: 45px;
+
+  svg { width: 18px; height: 18px; }
+  &:hover { opacity: 0.6; }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  padding: 0 10px;
+  mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+}
+
+.containerNav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  flex: 0 0 83.33333%;
+  max-width: 83.33333%;
+}
+
+.link {
+  font-family: var(--font-inter, Inter, sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  color: var(--text-color);
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover { color: var(--primary-color); }
+}
+
+.dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+@keyframes slideNext {
+  from { transform: translateX(-12px); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes slidePrev {
+  from { transform: translateX(12px); }
+  to   { transform: translateX(0); }
+}
+
+.slideNext { animation: slideNext 0.25s ease; }
+.slidePrev { animation: slidePrev 0.25s ease; }
