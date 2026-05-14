@@ -303,7 +303,7 @@ adentro de los componentes.
 
 ### Resumen
 
-El paquete es **agnóstico al framework**. Las "diferencias" entre Next y Vite
+El paquete es **agnóstico al framework**. Las "diferencias", entre Next y Vite
 viven en 5 líneas de JSX en cada `PortalUIProviders.jsx` de cada app. Todo lo
 demás (componentes, hooks, styles) es código portable.
 
