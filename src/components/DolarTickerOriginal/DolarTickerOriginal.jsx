@@ -7,6 +7,7 @@ import arrowBackWhite from "./arrow_back_ios_white.svg"
 import arrowUpward    from "./arrow_upward.svg"
 import arrowDownward  from "./arrow_downward.svg"
 import { useTheme } from '../../context/SiteConfigContext.jsx'
+import { useAdapters } from '../../adapters/AdaptersContext.jsx'
 
 const AUTO_INTERVAL = 3500 // ms entre cambios automáticos
 

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import styles from './CategoriesBar.module.scss'
 import MenuDrawer from '../MenuDrawer/MenuDrawer'
 import { useDrawer } from '../DrawerContext/DrawerContext'
+import { useAdapters } from '../../../../adapters/AdaptersContext.jsx'
 
 export default function CategoriesBar({
   categories = [],

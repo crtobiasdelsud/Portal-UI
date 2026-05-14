@@ -5,6 +5,7 @@ import { useSiteConfig, useCategories, useComputed, useInfoPages } from '../../.
 import { hexToCssFilter } from '../../../utils/colorContrast.js'
 import Icon from '../../../components/UI/Icon/Icon.jsx'
 import IconSmall from '../../../components/UI/IconSmall/IconSmall.jsx'
+import { useAdapters } from '../../../adapters/AdaptersContext.jsx'
 
 const FIXED_LINKS = [
   { label: 'Contáctanos', href: '/contacto' },
@@ -13,8 +14,6 @@ const FIXED_LINKS = [
 ]
 
 function formatFecha() {
-
-  const { Link } = useAdapters()
   return new Date().toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })
 }
 
