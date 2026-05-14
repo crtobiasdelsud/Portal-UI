@@ -1,0 +1,25 @@
+@use "../../../../styles/index.scss" as *;
+
+.root {
+  background: var(--surface-color, #f5f5f5);
+  padding: 14px 16px;
+  gap: 14px;
+}
+
+.name {
+  color: var(--text-color, #252523);
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover strong {
+      color: var(--primary-color, #b1043f);
+    }
+  }
+
+  strong:hover {
+    color: var(--primary-color, #b1043f);
+  }
+}
+.date { color: var(--text-color, #252523); }

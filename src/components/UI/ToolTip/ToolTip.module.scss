@@ -1,0 +1,26 @@
+@use "../../../styles/index" as *;
+
+.wrapper {
+  display: contents;
+}
+
+.floatingTip {
+  position: fixed;
+  transform: translateX(-50%) translateY(-100%);
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #000;
+  padding: 2px 4px;
+  border-radius: 1px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 99999;
+  font-family: var(--font-inter, Inter, sans-serif);
+  animation: tipIn .15s ease;
+}
+
+@keyframes tipIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(calc(-100% + 4px)); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(-100%); }
+}

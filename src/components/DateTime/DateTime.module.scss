@@ -1,0 +1,29 @@
+@use "../../styles/index.scss" as *;
+
+$dt-font: var(--font-inter, Inter, sans-serif);
+$dt-size: 12px;
+$dt-weight: 500;
+$dt-opacity: 1;
+
+.wrapper {
+  display: flex;
+  gap: 16px;
+  font-family: $dt-font;
+  font-size: $dt-size;
+  font-weight: $dt-weight;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  opacity: $dt-opacity;
+}
+
+.date,
+.time {
+  display: block;
+  font-family: $dt-font;
+  font-size: $dt-size;
+  font-weight: $dt-weight;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  opacity: $dt-opacity;
+  white-space: nowrap;
+}

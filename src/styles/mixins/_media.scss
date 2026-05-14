@@ -1,0 +1,30 @@
+@use "../variables/breakpoint" as *;
+
+@mixin respond($breakpoint) {
+  @if $breakpoint == tablet {
+    @supports (container-type: inline-size) {
+      @container (min-width: #{$tablet}) { @content; }
+    }
+    @supports not (container-type: inline-size) {
+      @media (min-width: $tablet) { @content; }
+    }
+  }
+
+  @if $breakpoint == laptop {
+    @supports (container-type: inline-size) {
+      @container (min-width: #{$laptop}) { @content; }
+    }
+    @supports not (container-type: inline-size) {
+      @media (min-width: $laptop) { @content; }
+    }
+  }
+
+  @if $breakpoint == desktop {
+    @supports (container-type: inline-size) {
+      @container (min-width: #{$desktop}) { @content; }
+    }
+    @supports not (container-type: inline-size) {
+      @media (min-width: $desktop) { @content; }
+    }
+  }
+}

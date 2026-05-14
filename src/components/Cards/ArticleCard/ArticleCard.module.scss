@@ -1,0 +1,129 @@
+@use "../../../styles/index.scss" as *;
+
+.container {
+  background-color: var(--surface-color, #ffffff);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  position: relative;
+}
+
+.authorAvatarWrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.authorAvatar {
+  width: 100px !important;
+  height: 100px !important;
+  object-fit: cover;
+  display: block;
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+}
+
+.link, .linkSmall {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+  min-height: 0;
+}
+
+// clase base para todas las imágenes de card
+// width/height lo controla next/image (fijo) o el inline style (responsive)
+.imageBase {
+  display: block;
+  object-fit: cover;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 16 / 9;
+
+  @include respond(desktop) {
+    flex: 1;
+    height: 0 !important;
+    min-height: 0;
+    aspect-ratio: unset;
+  }
+}
+
+// solo para el caso "full" sin size definido
+.image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  @include respond(desktop) {
+    flex: none;
+    gap: 12px;
+    padding: 10px 12px;
+  }
+}
+
+.headline {
+  font-family: var(--font-family);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-color, #252523);
+  margin: 12px 0 0;
+
+  @include respond(tablet) {
+    font-family: var(--font-titulo);
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+.category {
+  color: var(--primary-color, #4bac48);
+}
+
+.autor {
+  font-size: 12px;
+  color: var(--text-color, #252523);
+  font-weight: 300;
+  padding-top: 10px;
+}
+
+.bodyCompact {
+  gap: 5px;
+  padding-top: 10px;
+
+  @include respond(desktop) {
+    gap: 5px;
+    padding: 10px 0 0;
+  }
+}
+
+.autorCompact {
+  display: none;
+
+  @include respond(tablet) {
+    display: inline;
+  }
+}
