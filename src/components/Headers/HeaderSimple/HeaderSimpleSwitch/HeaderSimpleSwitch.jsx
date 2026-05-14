@@ -5,6 +5,7 @@ import HeaderSimpleMobile from "../HeaderSimpleMobile/HeaderSimpleMobile"
 import HeaderSimpleDesktop from "../HeaderSimpleDesktop/HeaderSimpleDesktop"
 import HeaderSimpleDesktopCompact from "../HeaderSimpleDesktopCompact/HeaderSimpleDesktopCompact"
 import HeaderSimpleAmp from "../HeaderSimpleAmp/HeaderSimpleAmp"
+import { DrawerProvider } from '../DrawerContext/DrawerContext'
 import { useCategories } from '../../../../context/SiteConfigContext.jsx'
 
 export default function HeaderSimpleSwitch({ settings = {}, isAmp = false, forceMode }) {
@@ -12,12 +13,22 @@ export default function HeaderSimpleSwitch({ settings = {}, isAmp = false, force
 
   const categories = useCategories()
 
-  // forceMode lo usa el preview del CMS para mostrar una sola variant a la vez
+  // forceMode lo usa el preview del CMS para mostrar una sola variant a la vez.
+  // CategoriesBar/MenuDrawer dependen de DrawerProvider, así que también
+  // hay que envolver acá (en el flow normal lo envuelve HeaderSwitch).
   if (forceMode === 'mobile') {
-    return <HeaderSimpleMobile settings={settings} categories={categories} />
+    return (
+      <DrawerProvider>
+        <HeaderSimpleMobile settings={settings} categories={categories} />
+      </DrawerProvider>
+    )
   }
   if (forceMode === 'desktop') {
-    return <HeaderSimpleDesktop settings={settings} categories={categories} />
+    return (
+      <DrawerProvider>
+        <HeaderSimpleDesktop settings={settings} categories={categories} />
+      </DrawerProvider>
+    )
   }
 
   return (
