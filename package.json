@@ -1,5 +1,5 @@
 {
-  "name": "@crtobias/portal-ui",
+  "name": "@crtobiasdelsud/portal-ui",
   "version": "1.0.0",
   "description": "Componentes compartidos entre el portal (Next) y el CMS (Vite) — widgets, views, providers para adapters y article pool.",
   "type": "module",

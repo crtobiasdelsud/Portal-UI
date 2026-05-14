@@ -1,4 +1,4 @@
-# @crtobias/portal-ui
+# @crtobiasdelsud/portal-ui
 
 Librería de componentes compartida entre el portal público (Next 15) y el
 editor CMS (Vite). Provee:
@@ -35,7 +35,7 @@ editor CMS (Vite). Provee:
 ## Instalación
 
 ```bash
-npm install @crtobias/portal-ui
+npm install @crtobiasdelsud/portal-ui
 ```
 
 `peerDependencies`:
@@ -47,7 +47,7 @@ npm install @crtobias/portal-ui
 
 ```js
 const nextConfig = {
-  transpilePackages: ['@crtobias/portal-ui'],
+  transpilePackages: ['@crtobiasdelsud/portal-ui'],
   // ...
 }
 ```
@@ -65,7 +65,7 @@ const nextConfig = {
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import { AdaptersProvider } from '@crtobias/portal-ui'
+import { AdaptersProvider } from '@crtobiasdelsud/portal-ui'
 import { clientFetch } from '@/lib/clientFetch'   // tu fetcher con BASE_URL + tenant
 
 export default function PortalUIProviders({ children }) {
@@ -80,7 +80,7 @@ export default function PortalUIProviders({ children }) {
 ```jsx
 // src/app/layout.jsx (server component)
 import PortalUIProviders from './PortalUIProviders'
-import { SiteConfigProvider } from '@crtobias/portal-ui'
+import { SiteConfigProvider } from '@crtobiasdelsud/portal-ui'
 
 export default async function RootLayout({ children }) {
   const siteData = await fetchSiteConfig()  // tu lógica
@@ -102,7 +102,7 @@ export default async function RootLayout({ children }) {
 
 ```jsx
 // src/PortalUIProviders.jsx
-import { AdaptersProvider } from '@crtobias/portal-ui'
+import { AdaptersProvider } from '@crtobiasdelsud/portal-ui'
 import ImageShim from './shims/Image'   // <img> plano
 import LinkShim from './shims/Link'     // <a> plano
 import { backendFetch } from './lib/backendClient'
@@ -318,10 +318,10 @@ demás (componentes, hooks, styles) es código portable.
 En el `package.json` de cada app:
 
 ```json
-"@crtobias/portal-ui": "file:../portal-ui"
+"@crtobiasdelsud/portal-ui": "file:../portal-ui"
 ```
 
-`npm install` crea un symlink: `node_modules/@crtobias/portal-ui` → `../portal-ui/`. **Cualquier cambio en `portal-ui/src/` aparece al toque** en las apps con HMR. **No tenés que publicar nada.**
+`npm install` crea un symlink: `node_modules/@crtobiasdelsud/portal-ui` → `../portal-ui/`. **Cualquier cambio en `portal-ui/src/` aparece al toque** en las apps con HMR. **No tenés que publicar nada.**
 
 Cuando hagas un cambio que rompa, ambas apps lo ven en el siguiente reload. Cuando estás contento, lo publicás.
 
@@ -337,20 +337,20 @@ Mismo efecto que `file:`, pero global a tu máquina:
 ```bash
 cd portal-ui && npm link
 
-cd ../editor-template-front && npm link @crtobias/portal-ui
-cd ../cms-editor-front      && npm link @crtobias/portal-ui
+cd ../editor-template-front && npm link @crtobiasdelsud/portal-ui
+cd ../cms-editor-front      && npm link @crtobiasdelsud/portal-ui
 ```
 
 Para desconectar:
 
 ```bash
-cd editor-template-front && npm unlink @crtobias/portal-ui && npm install
+cd editor-template-front && npm unlink @crtobiasdelsud/portal-ui && npm install
 ```
 
 #### C. Versión publicada (producción / otro dev sin acceso al disco)
 
 ```json
-"@crtobias/portal-ui": "^1.0.0"
+"@crtobiasdelsud/portal-ui": "^1.0.0"
 ```
 
 ```bash
@@ -465,7 +465,7 @@ export default function NewsletterView({ subscribers, onSubmit }) {
 ```jsx
 // editor-template-front/src/components/Newsletter/Newsletter.jsx (data layer)
 import { backendFetch } from '@/lib/backendClient'
-import { NewsletterView } from '@crtobias/portal-ui'
+import { NewsletterView } from '@crtobiasdelsud/portal-ui'
 
 export default async function Newsletter({ settings }) {
   const subs = await fetchSubscribers(backendFetch)
@@ -477,7 +477,7 @@ export default async function Newsletter({ settings }) {
 // cms-editor-front/src/previewHome/components/Newsletter/Newsletter.jsx (data layer)
 import { useEffect, useState } from 'react'
 import { backendFetch } from '@/lib/backendClient'
-import { NewsletterView } from '@crtobias/portal-ui'
+import { NewsletterView } from '@crtobiasdelsud/portal-ui'
 
 export default function Newsletter({ settings }) {
   const [subs, setSubs] = useState([])
@@ -506,7 +506,7 @@ path con un re-export:
 ```jsx
 // editor-template-front/src/components/Newsletter/Newsletter.jsx
 'use client'
-export { Newsletter as default } from '@crtobias/portal-ui'
+export { Newsletter as default } from '@crtobiasdelsud/portal-ui'
 ```
 
 Así no hay que tocar 20 callers — el caller sigue importando como antes, pero
@@ -535,8 +535,8 @@ git push --follow-tags
 ### 8. En las apps, traer la versión nueva
 
 ```bash
-cd ~/Desktop/editor-template-front && npm install @crtobias/portal-ui@latest
-cd ~/Desktop/cms-editor-front      && npm install @crtobias/portal-ui@latest
+cd ~/Desktop/editor-template-front && npm install @crtobiasdelsud/portal-ui@latest
+cd ~/Desktop/cms-editor-front      && npm install @crtobiasdelsud/portal-ui@latest
 ```
 
 ---
@@ -598,8 +598,8 @@ git clone git@github.com:crtobias/cms-editor-front.git
 
 # Asegurarse que las apps usen el paquete local
 cd portal-ui && npm link
-cd ../editor-template-front && npm link @crtobias/portal-ui
-cd ../cms-editor-front && npm link @crtobias/portal-ui
+cd ../editor-template-front && npm link @crtobiasdelsud/portal-ui
+cd ../cms-editor-front && npm link @crtobiasdelsud/portal-ui
 ```
 
 **Para cada cambio:**
@@ -813,7 +813,7 @@ import {
   FeedView, HeroView, RecommendedView, CabezalView,
   BannerView, BannerDisplay, ClimaView,
   TextWrapView, ArticleBodyView,
-} from '@crtobias/portal-ui'
+} from '@crtobiasdelsud/portal-ui'
 ```
 
 ---
@@ -826,4 +826,4 @@ import {
   cambio de shape, cambio de signature de hook)
 
 Pinear con `^` para auto-update minor/patch en las apps. Para producción
-estable, pinear exact (`"@crtobias/portal-ui": "1.1.2"`).
+estable, pinear exact (`"@crtobiasdelsud/portal-ui": "1.1.2"`).
