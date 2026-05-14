@@ -1,0 +1,103 @@
+@use "../../../../styles/index" as *;
+
+// ── Contenedor ────────────────────────────────────────────────────────────────
+
+.container {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 14px 16px 6px;
+  box-sizing: border-box;
+}
+
+// ── Encabezado "Lee además" ───────────────────────────────────────────────────
+
+.sectionHeader {
+  padding-left: 10px;
+  border-left: 3px solid var(--primary-color, #af0437);
+  margin-bottom: 12px;
+}
+
+.sectionTitle {
+  font-family: var(--font-inter, Inter, sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-color, #252523);
+  letter-spacing: -0.01em;
+}
+
+// ── Lista ─────────────────────────────────────────────────────────────────────
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  & + & {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+}
+
+// ── Carta (siempre horizontal) ────────────────────────────────────────────────
+
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  text-decoration: none;
+}
+
+.imgLink {
+  flex: 0 0 110px;
+  width: 110px;
+  display: block;
+  text-decoration: none;
+  overflow: hidden;
+
+  img {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.04);
+  }
+}
+
+// ── Texto ─────────────────────────────────────────────────────────────────────
+
+.body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 2px;
+}
+
+.header {
+  display: block;
+  text-decoration: none;
+  line-height: 1.45;
+
+  &:hover .titulo {
+    text-decoration: underline;
+  }
+}
+
+.volanta {
+  display: inline;
+  font-family: var(--font-titulo, "Frank Ruhl Libre", serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary-color, #af0437);
+}
+
+.titulo {
+  display: inline;
+  font-family: var(--font-titulo, "Frank Ruhl Libre", serif);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-color, #252523);
+}

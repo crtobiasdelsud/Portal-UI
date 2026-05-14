@@ -1,0 +1,103 @@
+@use "../../../../styles/index" as *;
+
+.container {
+  width: 100%;
+  
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 13.5px;
+
+  @include respond(tablet) {
+    padding: 0px;
+  }
+}
+
+.containerBorder{
+  transition: box-shadow 250ms cubic-bezier(.4, 0, .2, 1);
+    box-shadow: 0 3px 6px rgb(0 0 0 / .16);
+    will-change: box-shadow;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+
+.sectionHeader {
+  padding: 10px 15px;
+  border-left: 3px solid var(--primary-color, #af0437);
+  margin-left: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.sectionTitle {
+  font-family: var(--font-inter, Inter, sans-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 34px;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--text-color, #252523);
+}
+
+// ── Card ──────────────────────────────────────────────────────────────────────
+
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+.imgLink {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+
+  img {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.03);
+  }
+}
+
+// ── Cuerpo ────────────────────────────────────────────────────────────────────
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px 14px;
+}
+
+.textLink {
+  display: block;
+  text-decoration: none;
+  line-height: 1.45;
+
+  &:hover .titulo {
+    text-decoration: underline;
+  }
+}
+
+.volanta {
+  display: inline;
+  font-family: var(--font-titulo, "Frank Ruhl Libre", serif);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 23px;
+  color: var(--primary-color, #af0437);
+}
+
+.titulo {
+  display: inline;
+  font-family: var(--font-titulo, "Frank Ruhl Libre", serif);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 23px;
+  color: var(--text-color, #252523);
+}
+
+.autor {
+  font-family: var(--font-inter, Inter, sans-serif);
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--text-color, #252523);
+}

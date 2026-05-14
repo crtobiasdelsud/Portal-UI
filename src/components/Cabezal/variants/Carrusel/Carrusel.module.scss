@@ -1,0 +1,145 @@
+@use "../../../../styles/index" as *;
+
+.container {
+  width: 100%;
+  padding: 0 13.5px;
+
+  @include respond(tablet) {
+    padding: 0;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-left: 12px;
+  border-left: 3px solid var(--primary-color, #af0437);
+
+  @include respond(tablet) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.titulo {
+  font-family: var(--font-inter, Inter, sans-serif);
+  letter-spacing: -0.02em;
+  color: var(--text-color, #252523);
+  margin: 0;
+  font-size: 1.25em;
+  font-weight: 400;
+  line-height: 1.2em;
+}
+
+.verMas {
+  font-family: var(--font-inter, Inter, sans-serif);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  color: #fff;
+  background: var(--primary-color, #af0437);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: 86px;
+  height: 34px;
+  padding: 8px 16px;
+  border-radius: 2px;
+  white-space: nowrap;
+  box-sizing: border-box;
+
+  &:hover { opacity: 0.85; }
+}
+
+// ── Carousel wrapper ──────────────────────────────────────────────────────────
+
+.trackWrapper {
+  position: relative;
+}
+
+.track {
+  width: 100%;
+  display: flex;
+  gap: 30px;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+
+  @include respond(tablet) {
+    flex: 0 0 calc(50% - 15px);
+  }
+
+  @include respond(desktop) {
+    flex: 0 0 calc(33.333% - 20px);
+  }
+
+
+}
+
+// ── Arrow buttons ─────────────────────────────────────────────────────────────
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background:#3939398c;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  transition: opacity 0.15s;
+
+  &:hover { opacity: 0.85; }
+}
+
+.arrowPrev { left: -18px; }
+.arrowNext { right: -18px; }
+
+// ── Dot indicators ────────────────────────────────────────────────────────────
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+
+  &:hover { background: rgba(0, 0, 0, 0.4); }
+}
+
+.dotActive {
+  background: var(--primary-color, #af0437);
+}

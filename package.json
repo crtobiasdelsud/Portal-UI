@@ -1,6 +1,6 @@
 {
   "name": "@crtobias/portal-ui",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Componentes compartidos entre el portal (Next) y el CMS (Vite) — widgets, views, providers para adapters y article pool.",
   "type": "module",
   "main": "./src/index.js",

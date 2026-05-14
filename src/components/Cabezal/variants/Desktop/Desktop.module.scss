@@ -1,0 +1,113 @@
+@use "../../../../styles/index" as *;
+
+.container {
+  width: 100%;
+  padding: 0 13.5px;
+
+  
+   @include respond(tablet) {
+    padding: 0px;
+  }
+}
+
+.header {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-left: 12px;
+  border-left: 3px solid var(--primary-color, #af0437);
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titulo {
+  font-family: var(--font-inter, Inter, sans-serif);
+  letter-spacing: -0.02em;
+  color: var(--text-color, #252523);
+  margin: 0;
+  font-size: 1.25em;
+  font-weight: 400;
+  line-height: 1.2em;
+}
+.verMas {
+  font-family: var(--font-inter, Inter, sans-serif);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  color: #fff;
+  background: var(--primary-color, #af0437);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: 86px;
+  height: 34px;
+  padding: 8px 16px;
+  border-radius: 2px;
+  white-space: nowrap;
+  box-sizing: border-box;
+
+  &:hover { opacity: 0.85; }
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item { display: flex; }
+
+// ── Default ───────────────────────────────────────────────────────────────────
+.listDefault {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
+  gap: 16px;
+}
+
+// ── Ranking ───────────────────────────────────────────────────────────────────
+.listRanking {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 214px));
+  gap: 16px;
+  justify-content: start;
+}
+
+// ── Horizontal ────────────────────────────────────────────────────────────────
+.listHorizontal {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+// ── Compact ───────────────────────────────────────────────────────────────────
+.listCompact {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+// ── Categoria (featured izq, 2 compact der) ───────────────────────────────────
+.listCategoria {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 635px;
+  gap: 20px;
+}
+
+.itemFeaturedFirst { grid-row: span 2; }
+.itemFeaturedOther { overflow: hidden; }
+
+// ── CategoriaDos (featured der, 2 small izq) ─────────────────────────────────
+.listCategoriaDos {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr 1fr;
+  height: 635px;
+  gap: 20px;
+}
+
+.itemCDFirst  { grid-column: 2; grid-row: 1 / span 2; }
+.itemCDSecond { grid-column: 1; grid-row: 1; overflow: hidden; }
+.itemCDThird  { grid-column: 1; grid-row: 2; overflow: hidden; }

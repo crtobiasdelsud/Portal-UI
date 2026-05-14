@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.0 — 2026-05-14
+
+Fase 3 del plan — split data/view en widgets que tocan red.
+
+- **FeedView** + variants V1/V2 — `next/link` → `useAdapters().Link`
+- **HeroView** — `next/link/image` → `useAdapters()`
+- **RecommendedView** — usa `ArticleCard` interno del paquete
+- **CabezalView** + 18 variants top-level + CardCabezal (9 sub-variants)
+  - Routing por `tipo` extraído de `Cabezal.jsx`
+  - `LoQueSeLee` convertido a view pura (recibe `article` ya resuelto)
+  - Caso especial `loQueSeLee` se pasa por prop `article` (no `articles[]`)
+
+La capa de datos (`Feed.jsx`, `Hero.jsx`, `Recommended.jsx`, `Cabezal.jsx`)
+**queda en cada app**:
+- Portal (Next): async server components con `claimArticles()`/`claimWithFetch()`
+- CMS (Vite): client components con `useState`/`useEffect`
+
 ## 0.2.0 — 2026-05-14
 
 Fase 2 del plan — Views puras migradas desde `editor-template-front`.
