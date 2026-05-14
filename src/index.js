@@ -1,3 +1,4 @@
+// Portal UI — librería compartida portal Next + CMS Vite
 // === Adapters ===
 export {
   AdaptersProvider,
