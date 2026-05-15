@@ -121,6 +121,13 @@
     aspect-ratio: 16 / 7;
   }
 
+  /* La imagen del hero importante (AspectImage) a todo el ancho queda
+     altísima (~774px). La topamos para que sea un banner ancho y entre
+     en pantalla. En mobile la imagen es chica y este tope nunca se activa. */
+  .media {
+    max-height: 400px;
+  }
+
   .headline {
     font-size: 1.6rem;
 

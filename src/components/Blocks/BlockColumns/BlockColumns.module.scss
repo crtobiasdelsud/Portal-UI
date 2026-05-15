@@ -26,15 +26,20 @@
   }
 }
 
+/* Hero "importante": hero grande arriba a todo el ancho; abajo
+   widget1 + hero fantasma (automático) + widget2. */
 .gridFeatured {
   grid-template-areas:
     "hero"
     "recommended"
+    "fantasma"
     "feed";
 
   @media (min-width: 1000px) {
     grid-template-columns: repeat(4, 1fr);
-    grid-template-areas: "recommended hero hero feed";
+    grid-template-areas:
+      "hero        hero      hero      hero"
+      "recommended fantasma  fantasma  feed";
   }
 }
 

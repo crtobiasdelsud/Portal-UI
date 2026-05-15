@@ -1,149 +1,44 @@
 @use "../../styles/index.scss" as *;
 
-// ── Mini player bar ───────────────────────────────────────────────────────────
+// ── Mini player bar (minimalista) ─────────────────────────────────────────────
 
 .bar {
   position: fixed;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 32px);
-  max-width: 500px;
+  width: max-content;
+  max-width: calc(100% - 32px);
   background: var(--secondary-color, #0D1333);
-  border-radius: 16px;
-  padding: 10px 12px 18px;   // extra bottom padding para la barra de progreso
+  border-radius: 14px;
+  padding: 7px 10px 7px 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   z-index: 9999;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-
-    @include respond(desktop) {
-    padding: 0px;
-    margin: 0px;
-  }
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
 }
 
-// ── Botón cerrar ──────────────────────────────────────────────────────────────
-
-.closeBtn {
-  position: absolute;
-  top: 6px;
-  right: 8px;
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.7rem;
-  cursor: pointer;
-  padding: 2px 4px;
-  line-height: 1;
-
-  &:hover { color: rgba(255, 255, 255, 0.9); }
-}
-
-// ── Thumbnail ─────────────────────────────────────────────────────────────────
-
-.thumb {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  flex-shrink: 0;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.thumbImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.thumbIcon {
-  font-size: 1.3rem;
-}
-
-// ── Info ──────────────────────────────────────────────────────────────────────
-
-.info {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+// ── Título ────────────────────────────────────────────────────────────────────
 
 .titulo {
   color: #fff;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.subtitle {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.72rem;
-}
-
-// ── Equalizer animation ───────────────────────────────────────────────────────
-
-.eq {
-  display: flex;
-  gap: 2px;
-  align-items: flex-end;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-.eqBar {
-  width: 3px;
-  background: var(--primary-color, #B1043F);
-  border-radius: 2px;
-  transform-origin: bottom;
-  animation: eq 0.7s ease-in-out infinite alternate;
-
-  &:nth-child(1) { height: 35%; animation-delay: 0s;    }
-  &:nth-child(2) { height: 75%; animation-delay: 0.15s; }
-  &:nth-child(3) { height: 55%; animation-delay: 0.3s;  }
-  &:nth-child(4) { height: 90%; animation-delay: 0.1s;  }
-}
-
-.eqPaused .eqBar {
-  animation-play-state: paused;
-  opacity: 0.4;
-}
-
-@keyframes eq {
-  from { transform: scaleY(0.25); }
-  to   { transform: scaleY(1); }
-}
-
-// ── Skip buttons ──────────────────────────────────────────────────────────────
-
-.skipBtn {
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.65);
-  cursor: pointer;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-
-  &:hover { color: #fff; }
+  max-width: 220px;
+  margin-right: 4px;
 }
 
 // ── Play / Pause button ───────────────────────────────────────────────────────
 
 .playBtn {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.92);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #fff;
   border: none;
   color: var(--secondary-color, #0D1333);
   cursor: pointer;
@@ -151,24 +46,40 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: background 0.15s;
+  transition: transform 0.12s;
 
-  &:hover { background: #fff; }
+  &:hover { transform: scale(1.05); }
+}
+
+// ── Botón cerrar ──────────────────────────────────────────────────────────────
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: color 0.15s;
+
+  &:hover { color: rgba(255, 255, 255, 0.95); }
 }
 
 // ── Progress bar ──────────────────────────────────────────────────────────────
 
 .progressTrack {
   position: absolute;
-  bottom: 8px;
-  left: 14px;
-  right: 14px;
-  height: 3px;
+  bottom: 0;
+  left: 16px;
+  right: 16px;
+  height: 2px;
   background: rgba(255, 255, 255, 0.15);
   border-radius: 2px;
   cursor: pointer;
 
-  &:hover { height: 5px; bottom: 7px; }
+  &:hover { height: 4px; }
 }
 
 .progressFill {

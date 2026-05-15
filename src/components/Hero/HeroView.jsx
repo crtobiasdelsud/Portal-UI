@@ -30,6 +30,7 @@ export default function HeroView({ article, important = false }) {
             alt={article.imagen.alt ?? ''}
             aspect="16:9"
             focalPoint={article.focalPoint}
+            className={styles.media}
           />
         )}
         <div className={styles.body}>

@@ -35,10 +35,34 @@
 .icons {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
 
   @include respond(desktop) {
     gap: 12px;
+  }
+
+  // Non-AMP: el componente Icon renderiza <a><span aria-hidden/></a>.
+  // Achicamos en mobile y restauramos el tamaño completo en desktop.
+  a {
+    width: 26px;
+    height: 26px;
+  }
+
+  span[aria-hidden] {
+    width: 22px;
+    height: 22px;
+  }
+
+  @include respond(desktop) {
+    a {
+      width: 33px;
+      height: 33px;
+    }
+
+    span[aria-hidden] {
+      width: 32px;
+      height: 32px;
+    }
   }
 }
 

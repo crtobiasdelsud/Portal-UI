@@ -14,6 +14,11 @@ export default function BlockColumns({ widgets, registry, settings = {} }) {
     ? style.gridCategoriaDos
     : hasImportant ? style.gridFeatured : style.gridNormal
 
+  // Hero "fantasma": cuando hay un hero importante se agrega un Hero extra,
+  // sin articleId (artículo random), solo para ocupar el espacio del centro
+  // de la fila de abajo.
+  const HeroWidget = registry["HERO_BLOCK"]
+
   return (
     <section className={style.container}>
       <div className={`${style.grid} ${gridClass}`}>
@@ -31,6 +36,13 @@ export default function BlockColumns({ widgets, registry, settings = {} }) {
             </div>
           )
         })}
+        {hasImportant && HeroWidget && (
+          <div className={style.item} style={{ gridArea: "fantasma" }}>
+            <WidgetErrorBoundary>
+              <HeroWidget settings={{}} />
+            </WidgetErrorBoundary>
+          </div>
+        )}
       </div>
     </section>
   )
