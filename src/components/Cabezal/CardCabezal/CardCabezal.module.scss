@@ -47,6 +47,9 @@
   font-weight: 500;
   line-height: 150%;
   letter-spacing: -2%;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .volanta {

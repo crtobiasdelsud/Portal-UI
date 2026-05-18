@@ -1,6 +1,15 @@
 @use "../variables/breakpoint" as *;
 
 @mixin respond($breakpoint) {
+  @if $breakpoint == mobile {
+    @supports (container-type: inline-size) {
+      @container (min-width: #{$mobile}) { @content; }
+    }
+    @supports not (container-type: inline-size) {
+      @media (min-width: $mobile) { @content; }
+    }
+  }
+
   @if $breakpoint == tablet {
     @supports (container-type: inline-size) {
       @container (min-width: #{$tablet}) { @content; }

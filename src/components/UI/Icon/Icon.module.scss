@@ -27,6 +27,26 @@
     background-color: var(--primary-color, #4bac48);
 }
 
+/* Modo glifo: SVG inline. El color (y su hover) se aplica vía `currentColor`
+   — el <svg> del ícono usa fill="currentColor". */
+.glyph{
+    display: block;
+    height: 32px;
+    width: 32px;
+    color: currentColor;
+    transition: color 0.3s;
+}
+
+.glyph svg{
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.container:hover .glyph{
+    color: var(--primary-color, #4bac48);
+}
+
 .container[data-tooltip] {
     position: relative;
 }

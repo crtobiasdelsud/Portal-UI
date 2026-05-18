@@ -60,8 +60,15 @@
   flex-direction: column;
   gap: 16px;
 
-  @include respond(tablet) {
+  // Intermedio (~480–768px): 2 columnas
+  @include respond(mobile) {
     display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  // Ancho (≥768px): 3 columnas
+  @include respond(tablet) {
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
   }
