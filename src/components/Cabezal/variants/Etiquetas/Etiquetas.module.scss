@@ -1,0 +1,70 @@
+@use "../../../../styles/index" as *;
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px 0;
+}
+
+// ── Badge "# TEMAS" ─────────────────────────────────────────────────────────
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 6px 10px;
+  border: 1px solid var(--primary-color, #af0437);
+  color: var(--primary-color, #af0437);
+  font-family: var(--font-inter, Inter, sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--primary-color, #af0437);
+}
+
+// ── Lista de tags ───────────────────────────────────────────────────────────
+
+.list {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: inline-flex;
+}
+
+.tag {
+  font-family: var(--font-inter, Inter, sans-serif);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--text-color, #252523);
+  text-decoration: none;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: var(--primary-color, #af0437);
+    text-decoration: underline;
+  }
+}

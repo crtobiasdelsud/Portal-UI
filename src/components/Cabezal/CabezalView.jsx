@@ -14,6 +14,7 @@ import Carrusel      from './variants/Carrusel/Carrusel.jsx'
 import LeeAdemas     from './variants/LeeAdemas/LeeAdemas.jsx'
 import LoQueSeLee    from './variants/LoQueSeLee/LoQueSeLee.jsx'
 import SeguiLeyendo  from './variants/SeguiLeyendo/SeguiLeyendo.jsx'
+import Etiquetas     from './variants/Etiquetas/Etiquetas.jsx'
 
 const VARIANTS = {
   default:       Default,
@@ -41,6 +42,7 @@ const VARIANTS = {
   loqueselee:    LoQueSeLee,
   seguiLeyendo:  SeguiLeyendo,
   seguileyendo:  SeguiLeyendo,
+  etiquetas:     Etiquetas,
 }
 
 /**
@@ -53,8 +55,9 @@ const VARIANTS = {
  * @param {string} [props.titulo]
  * @param {string} [props.tipo='default']
  * @param {string} [props.verMasUrl]
- * @param {Array<object>} [props.articles=[]]  — todos los tipos excepto loQueSeLee
+ * @param {Array<object>} [props.articles=[]]  — todos los tipos excepto loQueSeLee/etiquetas
  * @param {object} [props.article]              — solo para loQueSeLee
+ * @param {Array<object>} [props.tags]          — solo para etiquetas (tags del artículo actual)
  * @param {boolean} [props.isAmp=false]
  */
 export default function CabezalView({
@@ -63,6 +66,7 @@ export default function CabezalView({
   verMasUrl,
   articles = [],
   article,
+  tags,
   isAmp = false,
 }) {
   const isLoQueSeLee = tipo === 'loQueSeLee' || tipo === 'loqueselee'
@@ -70,6 +74,11 @@ export default function CabezalView({
   if (isLoQueSeLee) {
     if (!article) return null
     return <LoQueSeLee article={article} />
+  }
+
+  // `etiquetas` recibe los tags del artículo en curso, no un array de artículos.
+  if (tipo === 'etiquetas') {
+    return <Etiquetas tags={tags} />
   }
 
   if (!titulo && !articles.length) return null

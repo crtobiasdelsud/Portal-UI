@@ -18,6 +18,17 @@
   }
 }
 
+// Barra lateral con el color primario. Se activa con la prop `borderLeft`
+// (la setea el widget del CMS cuando el ShareBlock va en el cuerpo del artículo).
+.borderLeft {
+  border-left: 4px solid var(--primary-color, #B1043F);
+  padding-left: 12px;
+
+  @include respond(desktop) {
+    padding-left: 16px;
+  }
+}
+
 .label {
   font-size: 14px;
   line-height: 14px;

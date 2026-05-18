@@ -10,13 +10,17 @@ function buildTooltip(label, href) {
   }
 }
 
-export default function Icon({ src, label, href, tooltipText }) {
-  const maskStyle = {
-    maskImage: `url(${src})`,
-    WebkitMaskImage: `url(${src})`,
-  }
-
-  const icon = <span style={maskStyle} aria-hidden="true" className={style.icon} />
+export default function Icon({ src, glyph, label, href, tooltipText, newTab = false }) {
+  // Dos modos de render del ícono:
+  //   - `glyph`: SVG inline (React node). Recolorea vía `fill="currentColor"`.
+  //   - `src`:   ruta a un .svg, usado como `mask-image` (modo legacy).
+  const icon = glyph
+    ? <span aria-hidden="true" className={style.glyph}>{glyph}</span>
+    : <span
+        aria-hidden="true"
+        className={style.icon}
+        style={{ maskImage: `url(${src})`, WebkitMaskImage: `url(${src})` }}
+      />
 
   if (href) {
     return (
@@ -25,6 +29,7 @@ export default function Icon({ src, label, href, tooltipText }) {
           className={style.container}
           href={href}
           aria-label={label}
+          {...(newTab && { target: '_blank', rel: 'noopener noreferrer' })}
         >
           {icon}
 
