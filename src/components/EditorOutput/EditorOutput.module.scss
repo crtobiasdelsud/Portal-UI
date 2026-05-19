@@ -108,13 +108,28 @@
     height: auto;
     display: block;
   }
+}
 
-  figcaption {
-    font-size: 0.8rem;
-    opacity: 0.6;
-    margin-top: 0.4rem;
-    text-align: center;
-  }
+// Wrapper relativo para anclar el epígrafe sobre la imagen (igual que el hero).
+.imageWrap {
+  position: relative;
+  display: block;
+}
+
+// Epígrafe — franja negra sobre el borde inferior de la foto (estilo ArticleHero).
+.epigrafe {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 10px 14px;
+  font-family: "Inter", "Helvetica", Arial, sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: #fff;
+  background: #000;
 }
 
 .embed {
@@ -214,32 +229,50 @@
    si no se setea, cae al color del portal: var(--primary-color, #af0437). */
 .pullquote {
   --pq-color: var(--eo-pullquote-color, var(--primary-color, #af0437));
-  margin: 2.25rem 0;
+  /* Comillas a los lados del texto (no arriba/abajo): fila flex con la
+     comilla de apertura a la izquierda y la de cierre a la derecha. */
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
+  max-width: 500px;
+  margin: 2.25rem auto;
   padding: 0.25rem 0;
 }
 
+/* La alineación mueve TODO el bloque (comillas + texto) a izq/centro/der. */
+.pullquote[data-align="left"] { margin-inline: 0 auto; }
+.pullquote[data-align="right"] { margin-inline: auto 0; }
+.pullquote[data-align="center"] { margin-inline: auto; }
+
 .pullquoteOpen,
 .pullquoteClose {
-  display: block;
+  flex: 0 0 auto;
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 700;
-  font-size: 3.75rem;
-  line-height: 0.1;
+  font-size: 6.5rem;
+  line-height: 1;
   color: var(--pq-color);
 }
 
-/* Comillas fijas: apertura a la izquierda, cierre a la derecha. */
-.pullquoteOpen { margin-bottom: 1.5rem; text-align: left; }
-.pullquoteClose { margin-top: 1.25rem; text-align: right; }
+/* Apertura pegada arriba; cierre pegado abajo — flanqueando el texto.
+   line-height 0.1 en el cierre colapsa la caja de línea: así el glifo (que
+   se dibuja arriba de su caja) cae hasta el fondo del bloque. */
+.pullquoteOpen { align-self: flex-start; }
+.pullquoteClose { align-self: flex-end; line-height: 0.1; }
 
 .pullquote p {
+  flex: 1 1 auto;
+  /* Permite que el flex item se encoja: sin esto una palabra larga sin
+     espacios revienta el max-width del bloque. */
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.4;
   color: var(--pq-color);
-  /* La alineación elegida en el CMS sólo afecta al texto. */
   text-align: var(--pq-text-align, center);
 }
 

@@ -14,6 +14,8 @@ const ampCls = {
   listOl:           "eo-list-ol",
   quote:            "eo-quote",
   image:            "eo-image",
+  imageWrap:        "eo-image-wrap",
+  epigrafe:         "eo-image-epigrafe",
   delimiter:        "eo-delimiter",
   code:             "eo-code",
   pullquote:        "eo-pullquote",
@@ -114,23 +116,25 @@ function Block({ block, cls, isAmp }) {
       )
 
     case "image": {
-      const src    = block.data.url || block.data.file?.url
-      const alt    = block.data.altText || block.data.caption || ""
-      const credit = block.data.authorCredits || block.data.caption
+      const src      = block.data.url || block.data.file?.url
+      const alt      = block.data.altText || block.data.caption || ""
+      const epigrafe = block.data.epigrafe
       return (
         <figure className={cls.image}>
-          {isAmp
-            ? <img src={src} alt={alt} />
-            : <Image
-                src={src}
-                alt={alt}
-                width={0}
-                height={0}
-                sizes="(max-width: 768px) 100vw, 800px"
-                style={{ width: "100%", height: "auto" }}
-              />
-          }
-          {credit && <figcaption>{credit}</figcaption>}
+          <div className={cls.imageWrap}>
+            {isAmp
+              ? <img src={src} alt={alt} />
+              : <Image
+                  src={src}
+                  alt={alt}
+                  width={0}
+                  height={0}
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  style={{ width: "100%", height: "auto" }}
+                />
+            }
+            {epigrafe && <p className={cls.epigrafe}>{epigrafe}</p>}
+          </div>
         </figure>
       )
     }
@@ -228,13 +232,13 @@ function Block({ block, cls, isAmp }) {
       const { variant, text, color, align } = block.data
       const hasClose = variant !== "2"
       // color === '' → el CSS cae a var(--primary-color, #af0437).
-      // align ausente (bloques viejos) → default 'center'. Sólo afecta al
-      // texto; las comillas quedan fijas (apertura izq, cierre der).
+      // align ausente (bloques viejos) → default 'center'. `data-align` mueve
+      // todo el bloque (comillas + texto); `--pq-text-align` alinea el texto.
       const pqStyle = { "--pq-text-align": align || "center" }
       if (color) pqStyle["--eo-pullquote-color"] = color
       if (isAmp) {
         return (
-          <div className={cls.pullquote} style={pqStyle}>
+          <div className={cls.pullquote} style={pqStyle} data-align={align || "center"}>
             <span className={cls.pullquoteOpen}>&ldquo;</span>
             <p dangerouslySetInnerHTML={{ __html: text }} suppressHydrationWarning />
             {hasClose && <span className={cls.pullquoteClose}>&rdquo;</span>}
@@ -243,7 +247,7 @@ function Block({ block, cls, isAmp }) {
       }
       const pullCls = [cls.pullquote, cls[`pullquoteV${variant}`]].filter(Boolean).join(" ")
       return (
-        <div className={pullCls} style={pqStyle}>
+        <div className={pullCls} style={pqStyle} data-align={align || "center"}>
           <span className={cls.pullquoteOpen}>&ldquo;</span>
           <p dangerouslySetInnerHTML={{ __html: text }} suppressHydrationWarning />
           {hasClose && <span className={cls.pullquoteClose}>&rdquo;</span>}
