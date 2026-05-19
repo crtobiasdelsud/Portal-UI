@@ -109,7 +109,7 @@ function Block({ block, cls, isAmp }) {
       return (
         <blockquote className={cls.quote}>
           <p dangerouslySetInnerHTML={{ __html: block.data.text }} />
-          {block.data.caption && <cite>{block.data.caption}</cite>}
+          {block.data.caption && <cite dangerouslySetInnerHTML={{ __html: block.data.caption }} />}
         </blockquote>
       )
 

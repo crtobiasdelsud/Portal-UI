@@ -1,5 +1,23 @@
 # Changelog
 
+## [Unreleased] — 2026-05-18
+
+### Fixed
+
+- `EditorOutput` + `EditorOutputFull`: `@editorjs/quote` guarda `caption` como HTML via `innerHTML`; se renderizaba como texto plano mostrando tags HTML crudos en el autor de la cita. Corregido con `dangerouslySetInnerHTML`.
+
+---
+
+## 1.0.2 — 2026-05-15
+
+Patch release. Fixes menores sobre la migracion 1.0.0; sin breaking changes
+en API publica. Detalle de cambios: ver `git log v1.0.1..v1.0.2 -- src/`.
+
+## 1.0.1 — 2026-05-14
+
+Patch release post-1.0.0. Sin breaking changes en API publica.
+Detalle de cambios: ver `git log v1.0.0..v1.0.1 -- src/`.
+
 ## 1.0.0 — 2026-05-14
 
 Migración 100% completa. Paridad total entre portal y CMS — todos los

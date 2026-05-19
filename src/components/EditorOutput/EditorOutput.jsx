@@ -109,7 +109,7 @@ function Block({ block, cls, isAmp }) {
       return (
         <blockquote className={cls.quote} suppressHydrationWarning>
           <p dangerouslySetInnerHTML={{ __html: block.data.text }} suppressHydrationWarning />
-          {block.data.caption && <cite>{block.data.caption}</cite>}
+          {block.data.caption && <cite dangerouslySetInnerHTML={{ __html: block.data.caption }} suppressHydrationWarning />}
         </blockquote>
       )
 
