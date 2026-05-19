@@ -33,13 +33,19 @@ export default function FooterSimple({ isAmp = false }) {
   } = s
   const social = { ...headerSocial, ...(s.social ?? {}) }
 
-  const safeTextColor = footerTextColor ?? theme.textColor ?? '#ffffff'
+  // Colores propios del footer (footer.settings) con fallback al theme global
+  const footerBg     = s.backgroundColor ?? theme.secondary ?? '#0D1333'
+  const footerText   = s.textColor ?? footerTextColor ?? theme.textColor ?? '#ffffff'
+  const footerAccent = s.primaryColor ?? theme.primary ?? footerBg
+  const footerFont   = s.fontFamily
+
   const inlineStyle = {
-    color: safeTextColor,
-    '--primary-color':        theme.primary,
-    '--secondary-color':      theme.secondary,
-    '--text-color':           safeTextColor,
-    '--social-hover-filter':  theme.primary ? hexToCssFilter(theme.primary) : 'none',
+    color: footerText,
+    ...(footerFont && { fontFamily: footerFont }),
+    '--primary-color':        footerAccent,
+    '--secondary-color':      footerBg,
+    '--text-color':           footerText,
+    '--social-hover-filter':  footerAccent ? hexToCssFilter(footerAccent) : 'none',
   }
 
   const logoEl = (logoUrl || iconUrl) && (
@@ -140,8 +146,8 @@ export default function FooterSimple({ isAmp = false }) {
   }
 
   return (
-    <div className={styles.fullcontainer}>
-      <footer className={styles.container} style={inlineStyle}>
+    <div className={styles.fullcontainer} style={inlineStyle}>
+      <footer className={styles.container}>
 
       {/* ── MAIN: izq (logo+slogan+legal) | der (nav + social+links) ── */}
       <div className={styles.mainRow}>
