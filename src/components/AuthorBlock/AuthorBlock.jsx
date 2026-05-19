@@ -15,7 +15,7 @@ function formatDate(fechaPublicacion, useLongDate) {
   const fecha = date.toLocaleDateString('es-AR', useLongDate
     ? { day: '2-digit', month: 'long',    year: 'numeric' }
     : { day: '2-digit', month: '2-digit', year: 'numeric' })
-  const hora  = date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })
+  const hora  = date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
   return `${fecha} - ${hora}`
 }
 

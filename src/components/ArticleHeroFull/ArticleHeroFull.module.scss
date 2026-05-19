@@ -3,17 +3,20 @@
 .hero {
   position: relative;
   width: 100%;
-  min-height: 90vh;
+  // Altura via custom property: el portal usa el default en `vh`; un preview
+  // dentro de un iframe puede fijar `--ahf-min-h` a un valor estable y evitar
+  // el loop de altura (vh → alto del iframe → scrollHeight → vh…).
+  min-height: var(--ahf-min-h, 90vh);
   overflow: hidden;
   display: flex;
   align-items: flex-end;
 
   @include respond(tablet) {
-    min-height: 75vh;
+    min-height: var(--ahf-min-h, 75vh);
   }
 
   @include respond(desktop) {
-    min-height: 75vh;
+    min-height: var(--ahf-min-h, 75vh);
   }
 }
 
@@ -112,5 +115,25 @@
     font-size: 1.125rem;
     line-height: 1.3em;
     padding-top: 1.875rem;
+  }
+}
+
+// ── Epígrafe de la imagen — crédito sutil en el borde inferior del hero ──────
+.epigrafe {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 0 5% 0.5rem;
+  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  text-align: right;
+  color: rgb(255 255 255 / 0.75);
+
+  @include respond(tablet) {
+    padding: 0 10% 0.6rem;
   }
 }

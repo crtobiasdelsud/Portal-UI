@@ -14,7 +14,7 @@ import V0Desktop from './variants/V0Desktop/V0Desktop'
 
 const VARIANTS = { '0': V0, '1': V1, '2': V2, '3': V3, '4': V4, '5': V5 }
 
-export default function ArticleHero({ titulo, volanta, copete, imagen, focalPoint, isAmp = false, extras = null, hideImageOnDesktop = false }) {
+export default function ArticleHero({ titulo, volanta, copete, imagen, imagenEpigrafe, focalPoint, isAmp = false, extras = null, hideImageOnDesktop = false }) {
   const theme   = useTheme()
   const variant = String(theme.articleHero ?? 1)
 
@@ -27,10 +27,21 @@ export default function ArticleHero({ titulo, volanta, copete, imagen, focalPoin
 
   const ExtrasEl = (!isAmp && extras) ? <div className={styles.extras}>{extras}</div> : null
 
+  // Epígrafe: overlay sutil sobre el borde inferior de la imagen del hero.
+  // Solo non-amp (en amp no se aplican los CSS modules).
+  const EpigrafeEl = (!isAmp && imagen && imagenEpigrafe)
+    ? <p className={styles.epigrafe}>{imagenEpigrafe}</p>
+    : null
+
   const ImgEl = imagen
     ? isAmp
       ? <img src={imagen} alt={titulo ?? ''} className="article-hero__img" />
-      : <AspectImage src={imagen} alt={titulo ?? ''} aspect="16:9" fill={true} focalPoint={focalPoint} />
+      : (
+        <>
+          <AspectImage src={imagen} alt={titulo ?? ''} aspect="16:9" fill={true} focalPoint={focalPoint} />
+          {EpigrafeEl}
+        </>
+      )
     : null
 
   const imgWrapClass = isAmp

@@ -3,7 +3,7 @@
 import styles from './ArticleHeroFull.module.scss'
 import { useSiteConfig } from '../../context/SiteConfigContext.jsx'
 
-export default function ArticleHeroFull({ titulo, copete, imagen, focalPoint, categoria }) {
+export default function ArticleHeroFull({ titulo, copete, imagen, imagenEpigrafe, focalPoint, categoria }) {
   const { config } = useSiteConfig()
   const siteName = config?.slots?.header?.settings?.siteName ?? ''
 
@@ -22,6 +22,9 @@ export default function ArticleHeroFull({ titulo, copete, imagen, focalPoint, ca
         />
       )}
       <div className={styles.gradient} />
+      {imagen && imagenEpigrafe && (
+        <p className={styles.epigrafe}>{imagenEpigrafe}</p>
+      )}
       <div className={styles.content}>
         {categoria && (
           <div className={styles.breadcrumb}>

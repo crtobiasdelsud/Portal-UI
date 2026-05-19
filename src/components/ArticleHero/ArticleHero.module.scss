@@ -87,3 +87,19 @@
     max-height: none;
   }
 }
+
+// ── Epígrafe de la imagen — franja negra sobre el borde inferior de la foto ──
+.epigrafe {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 10px 14px;
+  font-family: "Inter", "Helvetica", Arial, sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: #fff;
+  background: #000;
+}

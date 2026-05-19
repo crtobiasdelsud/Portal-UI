@@ -1,0 +1,18 @@
+// Root del preview — recrea el `<main>` del portal: es el container de las
+// container-queries (`container-type: inline-size`) de los componentes
+// portal-ui, para que el responsive responda al ancho real del contenedor
+// (clave cuando se renderiza dentro de un iframe).
+//
+// NOTA: a diferencia del `<main>` real, NO se usa `min-height: 100dvh` —
+// dentro de un iframe auto-dimensionado generaría un loop de altura.
+.root {
+  overflow-x: clip;
+  display: flex;
+  flex-direction: column;
+  container-type: inline-size;
+  background: #fff;
+
+  // Fija la altura del hero "full" a un valor estable: dentro de un iframe
+  // auto-dimensionado, el `90vh/75vh` por defecto generaría un loop de altura.
+  --ahf-min-h: 620px;
+}

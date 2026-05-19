@@ -57,6 +57,9 @@ export { default as ArticleHero }     from './components/ArticleHero/ArticleHero
 export { default as ArticleHeroFull } from './components/ArticleHeroFull/ArticleHeroFull.jsx'
 export { default as ArticleSidebar }  from './components/ArticleSidebar/ArticleSidebar.jsx'
 
+// === Screens / vistas de detalle de artículo (réplica portable para previews) ===
+export { default as ArticleDetailView } from './components/ArticleDetailView/ArticleDetailView.jsx'
+
 // === Headers ===
 export { default as HeaderSimpleSwitch }         from './components/Headers/HeaderSimple/HeaderSimpleSwitch/HeaderSimpleSwitch.jsx'
 export { default as HeaderSimpleDesktop }        from './components/Headers/HeaderSimple/HeaderSimpleDesktop/HeaderSimpleDesktop.jsx'

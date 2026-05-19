@@ -225,22 +225,27 @@ function Block({ block, cls, isAmp }) {
       return <div className={cls.raw} dangerouslySetInnerHTML={{ __html: block.data.html }} suppressHydrationWarning />
 
     case "pullquote": {
-      const { variant, text } = block.data
+      const { variant, text, color, align } = block.data
       const hasClose = variant !== "2"
+      // color === '' → el CSS cae a var(--primary-color, #af0437).
+      // align ausente (bloques viejos) → default 'center'. Sólo afecta al
+      // texto; las comillas quedan fijas (apertura izq, cierre der).
+      const pqStyle = { "--pq-text-align": align || "center" }
+      if (color) pqStyle["--eo-pullquote-color"] = color
       if (isAmp) {
         return (
-          <div className={cls.pullquote}>
+          <div className={cls.pullquote} style={pqStyle}>
             <span className={cls.pullquoteOpen}>&ldquo;</span>
-            <p>{text}</p>
+            <p dangerouslySetInnerHTML={{ __html: text }} suppressHydrationWarning />
             {hasClose && <span className={cls.pullquoteClose}>&rdquo;</span>}
           </div>
         )
       }
       const pullCls = [cls.pullquote, cls[`pullquoteV${variant}`]].filter(Boolean).join(" ")
       return (
-        <div className={pullCls}>
+        <div className={pullCls} style={pqStyle}>
           <span className={cls.pullquoteOpen}>&ldquo;</span>
-          <p>{text}</p>
+          <p dangerouslySetInnerHTML={{ __html: text }} suppressHydrationWarning />
           {hasClose && <span className={cls.pullquoteClose}>&rdquo;</span>}
         </div>
       )

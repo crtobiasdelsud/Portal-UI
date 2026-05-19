@@ -216,6 +216,53 @@
   line-height: 1.6;
 }
 
+/* ── Pullquote / Cita destacada ──
+   El color usa `--eo-pullquote-color` (parámetro elegido en el CMS);
+   si no se setea, cae al color del portal: var(--primary-color, #af0437). */
+.pullquote {
+  --pq-color: var(--eo-pullquote-color, var(--primary-color, #af0437));
+  margin: 2.25rem 0;
+  padding: 0.25rem 0;
+}
+
+.pullquoteOpen,
+.pullquoteClose {
+  display: block;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  font-size: 3.75rem;
+  line-height: 0.1;
+  color: var(--pq-color);
+}
+
+/* Comillas fijas: apertura a la izquierda, cierre a la derecha. */
+.pullquoteOpen { margin-bottom: 1.5rem; text-align: left; }
+.pullquoteClose { margin-top: 1.25rem; text-align: right; }
+
+.pullquote p {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--pq-color);
+  /* La alineación elegida en el CMS sólo afecta al texto. */
+  text-align: var(--pq-text-align, center);
+}
+
+/* Variante 3 — comillas en color, texto en negro. */
+.pullquoteV3 p { color: #111; }
+
+/* Variante 2 — fondo oscuro, texto blanco, sólo comilla de apertura. */
+.pullquoteV2 {
+  background: #333;
+  border-radius: 6px;
+  padding: 1.5rem 1.75rem 2rem;
+
+  p { color: #fff; }
+  .pullquoteClose { display: none; }
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;

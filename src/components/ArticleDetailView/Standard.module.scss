@@ -1,0 +1,179 @@
+// Réplica de ArticleDetail.module.scss del portal (editor-template-front).
+@use "../../styles/index" as *;
+
+// ── Tokens ────────────────────────────────────────────────────────────────────
+$page-max:   1376px;
+$sidebar-w:  322px;
+$col-gap:    30px;
+$page-pad:   16px;
+
+// ── Contenedor de ancho máximo ────────────────────────────────────────────────
+.pageWrap {
+  width: 100%;
+  max-width: $page-max;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  @include respond(tablet) {
+    max-width: 720px;
+  }
+
+  @include respond(laptop) {
+    max-width: 960px;
+  }
+
+  @include respond(desktop) {
+    max-width: $page-max;
+  }
+}
+
+// ── Grid de 4 columnas iguales (igual que Home) ───────────────────────────────
+.articleWrap {
+  @include respond(laptop) {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: $col-gap;
+    row-gap: 0;
+    align-items: start;
+  }
+
+  @include respond(desktop) {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: $col-gap;
+    row-gap: 0;
+    align-items: start;
+  }
+}
+
+// Breadcrumb + Hero + Author + SpeechButton — cols 1-3, row 2
+.articleHeader {
+  min-width: 0;
+  padding-top: 1.5rem;
+
+  @include respond(laptop) {
+    grid-column: 1 / 3;
+    grid-row: 2;
+  }
+
+  @include respond(desktop) {
+    grid-column: 1 / 4;
+    grid-row: 2;
+  }
+}
+
+// Row 3 — grid item que agrupa body + sidebar.
+.contentRow {
+  min-width: 0;
+
+  @include respond(laptop) {
+    grid-column: 1 / 4;
+    grid-row: 3;
+    display: flex;
+    align-items: stretch;
+    gap: $col-gap;
+  }
+
+  @include respond(desktop) {
+    grid-column: 1 / 4;
+    grid-row: 3;
+    display: flex;
+    align-items: stretch;
+    gap: $col-gap;
+  }
+}
+
+// Body — hijo flex del contentRow (2/3 del ancho)
+.body {
+  min-width: 0;
+  flex: 2 1 0;
+  align-self: flex-start;
+}
+
+// Sidebar — ocupa el alto del body para que los sticky internos funcionen
+.sidebarPlacement {
+  display: none;
+  container-type: inline-size;
+
+  @include respond(laptop) {
+    display: block;
+    flex: 1 0 0;
+    min-width: 0;
+  }
+
+  @include respond(desktop) {
+    display: block;
+    flex: 1 0 0;
+    min-width: 0;
+  }
+}
+
+// Widgets dentro del body — separación vertical entre widgets consecutivos
+.inBodyWidget {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+// ── Imagen del artículo en el body (tablet+) ─────────────────────────────────
+.bodyImage {
+  display: none;
+  position: relative;
+  margin: 0;
+
+  @include respond(tablet) {
+    display: block;
+    margin: 0 0 1.5rem;
+  }
+}
+
+// ── Epígrafe — franja negra sobre el borde inferior de la imagen ─────────────
+.bodyImageCaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 10px 14px;
+  font-family: "Inter", "Helvetica", Arial, sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #fff;
+  background: #000;
+}
+
+// ── SpeechButton mobile (en articleHeader) / desktop (en body tras imagen) ───
+.speechMobile {
+  @include respond(laptop) {
+    display: none;
+  }
+}
+
+.speechDesktop {
+  display: none;
+
+  @include respond(laptop) {
+    display: block;
+    margin-bottom: 1rem;
+  }
+}
+
+// ── Author + share (mobile) ───────────────────────────────────────────────────
+.authorContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+
+  @include respond(laptop) {
+    display: none;
+  }
+}
+
+// Extras dentro del hero — visible solo en desktop (el ArticleHero lo oculta en mobile)
+.heroExtras {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+}
