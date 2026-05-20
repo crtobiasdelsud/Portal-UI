@@ -56,6 +56,7 @@ export { default as Bajada }          from './components/Cards/Bajada/Bajada.jsx
 export { default as ArticleHero }     from './components/ArticleHero/ArticleHero.jsx'
 export { default as ArticleHeroFull } from './components/ArticleHeroFull/ArticleHeroFull.jsx'
 export { default as ArticleSidebar }  from './components/ArticleSidebar/ArticleSidebar.jsx'
+export { default as Carousel }        from './components/Carousel/Carousel.jsx'
 
 // === Screens / vistas de detalle de artículo (réplica portable para previews) ===
 export { default as ArticleDetailView } from './components/ArticleDetailView/ArticleDetailView.jsx'

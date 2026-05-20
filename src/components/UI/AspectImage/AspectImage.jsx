@@ -10,6 +10,8 @@ const RATIOS = {
  *
  * focalPoint: { x: 0–1, y: 0–1, zoom: ≥1 }
  * aspect: '16:9' | '4:3'  (default '16:9')
+ * priority: true → imagen LCP (carga eager + fetchpriority alta). Sin prioridad
+ *           se difiere con loading="lazy".
  */
 export default function AspectImage({
   src,
@@ -19,6 +21,7 @@ export default function AspectImage({
   fill      = false,
   className = '',
   style     = {},
+  priority  = false,
 }) {
   const x    = focalPoint?.x    ?? 0.5
   const y    = focalPoint?.y    ?? 0.5
@@ -36,6 +39,10 @@ export default function AspectImage({
       <img
         src={src}
         alt={alt}
+        decoding="async"
+        {...(priority
+          ? { loading: 'eager', fetchPriority: 'high' }
+          : { loading: 'lazy' })}
         style={{
           position:        'absolute',
           inset:           0,

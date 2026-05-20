@@ -201,11 +201,11 @@ export default function MenuDrawer({
             <div className={styles.social}>
               <span className={styles.socialLabel} style={{ color: subTextColor }}>Seguinos en:</span>
               <div className={styles.socialIcons}>
-                {social.facebook  && <Icon src="/icons/facebook.svg"  href={social.facebook}  label="Facebook"  />}
-                {social.twitter   && <Icon src="/icons/x.svg"         href={social.twitter}   label="X"         />}
-                {social.instagram && <Icon src="/icons/instagram.svg" href={social.instagram} label="Instagram" />}
-                {social.tiktok    && <Icon src="/icons/tiktok.svg"    href={social.tiktok}    label="TikTok"    />}
-                {social.youtube   && <Icon src="/icons/youtube.svg"   href={social.youtube}   label="YouTube"   />}
+                {social.facebook  && <Icon src="/icons/facebook.svg"  href={social.facebook}  label="Facebook"  newTab />}
+                {social.twitter   && <Icon src="/icons/x.svg"         href={social.twitter}   label="X"         newTab />}
+                {social.instagram && <Icon src="/icons/instagram.svg" href={social.instagram} label="Instagram" newTab />}
+                {social.tiktok    && <Icon src="/icons/tiktok.svg"    href={social.tiktok}    label="TikTok"    newTab />}
+                {social.youtube   && <Icon src="/icons/youtube.svg"   href={social.youtube}   label="YouTube"   newTab />}
               </div>
             </div>
           </div>

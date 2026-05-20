@@ -3,6 +3,7 @@
 import styles from './ArticleHero.module.scss'
 import { useTheme } from '../../context/SiteConfigContext.jsx'
 import AspectImage from '../../components/UI/AspectImage/AspectImage.jsx'
+import Carousel from '../Carousel/Carousel.jsx'
 import V0 from './variants/V0/V0'
 import V1 from './variants/V1/V1'
 import V2 from './variants/V2/V2'
@@ -14,7 +15,7 @@ import V0Desktop from './variants/V0Desktop/V0Desktop'
 
 const VARIANTS = { '0': V0, '1': V1, '2': V2, '3': V3, '4': V4, '5': V5 }
 
-export default function ArticleHero({ titulo, volanta, copete, imagen, imagenEpigrafe, focalPoint, isAmp = false, extras = null, hideImageOnDesktop = false }) {
+export default function ArticleHero({ titulo, volanta, copete, imagen, imagenes, imagenEpigrafe, focalPoint, isAmp = false, extras = null, hideImageOnDesktop = false }) {
   const theme   = useTheme()
   const variant = String(theme.articleHero ?? 1)
 
@@ -27,22 +28,45 @@ export default function ArticleHero({ titulo, volanta, copete, imagen, imagenEpi
 
   const ExtrasEl = (!isAmp && extras) ? <div className={styles.extras}>{extras}</div> : null
 
-  // Epígrafe: overlay sutil sobre el borde inferior de la imagen del hero.
-  // Solo non-amp (en amp no se aplican los CSS modules).
-  const EpigrafeEl = (!isAmp && imagen && imagenEpigrafe)
-    ? <p className={styles.epigrafe}>{imagenEpigrafe}</p>
-    : null
+  // Slides del carrusel: `imagenes` (array) tiene prioridad; si no, se arma
+  // con la imagen única + su epígrafe. La primera es la principal.
+  const slides = (Array.isArray(imagenes) && imagenes.length > 0)
+    ? imagenes
+    : (imagen ? [{ url: imagen, epigrafe: imagenEpigrafe }] : [])
 
-  const ImgEl = imagen
-    ? isAmp
-      ? <img src={imagen} alt={titulo ?? ''} className="article-hero__img" />
-      : (
+  let ImgEl = null
+  if (slides.length > 0) {
+    if (isAmp) {
+      // AMP no ejecuta JS de cliente: muestra sólo la imagen principal.
+      // fetchpriority alta → es la imagen LCP del artículo.
+      ImgEl = (
+        <img
+          src={slides[0].url}
+          alt={titulo ?? ''}
+          className="article-hero__img"
+          fetchPriority="high"
+        />
+      )
+    } else if (slides.length > 1) {
+      ImgEl = (
+        <Carousel
+          images={slides.map((s) => ({ url: s.url, alt: titulo ?? '', epigrafe: s.epigrafe }))}
+          focalPoint={focalPoint}
+          fill
+          priority
+        />
+      )
+    } else {
+      // Una sola imagen: epígrafe como overlay sutil sobre el borde inferior.
+      // `priority` → imagen LCP, carga con prioridad alta.
+      ImgEl = (
         <>
-          <AspectImage src={imagen} alt={titulo ?? ''} aspect="16:9" fill={true} focalPoint={focalPoint} />
-          {EpigrafeEl}
+          <AspectImage src={slides[0].url} alt={titulo ?? ''} aspect="16:9" fill={true} focalPoint={focalPoint} priority />
+          {slides[0].epigrafe && <p className={styles.epigrafe}>{slides[0].epigrafe}</p>}
         </>
       )
-    : null
+    }
+  }
 
   const imgWrapClass = isAmp
     ? 'article-hero__img-wrap'

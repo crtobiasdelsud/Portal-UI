@@ -2,8 +2,9 @@
 
 import styles from './ArticleHeroFull.module.scss'
 import { useSiteConfig } from '../../context/SiteConfigContext.jsx'
+import Carousel from '../Carousel/Carousel.jsx'
 
-export default function ArticleHeroFull({ titulo, copete, imagen, imagenEpigrafe, focalPoint, categoria }) {
+export default function ArticleHeroFull({ titulo, copete, imagen, imagenes, imagenEpigrafe, focalPoint, categoria }) {
   const { config } = useSiteConfig()
   const siteName = config?.slots?.header?.settings?.siteName ?? ''
 
@@ -11,19 +12,39 @@ export default function ArticleHeroFull({ titulo, copete, imagen, imagenEpigrafe
     ? `${focalPoint.x ?? 50}% ${focalPoint.y ?? 50}%`
     : 'center center'
 
+  // Slides del carrusel: `imagenes` (array) tiene prioridad; si no, la imagen
+  // única. La primera es la principal.
+  const slides = (Array.isArray(imagenes) && imagenes.length > 0)
+    ? imagenes
+    : (imagen ? [{ url: imagen, epigrafe: imagenEpigrafe }] : [])
+
+  const single = slides.length === 1 ? slides[0] : null
+
   return (
     <div className={styles.hero}>
-      {imagen && (
+      {slides.length > 1 ? (
+        <Carousel
+          images={slides.map((s) => ({ url: s.url, alt: titulo ?? '' }))}
+          focalPoint={focalPoint}
+          fill
+          showEpigrafe={false}
+          dotsPosition="top"
+          priority
+        />
+      ) : single ? (
         <img
-          src={imagen}
+          src={single.url}
           alt={titulo ?? ''}
           className={styles.img}
           style={{ objectPosition: objPos }}
+          decoding="async"
+          loading="eager"
+          fetchPriority="high"
         />
-      )}
+      ) : null}
       <div className={styles.gradient} />
-      {imagen && imagenEpigrafe && (
-        <p className={styles.epigrafe}>{imagenEpigrafe}</p>
+      {single && single.epigrafe && (
+        <p className={styles.epigrafe}>{single.epigrafe}</p>
       )}
       <div className={styles.content}>
         {categoria && (

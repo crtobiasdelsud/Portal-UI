@@ -1,0 +1,106 @@
+// Carrusel de imágenes — navegación manual. Las flechas y los puntos se
+// posicionan en absoluto sobre el viewport.
+.carousel {
+  position: relative;
+  width: 100%;
+}
+
+// Modo `fill`: ocupa el contenedor posicionado padre (uso en el hero).
+.fill {
+  position: absolute;
+  inset: 0;
+  width: auto;
+}
+
+.viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+// Epígrafe — franja negra de altura fija (38px) sobre el borde inferior.
+// Una sola línea: si el texto es largo se recorta con elipsis (no se expande).
+.epigrafe {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  height: 38px;
+  line-height: 38px;
+  margin: 0;
+  padding: 0 12px;
+  font-family: "Inter", "Helvetica", Arial, sans-serif;
+  font-size: 0.7rem;
+  color: #fff;
+  background: rgb(0 0 0 / 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.45);
+  color: #fff;
+  font-size: 1.7rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: rgb(0 0 0 / 0.72);
+  }
+}
+
+.arrowPrev { left: 10px; }
+.arrowNext { right: 10px; }
+
+// Puntos: apenas por encima de la franja del epígrafe (38px + 8px de aire).
+.dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 46px;
+  z-index: 4;
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+}
+
+.dotsTop {
+  bottom: auto;
+  top: 12px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.55);
+  box-shadow: 0 0 2px rgb(0 0 0 / 0.4);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.85);
+  }
+}
+
+.dotActive {
+  background: #fff;
+  transform: scale(1.3);
+}
