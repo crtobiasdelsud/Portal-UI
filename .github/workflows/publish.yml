@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/**'
       - 'package.json'
+      - '.github/workflows/publish.yml'
 
 jobs:
   publish:
@@ -45,7 +46,24 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          npm version ${{ steps.bump.outputs.type }} -m "chore: release %s [skip ci]"
+
+          # Compute next version without committing/tagging yet
+          NEXT_VERSION=$(npm version ${{ steps.bump.outputs.type }} --no-git-tag-version)
+          echo "Next version: $NEXT_VERSION"
+
+          # If the tag already exists on the remote (leftover from a previous failed run),
+          # bump again until we find a free version.
+          while git ls-remote --tags origin | grep -q "refs/tags/${NEXT_VERSION}$"; do
+            echo "Tag $NEXT_VERSION already exists on remote, bumping again..."
+            # Revert the previous bump to package.json before bumping again
+            git checkout -- package.json package-lock.json 2>/dev/null || git checkout -- package.json
+            NEXT_VERSION=$(npm version ${{ steps.bump.outputs.type }} --no-git-tag-version)
+            echo "Next version: $NEXT_VERSION"
+          done
+
+          git add package.json package-lock.json 2>/dev/null || git add package.json
+          git commit -m "chore: release ${NEXT_VERSION} [skip ci]"
+          git tag "$NEXT_VERSION"
           git push --follow-tags
 
       - name: Publish to npm
