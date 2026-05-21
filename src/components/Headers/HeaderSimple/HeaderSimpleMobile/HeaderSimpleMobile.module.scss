@@ -3,9 +3,16 @@
 .containerInFixed {
   display: flex;
   flex-direction: column;
-  position: static;
+  /* position: fixed (no sticky) para ser inmune a ancestors con
+     `overflow: hidden|auto|scroll`. HeaderSwitch mide su altura con
+     ResizeObserver y aplica esa altura al `.mobileSlot` para reservar el
+     espacio en el flujo. */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 1002;
   box-sizing: border-box;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
   container-type: inline-size;

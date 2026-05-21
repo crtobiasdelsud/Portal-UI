@@ -5,6 +5,30 @@ import AspectImage from '../UI/AspectImage/AspectImage.jsx'
 import Carousel from '../Carousel/Carousel.jsx'
 import EditorOutput from '../EditorOutput/EditorOutput.jsx'
 import Breadcrumb from '../Breadcrumb/Breadcrumb.jsx'
+import { useCategories } from '../../context/SiteConfigContext.jsx'
+
+function lastSegment(slug) {
+  return String(slug ?? '').split('/').filter(Boolean).pop() ?? ''
+}
+
+function findCategoryWithParent(categories, slug) {
+  const target = lastSegment(slug)
+  if (!target) return null
+  for (const cat of categories ?? []) {
+    const children = cat.subcategories ?? cat.children ?? []
+    for (const sub of children) {
+      if (lastSegment(sub.slug) === target) return { parent: cat, current: sub }
+    }
+    if (lastSegment(cat.slug) === target) return { parent: null, current: cat }
+  }
+  return null
+}
+
+function buildCategoryHref(item) {
+  if (!item) return '/'
+  const raw = String(item.slug ?? '')
+  return raw.startsWith('/') ? raw : `/${raw}`
+}
 import ArticleHero from '../ArticleHero/ArticleHero.jsx'
 import AuthorBlock from '../AuthorBlock/AuthorBlock.jsx'
 import ShareBlock from '../ShareBlock/ShareBlock.jsx'
@@ -21,6 +45,7 @@ import styles from './Standard.module.scss'
  * el preview muestra el artículo en sí, no la config de layout del sitio.
  */
 export default function Standard({ article }) {
+  const categories = useCategories()
   // Epígrafe de la imagen principal — normalizado en `imagen.epigrafe` y/o
   // `imagenEpigrafe` a nivel raíz; puede venir null.
   const imagenEpigrafe = article.imagen?.epigrafe ?? article.imagenEpigrafe ?? null
@@ -34,10 +59,24 @@ export default function Standard({ article }) {
   ]
   const hasCarousel = imagenes.length > 1
 
-  const breadcrumbItems = [
-    { label: 'Inicio', href: '/' },
-    { label: article.categoria?.nombre ?? '', href: `/${article.categoria?.slug ?? ''}` },
-  ]
+  const breadcrumbItems = (() => {
+    const items = [{ label: 'Inicio', href: '/' }]
+    const articleCat = article.categoria
+    if (!articleCat?.slug) return items
+
+    const match = findCategoryWithParent(categories, articleCat.slug)
+    if (match?.parent) {
+      items.push({
+        label: match.parent.label ?? match.parent.name ?? '',
+        href: buildCategoryHref(match.parent),
+      })
+    }
+    items.push({
+      label: articleCat.nombre ?? match?.current?.label ?? match?.current?.name ?? '',
+      href: match?.current ? buildCategoryHref(match.current) : `/${articleCat.slug}`,
+    })
+    return items
+  })()
 
   return (
     <PageWrapper>
