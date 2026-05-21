@@ -2,10 +2,14 @@
 @use "../../../../styles/variables/breakpoint" as *;
 
 // ── Mobile / tablet ─────────────────────────────────────────
+// El <header> dentro (HeaderSimpleMobile .containerInFixed) es `position: fixed`
+// para ser inmune a ancestors con `overflow: hidden` que rompen sticky.
+// HeaderSwitch.jsx mide la altura real del header con ResizeObserver y la
+// aplica como inline `height` a este slot, así el contenido siguiente del
+// documento no se mete debajo del header fijo.
 .mobileSlot {
   display: block;
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 1002;
 
   @media (min-width: $tablet) {

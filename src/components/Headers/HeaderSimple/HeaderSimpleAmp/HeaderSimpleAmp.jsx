@@ -80,11 +80,11 @@ export default function HeaderSimpleAmp({ settings = {} }) {
           <div className="amp-sidebar__social">
             <span className="amp-sidebar__social-label">Seguinos en:</span>
             <div className="amp-sidebar__social-icons">
-              {social.facebook  && <a href={social.facebook}  aria-label="Facebook"  className="amp-sidebar__social-link"><img src="/icons/facebook.svg"  alt="Facebook"  /></a>}
-              {social.twitter   && <a href={social.twitter}   aria-label="X"         className="amp-sidebar__social-link"><img src="/icons/x.svg"         alt="X"         /></a>}
-              {social.instagram && <a href={social.instagram} aria-label="Instagram" className="amp-sidebar__social-link"><img src="/icons/instagram.svg" alt="Instagram" /></a>}
-              {social.youtube   && <a href={social.youtube}   aria-label="YouTube"   className="amp-sidebar__social-link"><img src="/icons/youtube.svg"   alt="YouTube"   /></a>}
-              {social.tiktok    && <a href={social.tiktok}    aria-label="TikTok"    className="amp-sidebar__social-link"><img src="/icons/tiktok.svg"    alt="TikTok"    /></a>}
+              {social.facebook  && <a href={social.facebook}  aria-label="Facebook"  className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><img src="/icons/facebook.svg"  alt="Facebook"  /></a>}
+              {social.twitter   && <a href={social.twitter}   aria-label="X"         className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><img src="/icons/x.svg"         alt="X"         /></a>}
+              {social.instagram && <a href={social.instagram} aria-label="Instagram" className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><img src="/icons/instagram.svg" alt="Instagram" /></a>}
+              {social.youtube   && <a href={social.youtube}   aria-label="YouTube"   className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><img src="/icons/youtube.svg"   alt="YouTube"   /></a>}
+              {social.tiktok    && <a href={social.tiktok}    aria-label="TikTok"    className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><img src="/icons/tiktok.svg"    alt="TikTok"    /></a>}
             </div>
           </div>
         </amp-sidebar>

@@ -25,6 +25,8 @@ export default function IconSmall({ src, label, href }) {
           className={style.container}
           href={href}
           aria-label={label}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           {icon}
 

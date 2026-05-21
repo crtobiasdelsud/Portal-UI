@@ -139,20 +139,43 @@ function Block({ block, cls, isAmp }) {
       )
     }
 
-    case "embed":
+    case "embed": {
       if (isAmp) return null  // AMP doesn't allow arbitrary iframes
+      const { service, embed, width, height, caption } = block.data
+
+      // Tamaños por servicio:
+      //  - Videos (YouTube/Vimeo/Codepen) → 16:9 responsive.
+      //  - Instagram → el iframe del servicio se reflowea con el ancho; alto
+      //    real ≈ ancho + ~200px de chrome. aspect-ratio 5/6 cubre posts
+      //    cuadrados; maxHeight 80vh evita que un post largo desborde la
+      //    ventana del usuario.
+      //  - TikTok → portrait 9:16, mismo cap de 80vh.
+      //  - Resto (Twitter, etc.) → alto del servicio o 400 fallback.
+      const VIDEO_SERVICES = ["youtube", "vimeo", "codepen"]
+      const isVideo = VIDEO_SERVICES.includes(service)
+
+      let iframeStyle
+      if (isVideo) {
+        iframeStyle = { width: "100%", aspectRatio: "16 / 9", border: 0 }
+      } else if (service === "instagram") {
+        iframeStyle = { width: "100%", aspectRatio: "5 / 6", maxHeight: "80vh", border: 0 }
+      } else if (service === "tiktok") {
+        iframeStyle = { width: "100%", aspectRatio: "9 / 16", maxHeight: "80vh", border: 0 }
+      } else {
+        iframeStyle = { width: width || "100%", height: height || 400, border: 0 }
+      }
+
       return (
-        <figure className={cls.embed}>
+        <figure className={cls.embed} data-service={service}>
           <iframe
-            src={block.data.embed}
-            width={block.data.width || "100%"}
-            height={block.data.height || 400}
-            frameBorder="0"
+            src={embed}
+            style={iframeStyle}
             allowFullScreen
           />
-          {block.data.caption && <figcaption>{block.data.caption}</figcaption>}
+          {caption && <figcaption>{caption}</figcaption>}
         </figure>
       )
+    }
 
     case "attaches": {
       const href  = block.data.url || block.data.file?.url

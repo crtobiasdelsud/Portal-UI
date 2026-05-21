@@ -25,12 +25,20 @@ export default function Full({ article }) {
     { label: article.categoria?.nombre ?? '', href: `/${article.categoria?.slug ?? ''}` },
   ]
 
+  // Carrusel: la portada (principal) + las secundarias de la galería.
+  const galeria = Array.isArray(article.imagen?.galeria) ? article.imagen.galeria : []
+  const imagenes = [
+    ...(article.imagen?.url ? [{ url: article.imagen.url, epigrafe: imagenEpigrafe }] : []),
+    ...galeria.filter((g) => g?.url).map((g) => ({ url: g.url, epigrafe: g.epigrafe ?? null })),
+  ]
+
   return (
     <>
       <ArticleHeroFull
         titulo={article.titulo}
         copete={article.copete}
         imagen={article.imagen?.url ?? null}
+        imagenes={imagenes}
         imagenEpigrafe={imagenEpigrafe}
         focalPoint={article.focalPoint}
         categoria={article.categoria ?? null}

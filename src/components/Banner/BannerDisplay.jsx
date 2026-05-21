@@ -11,12 +11,20 @@ import styles from './Banner.module.scss'
  * Mode priority:
  *   vertical  → siempre vertical
  *   horizontal (o sin tipo) → horizontal si contenedor ≥ 480px, sino vertical
+ *
+ * Carga diferida: la media (que puede ser un GIF de varios MB) NO se descarga
+ * en el render inicial. Recién se monta cuando el banner se acerca al viewport
+ * (IntersectionObserver con rootMargin). Hasta que termina de cargar se ve un
+ * preview (skeleton) y la media hace fade-in al estar lista.
  */
 
 const MODES = {
   horizontal: { width: 970, height: 180 },
   vertical:   { width: 300, height: 600 },
 }
+
+// Distancia antes de entrar al viewport a la que se empieza a cargar la media.
+const LAZY_ROOT_MARGIN = '400px'
 
 function getMode(containerWidth, posicionImagen) {
   if (posicionImagen === 'vertical') return 'vertical'
@@ -40,7 +48,9 @@ export default function BannerDisplay({ banner }) {
   const [mode, setMode] = useState(
     banner?.posicionImagen === 'vertical' ? 'vertical' : 'horizontal'
   )
-  const [ready, setReady] = useState(false)
+  const [ready, setReady]   = useState(false)
+  const [near, setNear]     = useState(false)   // banner cerca del viewport → cargar media
+  const [loaded, setLoaded] = useState(false)   // media pesada ya descargada
 
   useEffect(() => {
     if (!outerRef.current) return
@@ -51,6 +61,23 @@ export default function BannerDisplay({ banner }) {
     obs.observe(outerRef.current)
     return () => obs.disconnect()
   }, [banner?.posicionImagen])
+
+  // Carga diferida: dispara la descarga de la media cuando el banner se acerca
+  // al viewport. Mientras tanto sólo se ve el preview (skeleton).
+  useEffect(() => {
+    if (!outerRef.current || near) return
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setNear(true)
+          io.disconnect()
+        }
+      },
+      { rootMargin: LAZY_ROOT_MARGIN }
+    )
+    io.observe(outerRef.current)
+    return () => io.disconnect()
+  }, [near])
 
   // Impresión: se dispara cuando el banner entra al viewport por primera vez
   useEffect(() => {
@@ -96,15 +123,41 @@ export default function BannerDisplay({ banner }) {
     }).catch(() => {})
   }
 
-  const media = isVideo
-    ? <video src={url} autoPlay loop muted playsInline className={styles.media} />
-    : <img src={url} alt={alt} className={styles.media} />
+  const mediaClass = `${styles.media}${loaded ? ` ${styles.mediaLoaded}` : ''}`
+
+  // La media recién se monta cuando `near` es true (carga diferida).
+  const media = !near
+    ? null
+    : isVideo
+      ? (
+        <video
+          src={url}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className={mediaClass}
+          onLoadedData={() => setLoaded(true)}
+        />
+      )
+      : (
+        <img
+          src={url}
+          alt={alt}
+          className={mediaClass}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+        />
+      )
 
   return (
     <div ref={outerRef} className={styles.outer}>
       {ready
         ? (
           <div className={styles.slot} style={slotStyle}>
+            {/* Preview: skeleton mientras la media pesada todavía no cargó. */}
+            {!loaded && <div className={styles.preview} aria-hidden="true" />}
             {destino
               ? <a href={destino} target="_blank" rel="noopener noreferrer" className={styles.link} onClick={handleClick}>{media}</a>
               : media
