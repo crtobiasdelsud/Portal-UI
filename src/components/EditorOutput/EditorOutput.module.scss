@@ -39,18 +39,23 @@
   }
 }
 
-/* mark SIN color inline → texto en primario, sin fondo */
+/* Marcador / highlighter — WYSIWYG con el CMS.
+   - Sin style inline → usa el primary del sitio (semitransparente) como fondo.
+   - Con style inline (background-color custom) → respeta el color elegido. */
 .body :global(mark:not([style])),
 .body :global(.cdx-marker:not([style])) {
-  background: transparent;
-  color: var(--eo-primary, #B1043F);
+  background: color-mix(in srgb, var(--eo-primary, #B1043F) 20%, transparent);
+  color: inherit;
   font-style: inherit;
+  padding: 0 0.1em;
+  border-radius: 2px;
 }
 
-/* mark CON color inline (background-color del plugin) → texto negro, fondo del color elegido */
 .body :global(mark[style]) {
-  color: #111;
+  color: inherit;
   font-style: inherit;
+  padding: 0 0.1em;
+  border-radius: 2px;
 }
 
 .listUl,
