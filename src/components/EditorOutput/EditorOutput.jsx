@@ -1,8 +1,51 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import styles from "./EditorOutput.module.scss"
 import { useTheme } from '../../context/SiteConfigContext.jsx'
 import { useAdapters } from '../../adapters/AdaptersContext.jsx'
+
+/**
+ * Iframe de embed con auto-resize por postMessage.
+ *
+ * Instagram (y algunos otros) postean al window padre un mensaje
+ * `{ type: 'MEASURE', details: { height } }` con el alto real del
+ * contenido. Lo escuchamos y ajustamos el iframe al tamaño exacto,
+ * eliminando el hueco vacío debajo del comment box.
+ *
+ * Si nunca llega el mensaje (servicios que no postean, o iframe no listo)
+ * queda el `height` del style por default — sin scroll, sólo con espacio
+ * de más en el peor caso.
+ */
+function EmbedIframe({ src, service, style }) {
+  const ref = useRef(null)
+  const [autoHeight, setAutoHeight] = useState(null)
+
+  useEffect(() => {
+    // Servicios que se sabe que postean MEASURE: Instagram. (Twitter usa
+    // su propio widgets.js para inyectar; nuestro iframe directo no recibe
+    // MEASURE de Twitter. TikTok tampoco postea altura.)
+    if (service !== 'instagram') return
+
+    function handleMessage(event) {
+      if (typeof event.origin !== 'string' || !event.origin.includes('instagram.com')) return
+      if (event.source !== ref.current?.contentWindow) return
+
+      let data = event.data
+      if (typeof data === 'string') {
+        try { data = JSON.parse(data) } catch { return }
+      }
+      const h = data?.type === 'MEASURE' ? data?.details?.height : null
+      if (typeof h === 'number' && h > 0) setAutoHeight(Math.ceil(h))
+    }
+
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [service])
+
+  const finalStyle = autoHeight != null ? { ...style, height: autoHeight } : style
+  return <iframe ref={ref} src={src} style={finalStyle} allowFullScreen />
+}
 
 // Fixed class names for AMP (no CSS Modules hashing)
 const ampCls = {
@@ -143,35 +186,66 @@ function Block({ block, cls, isAmp }) {
       if (isAmp) return null  // AMP doesn't allow arbitrary iframes
       const { service, embed, width, height, caption } = block.data
 
-      // Tamaños por servicio:
-      //  - Videos (YouTube/Vimeo/Codepen) → 16:9 responsive.
-      //  - Instagram → el iframe del servicio se reflowea con el ancho; alto
-      //    real ≈ ancho + ~200px de chrome. aspect-ratio 5/6 cubre posts
-      //    cuadrados; maxHeight 80vh evita que un post largo desborde la
-      //    ventana del usuario.
-      //  - TikTok → portrait 9:16, mismo cap de 80vh.
-      //  - Resto (Twitter, etc.) → alto del servicio o 400 fallback.
+      // Tamaños por servicio: a los iframes cross-origin no se les puede medir
+      // el contenido, así que les damos altos generosos para que el embed se
+      // renderice completo SIN scroll interno.
+      //  - Videos (YouTube/Vimeo/Codepen) → 16:9 responsive (videos siempre encajan).
+      //  - Instagram / TikTok / resto → respetar el `height` que vino del bloque
+      //    (Editor.js lo setea según el servicio); si no hay, fallback alto
+      //    suficiente para cubrir el embed típico. Sin maxHeight ni aspect-ratio
+      //    forzado, así el iframe crece tanto como necesite.
       const VIDEO_SERVICES = ["youtube", "vimeo", "codepen"]
       const isVideo = VIDEO_SERVICES.includes(service)
 
+      // Altos por defecto por servicio. Instagram se auto-ajusta vía
+      // postMessage en `EmbedIframe`, así que el default sólo aplica hasta
+      // que llegue el MEASURE — lo dejamos un poco apretado para minimizar
+      // el flash de hueco vacío en el primer paint.
+      const MIN_HEIGHT = {
+        instagram: 800,
+        tiktok: 800,
+        twitter: 700,
+        reddit: 700,
+        facebook: 700,
+        imgur: 600,
+        pinterest: 700,
+      }
+
+      // Anchos máximos por servicio: el contenido del iframe se diseña para
+      // un ancho específico (IG ≈540, TikTok portrait ≈360). Sin tope, el
+      // iframe se estira a 100% de la columna y el contenido queda a la
+      // izquierda con espacio vacío al lado. Con `margin: 0 auto` el iframe
+      // se centra dentro de la columna del artículo.
+      const MAX_WIDTH = {
+        instagram: 540,
+        tiktok: 360,
+        twitter: 600,
+        reddit: 600,
+        facebook: 600,
+        imgur: 600,
+        pinterest: 540,
+      }
+
       let iframeStyle
       if (isVideo) {
-        iframeStyle = { width: "100%", aspectRatio: "16 / 9", border: 0 }
-      } else if (service === "instagram") {
-        iframeStyle = { width: "100%", aspectRatio: "5 / 6", maxHeight: "80vh", border: 0 }
-      } else if (service === "tiktok") {
-        iframeStyle = { width: "100%", aspectRatio: "9 / 16", maxHeight: "80vh", border: 0 }
+        iframeStyle = { width: "100%", aspectRatio: "16 / 9", border: 0, display: "block" }
       } else {
-        iframeStyle = { width: width || "100%", height: height || 400, border: 0 }
+        const floor = MIN_HEIGHT[service]
+        const h = floor ? Math.max(height || 0, floor) : (height || 700)
+        const maxW = MAX_WIDTH[service]
+        iframeStyle = {
+          width: "100%",
+          maxWidth: maxW || width || "100%",
+          height: h,
+          border: 0,
+          display: "block",
+          margin: "0 auto",
+        }
       }
 
       return (
         <figure className={cls.embed} data-service={service}>
-          <iframe
-            src={embed}
-            style={iframeStyle}
-            allowFullScreen
-          />
+          <EmbedIframe src={embed} service={service} style={iframeStyle} />
           {caption && <figcaption>{caption}</figcaption>}
         </figure>
       )
