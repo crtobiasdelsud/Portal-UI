@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import { ensureContrast } from '../../../../utils/colorContrast.js'
 import { useDrawer } from '../DrawerContext/DrawerContext'
 import styles from './LiveBanner.module.scss'
@@ -51,11 +51,18 @@ function loadYouTubeAPI() {
 }
 
 export default function LiveBanner({ liveUrl, liveTitle, secondaryColor }) {
-  const { liveDismissed, setLiveDismissed } = useDrawer()
-  const [expanded, setExpanded] = useState(false)
-  const [muted, setMuted]       = useState(true)
+  const {
+    liveDismissed, setLiveDismissed,
+    liveExpanded:  expanded, setLiveExpanded: setExpanded,
+    liveMuted:     muted,    setLiveMuted:    setMuted,
+  } = useDrawer()
   const iframeRef = useRef(null)
   const playerRef = useRef(null)
+  // Capturamos el muted "deseado" en una ref para que el onReady del player
+  // (que puede dispararse después de varios re-renders) lea el valor vigente
+  // sin recrear el efecto cuando cambia.
+  const mutedRef = useRef(muted)
+  useEffect(() => { mutedRef.current = muted }, [muted])
 
   const videoId = getYouTubeId(liveUrl)
 
@@ -69,8 +76,14 @@ export default function LiveBanner({ liveUrl, liveTitle, secondaryColor }) {
         playerRef.current = new YT.Player(iframeRef.current, {
           events: {
             onReady: (e) => {
-              try { e.target.mute() } catch {}
-              setMuted(true)
+              try {
+                if (mutedRef.current) {
+                  e.target.mute()
+                } else {
+                  e.target.unMute()
+                  if (typeof e.target.setVolume === 'function') e.target.setVolume(100)
+                }
+              } catch {}
             },
           },
         })
@@ -88,7 +101,7 @@ export default function LiveBanner({ liveUrl, liveTitle, secondaryColor }) {
 
   const bg       = secondaryColor || '#0D1333'
   const txtColor = ensureContrast('#ffffff', bg)
-  const src      = buildEmbedSrc(liveUrl, { autoplay: true, mute: true })
+  const src      = buildEmbedSrc(liveUrl, { autoplay: true, mute: muted })
 
   const toggleSound = () => {
     const p = playerRef.current

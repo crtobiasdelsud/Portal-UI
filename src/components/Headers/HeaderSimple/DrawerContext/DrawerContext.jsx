@@ -7,6 +7,8 @@ const DrawerContext = createContext(null)
 export function DrawerProvider({ children }) {
   const [open, setOpen] = useState(false)
   const [liveDismissed, setLiveDismissed] = useState(false)
+  const [liveExpanded, setLiveExpanded]   = useState(false)
+  const [liveMuted, setLiveMuted]         = useState(true)
   const [focusSearch, setFocusSearch] = useState(false)
 
   const openWithSearch = useCallback(() => {
@@ -31,7 +33,7 @@ export function DrawerProvider({ children }) {
   }, [open])
 
   return (
-    <DrawerContext.Provider value={{ open, setOpen, liveDismissed, setLiveDismissed, focusSearch, setFocusSearch, openWithSearch }}>
+    <DrawerContext.Provider value={{ open, setOpen, liveDismissed, setLiveDismissed, liveExpanded, setLiveExpanded, liveMuted, setLiveMuted, focusSearch, setFocusSearch, openWithSearch }}>
       {children}
     </DrawerContext.Provider>
   )
