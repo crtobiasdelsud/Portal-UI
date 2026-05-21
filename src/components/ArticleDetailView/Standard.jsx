@@ -26,6 +26,9 @@ export default function Standard({ article }) {
 
   const breadcrumbItems = [
     { label: 'Inicio', href: '/' },
+    ...(article.categoria?.parent
+      ? [{ label: article.categoria.parent.nombre ?? '', href: `/${article.categoria.parent.slug ?? ''}` }]
+      : []),
     { label: article.categoria?.nombre ?? '', href: `/${article.categoria?.slug ?? ''}` },
   ]
 

@@ -30,6 +30,12 @@ export default function ArticleHeroFull({ titulo, copete, imagen, imagenEpigrafe
           <div className={styles.breadcrumb}>
             {siteName && <span>{siteName}</span>}
             {siteName && <span className={styles.sep}>&rsaquo;</span>}
+            {categoria.parent && (
+              <>
+                <a href={`/${categoria.parent.slug}`}>{categoria.parent.nombre ?? categoria.parent.slug}</a>
+                <span className={styles.sep}>&rsaquo;</span>
+              </>
+            )}
             <a href={`/${categoria.slug}`}>{categoria.nombre ?? categoria.slug}</a>
           </div>
         )}

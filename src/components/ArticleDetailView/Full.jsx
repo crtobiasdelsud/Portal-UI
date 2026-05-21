@@ -4,6 +4,7 @@ import ArticleHeroFull from '../ArticleHeroFull/ArticleHeroFull.jsx'
 import AuthorBlock from '../AuthorBlock/AuthorBlock.jsx'
 import ShareBlock from '../ShareBlock/ShareBlock.jsx'
 import EditorOutputFull from '../EditorOutputFull/EditorOutputFull.jsx'
+import Breadcrumb from '../Breadcrumb/Breadcrumb.jsx'
 import styles from './Full.module.scss'
 
 /**
@@ -15,6 +16,14 @@ import styles from './Full.module.scss'
  */
 export default function Full({ article }) {
   const imagenEpigrafe = article.imagen?.epigrafe ?? article.imagenEpigrafe ?? null
+
+  const breadcrumbItems = [
+    { label: 'Inicio', href: '/' },
+    ...(article.categoria?.parent
+      ? [{ label: article.categoria.parent.nombre ?? '', href: `/${article.categoria.parent.slug ?? ''}` }]
+      : []),
+    { label: article.categoria?.nombre ?? '', href: `/${article.categoria?.slug ?? ''}` },
+  ]
 
   return (
     <>
@@ -28,6 +37,8 @@ export default function Full({ article }) {
       />
 
       <div className={styles.wrap}>
+        <Breadcrumb items={breadcrumbItems} />
+
         <div className={styles.author}>
           <AuthorBlock
             autor={article.autor}
