@@ -14,6 +14,7 @@ export default function HeaderSimpleMobile({ settings = {}, categories: propCate
   const categoriesFromCtx = useCategories()
   const {
     siteName, logoUrl, iconUrl, logoAlt, logo,
+    logoWidth, logoHeight,
     primaryColor, secondaryColor, backgroundColor, textColor,
     social = {}, searchEnabled,
     embedUrl, embedIcon,
@@ -48,7 +49,9 @@ export default function HeaderSimpleMobile({ settings = {}, categories: propCate
               </Link>
             ) : logoUrl ? (
               <Link href="/" aria-label={`Ir a inicio - ${siteName}`}>
-                <img src={logoUrl} alt={logoAlt || siteName} className={styles.logoImg} />
+                {/* width/height intrínsecos (de la config) → el navegador reserva
+                    el ancho del logo y evita CLS; el CSS lo muestra a 33px de alto. */}
+                <img src={logoUrl} alt={logoAlt || siteName} className={styles.logoImg} {...(logoWidth && logoHeight ? { width: logoWidth, height: logoHeight } : {})} />
               </Link>
             ) : (
               <span className={styles.logo} style={{ color: primaryColor }}>{siteName}</span>
@@ -68,6 +71,8 @@ export default function HeaderSimpleMobile({ settings = {}, categories: propCate
             textColor={textColor}
             resolvedLogo={resolvedLogo}
             logoUrl={logoUrl}
+            logoWidth={logoWidth}
+            logoHeight={logoHeight}
             iconUrl={iconUrl}
             siteName={siteName}
             logoAlt={logoAlt}

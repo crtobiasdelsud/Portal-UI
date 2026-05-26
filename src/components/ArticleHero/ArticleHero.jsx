@@ -34,6 +34,10 @@ export default function ArticleHero({ titulo, volanta, copete, imagen, imagenes,
     ? imagenes
     : (imagen ? [{ url: imagen, epigrafe: imagenEpigrafe }] : [])
 
+  // El hero se ve solo en mobile/tablet (en desktop se oculta con
+  // hideImageOnDesktop), así que ocupa ~todo el ancho del viewport.
+  const heroSizes = '100vw'
+
   let ImgEl = null
   if (slides.length > 0) {
     if (isAmp) {
@@ -50,8 +54,9 @@ export default function ArticleHero({ titulo, volanta, copete, imagen, imagenes,
     } else if (slides.length > 1) {
       ImgEl = (
         <Carousel
-          images={slides.map((s) => ({ url: s.url, alt: titulo ?? '', epigrafe: s.epigrafe }))}
+          images={slides.map((s) => ({ url: s.url, alt: titulo ?? '', epigrafe: s.epigrafe, variants: s.variants ?? null }))}
           focalPoint={focalPoint}
+          sizes={heroSizes}
           fill
           priority
         />
@@ -61,7 +66,7 @@ export default function ArticleHero({ titulo, volanta, copete, imagen, imagenes,
       // `priority` → imagen LCP, carga con prioridad alta.
       ImgEl = (
         <>
-          <AspectImage src={slides[0].url} alt={titulo ?? ''} aspect="16:9" fill={true} focalPoint={focalPoint} priority />
+          <AspectImage src={slides[0].url} alt={titulo ?? ''} aspect="16:9" fill={true} focalPoint={focalPoint} variants={slides[0].variants ?? null} sizes={heroSizes} priority />
           {slides[0].epigrafe && <p className={styles.epigrafe}>{slides[0].epigrafe}</p>}
         </>
       )

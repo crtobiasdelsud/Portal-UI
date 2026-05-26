@@ -4,12 +4,19 @@ import { useEffect, useRef, useState } from "react"
 import styles from './HeaderSwitch.module.scss'
 import { DrawerProvider } from '../DrawerContext/DrawerContext'
 
-export default function HeaderSwitch({ mobile, desktop, desktopCompact }) {
+export default function HeaderSwitch({ mobile, desktop, desktopCompact, hasLive = false }) {
   const [scrolled, setScrolled] = useState(false)
   // El <header> mobile es `position: fixed` (ver HeaderSimpleMobile.scss).
   // Medimos su altura real con ResizeObserver y la inyectamos como `height`
   // inline en el slot para reservar espacio en el flujo del documento.
-  const [mobileHeight, setMobileHeight] = useState(0)
+  //
+  // El estado se inicializa con una ESTIMACIÓN del alto del header ya en SSR
+  // (no en 0): ~91px sin LiveBanner (dateTimeBar 27 + topRow 64) y ~176px con
+  // LiveBanner (≈ +85px del banner colapsado). Así el slot reserva el espacio
+  // desde el primer paint y `main` no salta al hidratar (CLS). El ResizeObserver
+  // afina el valor exacto después — y como es un valor (no un min-height fijo),
+  // al cerrar/colapsar el banner la altura baja sin dejar hueco.
+  const [mobileHeight, setMobileHeight] = useState(hasLive ? 176 : 91)
   const mobileWrapperRef = useRef(null)
 
   useEffect(() => {
@@ -38,7 +45,7 @@ export default function HeaderSwitch({ mobile, desktop, desktopCompact }) {
         <div
           ref={mobileWrapperRef}
           className={styles.mobileSlot}
-          style={mobileHeight ? { height: mobileHeight } : undefined}
+          style={{ height: mobileHeight }}
         >
           {mobile}
         </div>

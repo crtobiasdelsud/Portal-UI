@@ -14,6 +14,10 @@ $dt-opacity: 1;
   line-height: 1.5;
   letter-spacing: -0.02em;
   opacity: $dt-opacity;
+  // Dígitos de ancho fijo: la hora se calcula con new Date() y difiere entre
+  // SSR y cliente; con tabular-nums el ancho de "10:12HS" es constante sin
+  // importar qué dígitos sean, así el swap en la hidratación no produce CLS.
+  font-variant-numeric: tabular-nums;
 }
 
 .date,
@@ -26,4 +30,5 @@ $dt-opacity: 1;
   letter-spacing: -0.02em;
   opacity: $dt-opacity;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }

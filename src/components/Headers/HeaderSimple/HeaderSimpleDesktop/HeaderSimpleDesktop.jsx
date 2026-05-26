@@ -15,6 +15,7 @@ export default function HeaderSimpleDesktop({ settings = {}, categories: propCat
   const categoriesFromCtx = useCategories()
   const {
     siteName, logoUrl, iconUrl, logoAlt, logo,
+    logoWidth, logoHeight,
     primaryColor, secondaryColor, backgroundColor, textColor,
     social = {}, searchEnabled,
     embedUrl, embedIcon,
@@ -44,7 +45,7 @@ export default function HeaderSimpleDesktop({ settings = {}, categories: propCat
               </Link>
             ) : logoUrl ? (
               <Link href="/" aria-label={`Ir a inicio - ${siteName}`}>
-                <img src={logoUrl} alt={logoAlt || siteName} className={styles.logoImg} />
+                <img src={logoUrl} alt={logoAlt || siteName} className={styles.logoImg} {...(logoWidth && logoHeight ? { width: logoWidth, height: logoHeight } : {})} />
               </Link>
             ) : (
               <span className={styles.logo} style={{ color: primaryColor }}>{siteName}</span>

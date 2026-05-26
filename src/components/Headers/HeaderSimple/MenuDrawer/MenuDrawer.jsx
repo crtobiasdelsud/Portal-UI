@@ -17,6 +17,8 @@ export default function MenuDrawer({
   textColor,
   resolvedLogo,
   logoUrl,
+  logoWidth,
+  logoHeight,
   iconUrl,
   siteName,
   logoAlt,
@@ -101,7 +103,7 @@ export default function MenuDrawer({
                 ) : resolvedLogo ? (
                   <Image src={resolvedLogo} alt={logoAlt || siteName} width={40} height={40} className={styles.logoImg} />
                 ) : logoUrl ? (
-                  <img src={logoUrl} alt={logoAlt || siteName} className={styles.logoImg} />
+                  <img src={logoUrl} alt={logoAlt || siteName} className={styles.logoImg} {...(logoWidth && logoHeight ? { width: logoWidth, height: logoHeight } : {})} />
                 ) : (
                   <span className={styles.logoInitials} style={{ backgroundColor: primaryColor, color: drawerText }}>
                     {siteName?.slice(0, 2).toUpperCase()}

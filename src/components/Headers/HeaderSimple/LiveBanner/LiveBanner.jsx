@@ -54,6 +54,7 @@ export default function LiveBanner({ liveUrl, liveTitle, secondaryColor }) {
   const {
     liveDismissed, setLiveDismissed,
     liveExpanded:  expanded, setLiveExpanded: setExpanded,
+    liveStarted,   setLiveStarted,
     liveMuted:     muted,    setLiveMuted:    setMuted,
   } = useDrawer()
   const iframeRef = useRef(null)
@@ -66,8 +67,18 @@ export default function LiveBanner({ liveUrl, liveTitle, secondaryColor }) {
 
   const videoId = getYouTubeId(liveUrl)
 
+  // La primera vez que se expande arranca la reproducción "para siempre":
+  // a partir de ahí el iframe queda montado aunque se colapse, así el live
+  // no se corta. Sólo vuelve a la preview si se recarga la página.
   useEffect(() => {
-    if (!videoId || !iframeRef.current) return
+    if (expanded && !liveStarted) setLiveStarted(true)
+  }, [expanded, liveStarted, setLiveStarted])
+
+  // El iframe se monta una vez que `liveStarted` es true y permanece montado.
+  // Por eso el cleanup sólo destruye el player al desmontar el componente
+  // (no en cada colapso), y la reproducción continúa al contraer el banner.
+  useEffect(() => {
+    if (!liveStarted || !videoId || !iframeRef.current) return
     let cancelled = false
 
     loadYouTubeAPI().then((YT) => {
@@ -83,6 +94,7 @@ export default function LiveBanner({ liveUrl, liveTitle, secondaryColor }) {
                   e.target.unMute()
                   if (typeof e.target.setVolume === 'function') e.target.setVolume(100)
                 }
+                e.target.playVideo?.()
               } catch {}
             },
           },
@@ -95,13 +107,16 @@ export default function LiveBanner({ liveUrl, liveTitle, secondaryColor }) {
       try { playerRef.current?.destroy?.() } catch {}
       playerRef.current = null
     }
-  }, [videoId])
+  }, [liveStarted, videoId])
 
   if (!liveUrl || liveDismissed) return null
 
   const bg       = secondaryColor || '#0D1333'
   const txtColor = ensureContrast('#ffffff', bg)
   const src      = buildEmbedSrc(liveUrl, { autoplay: true, mute: muted })
+  // mqdefault (320x180, 16:9, ~12 KiB) alcanza de sobra para el preview chico
+  // (~146x82) incluso en retina. maxresdefault eran ~135 KiB para nada.
+  const thumbSrc = videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : null
 
   const toggleSound = () => {
     const p = playerRef.current
@@ -125,15 +140,27 @@ export default function LiveBanner({ liveUrl, liveTitle, secondaryColor }) {
     >
 
       <div className={styles.preview}>
-        <iframe
-          ref={iframeRef}
-          src={src}
-          className={styles.frame}
-          allowFullScreen
-          allow="autoplay; encrypted-media"
-          tabIndex={expanded ? 0 : -1}
-          title="Preview en vivo"
-        />
+        {liveStarted ? (
+          <iframe
+            ref={iframeRef}
+            src={src}
+            className={styles.frame}
+            allowFullScreen
+            allow="autoplay; encrypted-media"
+            title="Transmisión en vivo"
+          />
+        ) : thumbSrc ? (
+          <img
+            src={thumbSrc}
+            alt={liveTitle || 'Preview en vivo'}
+            className={styles.frame}
+            width={320}
+            height={180}
+            loading="lazy"
+            style={{ objectFit: 'cover' }}
+            onError={(e) => { e.currentTarget.src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` }}
+          />
+        ) : null}
       </div>
 
       <div className={styles.info}>

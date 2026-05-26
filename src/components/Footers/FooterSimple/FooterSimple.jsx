@@ -29,6 +29,7 @@ export default function FooterSimple({ isAmp = false }) {
   const headerSocial = slots?.header?.settings?.social ?? {}
   const {
     logoUrl, iconUrl, logoAlt, siteName,
+    logoWidth, logoHeight,
     legal = {}, links = [], copyright,
   } = s
   const social = { ...headerSocial, ...(s.social ?? {}) }
@@ -52,7 +53,7 @@ export default function FooterSimple({ isAmp = false }) {
     <div className={isAmp ? 'footer-simple__logo-wrap' : styles.logoWrap}>
       {isAmp
         ? <a href="/amp"><img src={logoUrl || iconUrl} alt={logoAlt || siteName} className="footer-simple__logo-img" /></a>
-        : <Link href="/"><img src={logoUrl || iconUrl} alt={logoAlt || siteName} className={styles.logoImg} /></Link>
+        : <Link href="/"><img src={logoUrl || iconUrl} alt={logoAlt || siteName} className={styles.logoImg} {...(logoWidth && logoHeight ? { width: logoWidth, height: logoHeight } : {})} /></Link>
       }
     </div>
   )

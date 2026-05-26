@@ -14,13 +14,15 @@ export default function DateTime({ isAmp = false, textColor, backgroundColor, pa
 
   const style = { color: textColor }
 
-  if (part === 'date') return <span className={styles.date} style={style}>{fecha}</span>
-  if (part === 'time') return <span className={styles.time} style={style}>{hora}</span>
+  // suppressHydrationWarning: la hora/fecha se calcula con new Date() y difiere
+  // entre SSR y cliente (zona horaria / minuto); es esperado, no un bug.
+  if (part === 'date') return <span className={styles.date} style={style} suppressHydrationWarning>{fecha}</span>
+  if (part === 'time') return <span className={styles.time} style={style} suppressHydrationWarning>{hora}</span>
 
   return (
     <div className={styles.wrapper} style={{ color: textColor, backgroundColor }}>
-      <span>{fecha}</span>
-      <span>{hora}</span>
+      <span suppressHydrationWarning>{fecha}</span>
+      <span suppressHydrationWarning>{hora}</span>
     </div>
   )
 }

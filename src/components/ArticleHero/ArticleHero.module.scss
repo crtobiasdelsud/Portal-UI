@@ -21,6 +21,9 @@
   font-size: 1em;
   font-weight: 500;
   line-height: 1.7625rem;
+  // Reserva la altura de 1 línea desde el primer paint → evita que el título y
+  // el resto del contenido salten al asentarse la fuente (CLS).
+  min-height: 1.7625rem;
   color: var(--primary-color, #af0437);
 
 }

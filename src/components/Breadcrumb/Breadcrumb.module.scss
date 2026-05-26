@@ -6,6 +6,11 @@
   flex-wrap: wrap;
   font-family: var(--font-inter);
   font-size: 14px;
+  // line-height + min-height fijos: reservan la altura de 1 línea desde el
+  // primer paint, así al asentarse la fuente el breadcrumb no empuja el
+  // contenido hacia abajo (CLS).
+  line-height: 1.5;
+  min-height: 1.3125rem; // 14px * 1.5
   gap: 0;
   left: 15px;
   width: 100%;

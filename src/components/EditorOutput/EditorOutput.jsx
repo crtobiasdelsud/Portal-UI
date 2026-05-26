@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from "./EditorOutput.module.scss"
 import { useTheme } from '../../context/SiteConfigContext.jsx'
-import { useAdapters } from '../../adapters/AdaptersContext.jsx'
+import { buildSrcSet, resolveImageSrc } from '../../utils/imageVariants.js'
 
 /**
  * Iframe de embed con auto-resize por postMessage.
@@ -115,7 +115,6 @@ function renderListItem(item) {
 }
 
 function Block({ block, cls, isAmp }) {
-  const { Image } = useAdapters()
   switch (block.type) {
     case "paragraph":
       return <p className={cls.paragraph} dangerouslySetInnerHTML={{ __html: block.data.text }} suppressHydrationWarning />
@@ -162,17 +161,27 @@ function Block({ block, cls, isAmp }) {
       const src      = block.data.url || block.data.file?.url
       const alt      = block.data.altText || block.data.caption || ""
       const epigrafe = block.data.epigrafe
+      // Variantes WebP + dimensiones que ahora persiste el ImageTool del CMS.
+      // Imágenes legacy no las traen → degrada a `<img src>` plano (igual que antes).
+      const variants = block.data.variants || block.data.file?.variants || null
+      const w        = block.data.width  || block.data.file?.width  || null
+      const h        = block.data.height || block.data.file?.height || null
+      const srcSet   = buildSrcSet(variants)
+      const imgSrc   = srcSet ? resolveImageSrc(variants, src, 'large') : src
       return (
         <figure className={cls.image}>
           <div className={cls.imageWrap}>
             {isAmp
               ? <img src={src} alt={alt} />
-              : <Image
-                  src={src}
+              : <img
+                  src={imgSrc}
                   alt={alt}
-                  width={0}
-                  height={0}
-                  sizes="(max-width: 768px) 100vw, 800px"
+                  // width/height intrínsecos → el navegador reserva espacio por
+                  // el aspect-ratio y evita CLS, aunque el CSS lo muestre a 100%.
+                  {...(w && h ? { width: w, height: h } : {})}
+                  {...(srcSet ? { srcSet, sizes: "(max-width: 768px) 100vw, 800px" } : {})}
+                  loading="lazy"
+                  decoding="async"
                   style={{ width: "100%", height: "auto" }}
                 />
             }
@@ -392,7 +401,7 @@ function Block({ block, cls, isAmp }) {
           <p className={cls.relatedTitle}>Lee además</p>
           {articles.map((a) => (
             <a key={a.id} href={`/${a.slug || a.id}`} className={cls.relatedItem}>
-              {a.image && <img src={a.image} alt={a.title} className={cls.relatedImg} />}
+              {a.image && <img src={a.image} alt={a.title} className={cls.relatedImg} width={80} height={60} loading="lazy" decoding="async" />}
               <div className={cls.relatedInfo}>
                 {a.volanta && <span className={cls.relatedVolanta}>{a.volanta}</span>}
                 <span className={cls.relatedItemTitle}>{a.title}</span>

@@ -11,9 +11,10 @@ import styles from './Carousel.module.scss'
  * en aspecto 16:9 y, si tiene, su epígrafe como franja negra inferior.
  *
  * @param {object} props
- * @param {{ url: string, alt?: string, epigrafe?: string }[]} props.images
+ * @param {{ url: string, alt?: string, epigrafe?: string, variants?: object }[]} props.images
  * @param {object}  [props.focalPoint]   - { x, y, zoom } aplicado a todas.
  * @param {string}  [props.aspect]       - '16:9' | '4:3'.
+ * @param {string}  [props.sizes]        - hint de tamaño para el srcset de variantes.
  * @param {boolean} [props.fill]         - true → ocupa el contenedor posicionado
  *                                         padre (uso en el hero). false → genera
  *                                         su propia caja con aspect-ratio.
@@ -30,6 +31,7 @@ export default function Carousel({
   showEpigrafe = true,
   dotsPosition = 'bottom',
   priority = false,
+  sizes,
 }) {
   const [index, setIndex] = useState(0)
 
@@ -54,6 +56,8 @@ export default function Carousel({
           aspect={aspect}
           fill={fill}
           focalPoint={focalPoint}
+          variants={current.variants ?? null}
+          sizes={sizes}
           priority={priority && safeIndex === 0}
         />
         {showEpigrafe && current.epigrafe && (

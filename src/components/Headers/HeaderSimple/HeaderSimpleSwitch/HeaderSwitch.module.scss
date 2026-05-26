@@ -11,9 +11,16 @@
   display: block;
   position: relative;
   z-index: 1002;
+  // Reserva el alto del header fijo DESDE EL PRIMER PAINT (dateTimeBar ~27px +
+  // topRow 64px = ~91px). Sin esto, `mobileHeight` arranca en 0 y el slot no
+  // reserva espacio hasta que el ResizeObserver mide el header tras hidratar,
+  // momento en que todo `main` salta hacia abajo (CLS ~0.11). El observer sigue
+  // afinando la altura exacta (p. ej. si hay LiveBanner) sobre este piso.
+  min-height: 91px;
 
   @media (min-width: $tablet) {
     display: none;
+    min-height: 0;
   }
 }
 
