@@ -28,6 +28,8 @@ export default function LoQueSeLee({ article }) {
                 alt={imagen.alt ?? titulo ?? ''}
                 aspect="16:9"
                 focalPoint={focalPoint}
+                variants={imagen.variants ?? null}
+                sizes="(min-width: 1024px) 360px, 100vw"
               />
             </Link>
           )}

@@ -8,6 +8,7 @@ import Categoria     from './variants/Categoria/Categoria.jsx'
 import CategoriaDos  from './variants/CategoriaDos/CategoriaDos.jsx'
 import UnaDetallada  from './variants/UnaDetallada/UnaDetallada.jsx'
 import Duo           from './variants/Duo/Duo.jsx'
+import DuoSinCopete  from './variants/DuoSinCopete/DuoSinCopete.jsx'
 import Ranking       from './variants/Ranking/Ranking.jsx'
 import Tres          from './variants/Tres/Tres.jsx'
 import Carrusel      from './variants/Carrusel/Carrusel.jsx'
@@ -28,6 +29,8 @@ const VARIANTS = {
   unaDetallada:  UnaDetallada,
   unadetallada:  UnaDetallada,
   duo:           Duo,
+  duoSinCopete:  DuoSinCopete,
+  duosincopete:  DuoSinCopete,
   tres:          Tres,
   ranking:       Ranking,
   ranking1:      Ranking,
