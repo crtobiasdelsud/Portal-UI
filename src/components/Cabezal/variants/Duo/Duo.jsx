@@ -1,7 +1,7 @@
 import styles from './Duo.module.scss'
 import CardCabezal from '../../CardCabezal/index'
 
-export default function Duo({ titulo, verMasUrl, articles }) {
+export default function Duo({ titulo, verMasUrl, articles, getSlotProps }) {
   return (
     <section className={styles.container}>
       {titulo && (
@@ -13,7 +13,7 @@ export default function Duo({ titulo, verMasUrl, articles }) {
       {articles.length > 0 && (
         <ul className={styles.list}>
           {articles.slice(0, 2).map((article, i) => (
-            <li key={article.id ?? i} className={styles.item}>
+            <li key={article.id ?? i} className={styles.item} {...(getSlotProps?.(i) ?? {})}>
               <CardCabezal article={article} tipo="duo" index={i} />
             </li>
           ))}

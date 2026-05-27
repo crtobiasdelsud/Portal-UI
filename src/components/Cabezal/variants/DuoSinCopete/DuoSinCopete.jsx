@@ -1,7 +1,7 @@
 import styles from './DuoSinCopete.module.scss'
 import CardCabezal from '../../CardCabezal/index'
 
-export default function DuoSinCopete({ titulo, verMasUrl, articles }) {
+export default function DuoSinCopete({ titulo, verMasUrl, articles, getSlotProps }) {
   return (
     <section className={styles.container}>
       {titulo && (
@@ -13,7 +13,7 @@ export default function DuoSinCopete({ titulo, verMasUrl, articles }) {
       {articles.length > 0 && (
         <ul className={styles.list}>
           {articles.slice(0, 2).map((article, i) => (
-            <li key={article.id ?? i} className={styles.item}>
+            <li key={article.id ?? i} className={styles.item} {...(getSlotProps?.(i) ?? {})}>
               <CardCabezal article={article} tipo="tres" index={i} />
             </li>
           ))}

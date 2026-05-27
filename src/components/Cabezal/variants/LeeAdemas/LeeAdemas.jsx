@@ -30,7 +30,7 @@ function LeeAdemasCard({ article }) {
   )
 }
 
-export default function LeeAdemas({ articles = [] }) {
+export default function LeeAdemas({ articles = [], getSlotProps }) {
 
   const { Link } = useAdapters()
   const items = articles.slice(0, 2)
@@ -43,7 +43,7 @@ export default function LeeAdemas({ articles = [] }) {
       </div>
       <ul className={styles.list}>
         {items.map((article, i) => (
-          <li key={article.id ?? i} className={styles.item}>
+          <li key={article.id ?? i} className={styles.item} {...(getSlotProps?.(i) ?? {})}>
             <LeeAdemasCard article={article} />
           </li>
         ))}

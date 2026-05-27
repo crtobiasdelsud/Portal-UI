@@ -16,6 +16,7 @@ import LeeAdemas     from './variants/LeeAdemas/LeeAdemas.jsx'
 import LoQueSeLee    from './variants/LoQueSeLee/LoQueSeLee.jsx'
 import SeguiLeyendo  from './variants/SeguiLeyendo/SeguiLeyendo.jsx'
 import Etiquetas     from './variants/Etiquetas/Etiquetas.jsx'
+import { getCabezalLimit } from './cabezalLimits.js'
 
 const VARIANTS = {
   default:       Default,
@@ -71,6 +72,7 @@ export default function CabezalView({
   article,
   tags,
   isAmp = false,
+  getSlotProps,
 }) {
   const isLoQueSeLee = tipo === 'loQueSeLee' || tipo === 'loqueselee'
 
@@ -86,14 +88,21 @@ export default function CabezalView({
 
   if (!titulo && !articles.length) return null
 
+  // Tope estructural: cada layout aguanta un máximo de cartas. Recortamos acá
+  // (único embudo) para proteger tanto al portal como al preview del CMS, sin
+  // importar cuántas notas haya fetcheado la data layer.
+  const max = getCabezalLimit(tipo).max
+  const capped = articles.length > max ? articles.slice(0, max) : articles
+
   const Component = VARIANTS[tipo] ?? Default
   return (
     <Component
       titulo={titulo}
       verMasUrl={verMasUrl}
-      articles={articles}
+      articles={capped}
       tipo={tipo}
       isAmp={isAmp}
+      getSlotProps={getSlotProps}
     />
   )
 }

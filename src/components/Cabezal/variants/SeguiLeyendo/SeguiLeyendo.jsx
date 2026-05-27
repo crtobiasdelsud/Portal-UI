@@ -16,7 +16,7 @@ function SeguiLeyendoCard({ article }) {
   )
 }
 
-export default function SeguiLeyendo({ titulo, articles = [] }) {
+export default function SeguiLeyendo({ titulo, articles = [], getSlotProps }) {
 
   const { Link } = useAdapters()
   if (!articles.length) return null
@@ -28,7 +28,7 @@ export default function SeguiLeyendo({ titulo, articles = [] }) {
       </div>
       <ul className={styles.list}>
         {articles.map((article, i) => (
-          <li key={article.id ?? i} className={styles.item}>
+          <li key={article.id ?? i} className={styles.item} {...(getSlotProps?.(i) ?? {})}>
             <SeguiLeyendoCard article={article} />
           </li>
         ))}

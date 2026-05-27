@@ -6,7 +6,7 @@ import CarruselCard from '../../CardCabezal/variants/Carrusel/Carrusel'
 
 const CLONE_COUNT = 3
 
-export default function Carrusel({ titulo, verMasUrl, articles }) {
+export default function Carrusel({ titulo, verMasUrl, articles, getSlotProps }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const trackRef  = useRef(null)
   const isJumping = useRef(false)
@@ -133,7 +133,7 @@ export default function Carrusel({ titulo, verMasUrl, articles }) {
           ))}
 
           {articles.map((article, i) => (
-            <div key={article.id ?? i} className={styles.slide}>
+            <div key={article.id ?? i} className={styles.slide} {...(getSlotProps?.(i) ?? {})}>
               <CarruselCard article={article} />
             </div>
           ))}

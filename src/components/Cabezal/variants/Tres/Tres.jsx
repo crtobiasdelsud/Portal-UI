@@ -1,7 +1,7 @@
 import styles from './Tres.module.scss'
 import CardCabezal from '../../CardCabezal/index'
 
-export default function Tres({ titulo, verMasUrl, articles }) {
+export default function Tres({ titulo, verMasUrl, articles, getSlotProps }) {
   return (
     <section className={styles.container}>
       {titulo && (
@@ -13,7 +13,7 @@ export default function Tres({ titulo, verMasUrl, articles }) {
       {articles.length > 0 && (
         <ul className={styles.list}>
           {articles.map((article, i) => (
-            <li key={article.id ?? i} className={`${styles.item} ${styles.itemOther}`}>
+            <li key={article.id ?? i} className={`${styles.item} ${styles.itemOther}`} {...(getSlotProps?.(i) ?? {})}>
               <CardCabezal article={article} tipo="default" />
             </li>
           ))}

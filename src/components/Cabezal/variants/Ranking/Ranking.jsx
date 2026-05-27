@@ -1,7 +1,7 @@
 import styles from './Ranking.module.scss'
 import CardCabezal from '../../CardCabezal/index'
 
-export default function Ranking({ titulo, verMasUrl, articles, tipo }) {
+export default function Ranking({ titulo, verMasUrl, articles, tipo, getSlotProps }) {
   return (
     <section className={styles.container}>
       {titulo && (
@@ -13,7 +13,7 @@ export default function Ranking({ titulo, verMasUrl, articles, tipo }) {
       {articles.length > 0 && (
         <ul className={styles.list}>
           {articles.map((article, i) => (
-            <li key={article.id ?? i} className={styles.item}>
+            <li key={article.id ?? i} className={styles.item} {...(getSlotProps?.(i) ?? {})}>
               <CardCabezal article={article} rank={i + 1} tipo={tipo} index={i} />
             </li>
           ))}

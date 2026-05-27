@@ -1,7 +1,7 @@
 import styles from './Medium.module.scss'
 import CardCabezal from '../../CardCabezal/index'
 
-export default function Medium({ titulo, verMasUrl, articles }) {
+export default function Medium({ titulo, verMasUrl, articles, getSlotProps }) {
   return (
     <section className={styles.container}>
       {titulo && (
@@ -13,7 +13,7 @@ export default function Medium({ titulo, verMasUrl, articles }) {
       {articles.length > 0 && (
         <ul className={styles.list}>
           {articles.map((article, i) => (
-            <li key={article.id ?? i} className={styles.item}>
+            <li key={article.id ?? i} className={styles.item} {...(getSlotProps?.(i) ?? {})}>
               <CardCabezal article={article} tipo="medium" index={i} />
             </li>
           ))}

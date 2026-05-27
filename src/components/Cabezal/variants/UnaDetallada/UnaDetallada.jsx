@@ -6,7 +6,7 @@ function itemClass(i, s) {
   return `${s.item} ${s.itemOther}`
 }
 
-export default function UnaDetallada({ titulo, verMasUrl, articles }) {
+export default function UnaDetallada({ titulo, verMasUrl, articles, getSlotProps }) {
   return (
     <section className={styles.container}>
       {titulo && (
@@ -18,7 +18,7 @@ export default function UnaDetallada({ titulo, verMasUrl, articles }) {
       {articles.length > 0 && (
         <ul className={styles.list}>
           {articles.map((article, i) => (
-            <li key={article.id ?? i} className={itemClass(i, styles)}>
+            <li key={article.id ?? i} className={itemClass(i, styles)} {...(getSlotProps?.(i) ?? {})}>
               <CardCabezal article={article} tipo="unaDetallada" index={i} />
             </li>
           ))}

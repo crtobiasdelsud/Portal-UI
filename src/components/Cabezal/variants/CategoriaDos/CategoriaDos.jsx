@@ -6,7 +6,7 @@ function itemClass(i) {
   return `${styles.item} ${styles.itemOther}`
 }
 
-export default function CategoriaDos({ titulo, verMasUrl, articles }) {
+export default function CategoriaDos({ titulo, verMasUrl, articles, getSlotProps }) {
   return (
     <section className={styles.container}>
       {titulo && (
@@ -18,7 +18,7 @@ export default function CategoriaDos({ titulo, verMasUrl, articles }) {
       {articles.length > 0 && (
         <ul className={styles.list}>
           {articles.map((article, i) => (
-            <li key={article.id ?? i} className={itemClass(i)}>
+            <li key={article.id ?? i} className={itemClass(i)} {...(getSlotProps?.(i) ?? {})}>
               <CardCabezal article={article} tipo="categoria" index={i} />
             </li>
           ))}
