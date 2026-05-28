@@ -12,8 +12,14 @@
 }
 
 // ── Preview de video ────────────────────────────────────────
+// `width` explícito en colapsado: el contenido del preview es un <div> vacío
+// (anchor para el iframe del LivePlayerHost) que no aporta dimensión
+// intrínseca, así que sin width el aspect-ratio no se aplica y el preview
+// colapsa a 0×0. Con 146px de ancho, aspect-ratio 16/9 da ~82px de alto
+// (replicando el tamaño que antes daban el <img>/<iframe>).
 .preview {
   flex-shrink: 0;
+  width: 146px;
   aspect-ratio: 16 / 9;
   max-height: 10vh;
   overflow: hidden;

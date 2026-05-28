@@ -34,6 +34,7 @@ export default function HeaderSimpleSwitch({ settings = {}, isAmp = false, force
   return (
     <HeaderSwitch
       hasLive={!!settings.liveUrl}
+      liveUrl={settings.liveUrl}
       mobile={
         <HeaderSimpleMobile settings={settings} categories={categories} />
       }

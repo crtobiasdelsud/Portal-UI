@@ -93,6 +93,7 @@ export default function HeaderSimpleDesktopCompact({ settings = {}, categories: 
         liveUrl={liveUrl}
         liveTitle={liveTitle}
         secondaryColor={secondaryColor}
+        priority={1}
       />
     </header>
   )

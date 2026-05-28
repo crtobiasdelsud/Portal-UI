@@ -88,6 +88,7 @@ export default function HeaderSimpleDesktop({ settings = {}, categories: propCat
         liveUrl={liveUrl}
         liveTitle={liveTitle}
         secondaryColor={secondaryColor}
+        priority={2}
       />
     </header>
   )

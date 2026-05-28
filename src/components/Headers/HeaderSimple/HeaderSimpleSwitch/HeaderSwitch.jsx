@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState } from "react"
 import styles from './HeaderSwitch.module.scss'
 import { DrawerProvider } from '../DrawerContext/DrawerContext'
+import LivePlayerHost from '../LivePlayerHost/LivePlayerHost'
 
-export default function HeaderSwitch({ mobile, desktop, desktopCompact, hasLive = false }) {
+export default function HeaderSwitch({ mobile, desktop, desktopCompact, hasLive = false, liveUrl }) {
   const [scrolled, setScrolled] = useState(false)
   // El <header> mobile es `position: fixed` (ver HeaderSimpleMobile.scss).
   // Medimos su altura real con ResizeObserver y la inyectamos como `height`
@@ -49,6 +50,7 @@ export default function HeaderSwitch({ mobile, desktop, desktopCompact, hasLive 
         >
           {mobile}
         </div>
+        {liveUrl && <LivePlayerHost liveUrl={liveUrl} />}
       </DrawerProvider>
 
       <DrawerProvider>
@@ -58,6 +60,7 @@ export default function HeaderSwitch({ mobile, desktop, desktopCompact, hasLive 
         <div className={styles.desktopCompactSlot}>
           {desktopCompact}
         </div>
+        {liveUrl && <LivePlayerHost liveUrl={liveUrl} />}
       </DrawerProvider>
     </>
   )

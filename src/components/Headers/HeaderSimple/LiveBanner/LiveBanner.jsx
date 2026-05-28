@@ -18,52 +18,20 @@ function getYouTubeId(url) {
   return null
 }
 
-function buildEmbedSrc(url, { autoplay, mute }) {
-  const id = getYouTubeId(url)
-  if (!id) return url
-  const params = new URLSearchParams({
-    autoplay: autoplay ? '1' : '0',
-    mute:     mute     ? '1' : '0',
-    enablejsapi: '1',
-    rel:        '0',
-    playsinline:'1',
-  })
-  return `https://www.youtube.com/embed/${id}?${params.toString()}`
-}
-
-let ytApiPromise = null
-function loadYouTubeAPI() {
-  if (typeof window === 'undefined') return Promise.resolve(null)
-  if (window.YT && window.YT.Player) return Promise.resolve(window.YT)
-  if (ytApiPromise) return ytApiPromise
-  ytApiPromise = new Promise((resolve) => {
-    const prev = window.onYouTubeIframeAPIReady
-    window.onYouTubeIframeAPIReady = () => {
-      if (typeof prev === 'function') prev()
-      resolve(window.YT)
-    }
-    const s = document.createElement('script')
-    s.src = 'https://www.youtube.com/iframe_api'
-    s.async = true
-    document.head.appendChild(s)
-  })
-  return ytApiPromise
-}
-
-export default function LiveBanner({ liveUrl, liveTitle, secondaryColor }) {
+// Este componente ya NO monta el iframe. El iframe vive una sola vez en
+// <LivePlayerHost> (singleton por DrawerProvider) y se posiciona sobre el
+// anchor del banner visible. Acá sólo renderizamos la UI (badge, título,
+// botones) y un <div> "anchor" del tamaño del preview, que el host usa como
+// referencia para colocar el iframe encima.
+export default function LiveBanner({ liveUrl, liveTitle, secondaryColor, priority = 0 }) {
   const {
     liveDismissed, setLiveDismissed,
     liveExpanded:  expanded, setLiveExpanded: setExpanded,
     liveStarted,   setLiveStarted,
     liveMuted:     muted,    setLiveMuted:    setMuted,
+    registerLiveAnchor, unregisterLiveAnchor,
   } = useDrawer()
-  const iframeRef = useRef(null)
-  const playerRef = useRef(null)
-  // Capturamos el muted "deseado" en una ref para que el onReady del player
-  // (que puede dispararse después de varios re-renders) lea el valor vigente
-  // sin recrear el efecto cuando cambia.
-  const mutedRef = useRef(muted)
-  useEffect(() => { mutedRef.current = muted }, [muted])
+  const anchorRef = useRef(null)
 
   const videoId = getYouTubeId(liveUrl)
 
@@ -74,64 +42,25 @@ export default function LiveBanner({ liveUrl, liveTitle, secondaryColor }) {
     if (expanded && !liveStarted) setLiveStarted(true)
   }, [expanded, liveStarted, setLiveStarted])
 
-  // El iframe se monta una vez que `liveStarted` es true y permanece montado.
-  // Por eso el cleanup sólo destruye el player al desmontar el componente
-  // (no en cada colapso), y la reproducción continúa al contraer el banner.
+  // Sólo registramos el anchor con su prioridad. El host (LivePlayerHost)
+  // elige el de mayor prioridad que esté visible.
   useEffect(() => {
-    if (!liveStarted || !videoId || !iframeRef.current) return
-    let cancelled = false
-
-    loadYouTubeAPI().then((YT) => {
-      if (cancelled || !iframeRef.current || !YT?.Player) return
-      try {
-        playerRef.current = new YT.Player(iframeRef.current, {
-          events: {
-            onReady: (e) => {
-              try {
-                if (mutedRef.current) {
-                  e.target.mute()
-                } else {
-                  e.target.unMute()
-                  if (typeof e.target.setVolume === 'function') e.target.setVolume(100)
-                }
-                e.target.playVideo?.()
-              } catch {}
-            },
-          },
-        })
-      } catch {}
-    })
-
-    return () => {
-      cancelled = true
-      try { playerRef.current?.destroy?.() } catch {}
-      playerRef.current = null
-    }
-  }, [liveStarted, videoId])
+    if (!liveStarted) return
+    const el = anchorRef.current
+    if (!el) return
+    registerLiveAnchor(el, priority)
+    return () => unregisterLiveAnchor(el)
+  }, [liveStarted, priority, registerLiveAnchor, unregisterLiveAnchor])
 
   if (!liveUrl || liveDismissed) return null
 
   const bg       = secondaryColor || '#0D1333'
   const txtColor = ensureContrast('#ffffff', bg)
-  const src      = buildEmbedSrc(liveUrl, { autoplay: true, mute: muted })
   // mqdefault (320x180, 16:9, ~12 KiB) alcanza de sobra para el preview chico
   // (~146x82) incluso en retina. maxresdefault eran ~135 KiB para nada.
   const thumbSrc = videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : null
 
-  const toggleSound = () => {
-    const p = playerRef.current
-    if (!p) return
-    try {
-      if (muted) {
-        p.unMute()
-        if (typeof p.setVolume === 'function') p.setVolume(100)
-        setMuted(false)
-      } else {
-        p.mute()
-        setMuted(true)
-      }
-    } catch {}
-  }
+  const toggleSound = () => setMuted(v => !v)
 
   return (
     <div
@@ -141,14 +70,7 @@ export default function LiveBanner({ liveUrl, liveTitle, secondaryColor }) {
 
       <div className={styles.preview}>
         {liveStarted ? (
-          <iframe
-            ref={iframeRef}
-            src={src}
-            className={styles.frame}
-            allowFullScreen
-            allow="autoplay; encrypted-media"
-            title="Transmisión en vivo"
-          />
+          <div ref={anchorRef} className={styles.frame} aria-hidden="true" />
         ) : thumbSrc ? (
           <img
             src={thumbSrc}
