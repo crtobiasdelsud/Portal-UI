@@ -1,0 +1,25 @@
+import shared from '../../ArticleHero.module.scss'
+import s from './V2.module.scss'
+
+export default function V2({ isAmp, inlineStyle, titulo, volanta, ImgEl, ExtrasEl, imgWrapClass, noImgMod }) {
+  const VolantaEl = volanta
+    ? <span className={isAmp ? 'article-hero__volanta' : `${shared.volanta} ${s.volanta}`}>{volanta}</span>
+    : null
+  const TituloEl = <h1 className={isAmp ? 'article-hero__titulo' : `${shared.titulo} ${s.titulo}`}>{titulo}</h1>
+
+  return (
+    <article
+      className={isAmp ? 'article-hero article-hero--1' : `${shared.container}${noImgMod}`}
+      style={inlineStyle}
+    >
+      <div className={`${imgWrapClass} ${s.imgWrap}`}>
+        {VolantaEl}
+        {ImgEl}
+      </div>
+      <div className={isAmp ? 'article-hero__panel' : s.panel}>
+        {TituloEl}
+      </div>
+      {ExtrasEl}
+    </article>
+  )
+}

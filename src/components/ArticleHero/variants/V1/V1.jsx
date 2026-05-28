@@ -1,7 +1,7 @@
 import shared from '../../ArticleHero.module.scss'
-import s from './V0Desktop.module.scss'
+import s from './V1.module.scss'
 
-export default function V0Desktop({ isAmp, inlineStyle, titulo, volanta, copete, ImgEl, ExtrasEl, imgWrapClass, noImgMod }) {
+export default function V1({ isAmp, inlineStyle, titulo, volanta, copete, ImgEl, ExtrasEl, imgWrapClass, noImgMod }) {
   const VolantaEl = volanta
     ? <span className={isAmp ? 'article-hero__volanta' : `${shared.volanta} ${s.volanta}`}>{volanta}</span>
     : null
@@ -15,7 +15,7 @@ export default function V0Desktop({ isAmp, inlineStyle, titulo, volanta, copete,
 
   return (
     <article
-      className={isAmp ? 'article-hero article-hero--0' : `${shared.container} ${s.root}${noImgMod}`}
+      className={isAmp ? 'article-hero article-hero--2' : `${shared.container} ${s.root}${noImgMod}`}
       style={inlineStyle}
     >
       <div className={isAmp ? 'article-hero__text' : s.text}>
@@ -26,7 +26,7 @@ export default function V0Desktop({ isAmp, inlineStyle, titulo, volanta, copete,
       <div className={`${imgWrapClass} ${s.imgWrap}`}>
         {ImgEl}
       </div>
-      <div className={s.extrasRow}>{ExtrasEl}</div>
+      {ExtrasEl}
     </article>
   )
 }
