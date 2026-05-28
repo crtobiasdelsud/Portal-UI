@@ -7,7 +7,10 @@ export default function V0Desktop({ isAmp, inlineStyle, titulo, volanta, copete,
     : null
   const TituloEl = <h1 className={isAmp ? 'article-hero__titulo' : `${shared.titulo} ${s.titulo}`}>{titulo}</h1>
   const CopeteEl = copete
-    ? <p className={isAmp ? 'article-hero__copete' : `${shared.copete} ${s.copete}`}>{copete}</p>
+    ? <p
+        className={isAmp ? 'article-hero__copete' : `${shared.copete} ${s.copete}`}
+        dangerouslySetInnerHTML={{ __html: copete }}
+      />
     : null
 
   return (
