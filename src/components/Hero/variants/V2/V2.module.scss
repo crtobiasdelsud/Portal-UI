@@ -1,0 +1,168 @@
+@use "../../../../styles/index.scss" as *;
+
+.container {
+  background-color: var(--surface-color, transparent);
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0; // full bleed: la imagen toca los bordes
+
+  @include respond(desktop) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+
+  @include respond(desktop) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+}
+
+.imgWrap {
+  position: relative;
+  width: 100%;
+
+  @include respond(desktop) {
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+// Caja que define el tamaño de la imagen (AspectImage va en modo `fill`)
+.mediaBox {
+  position: relative;
+  width: 100%;
+  height: 55vh; // mobile: imagen alta pero sin ocupar toda la pantalla
+
+  @include respond(tablet) {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  @include respond(desktop) {
+    height: 100%;
+    aspect-ratio: unset;
+  }
+}
+
+// ── Overlay SOBRE la imagen en todos los anchos (cajas blancas por línea) ──
+.overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  padding: 0 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: var(--font-family);
+}
+
+.volantaWrap {
+  display: block;
+  margin-bottom: 5px;
+  max-width: 100%;
+}
+
+.headlineWrap {
+  display: block;
+  max-width: 100%;
+}
+
+// Cajas con fondo blanco que se clonan en cada línea de texto
+.volanta,
+.headline {
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  background: #fff;
+  padding: 3px 7px;
+}
+
+.volanta {
+  color: var(--primary-color, #4bac48);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
+
+  @include respond(tablet) {
+    font-size: 26px;
+  }
+
+  @include respond(desktop) {
+    font-size: 28px;
+  }
+}
+
+.headline {
+  color: var(--text-color, #252523);
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.55;
+
+  @include respond(tablet) {
+    font-size: 30px;
+    line-height: 1.7;
+  }
+
+  @include respond(desktop) {
+    font-size: 32px;
+  }
+}
+
+// ── Copete debajo de la imagen (si existe) ───────────────────────────────
+.copete {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-color, #252523);
+  margin: 10px 0 0;
+  padding: 0 16px;
+
+  @include respond(tablet) {
+    padding: 0;
+  }
+
+  @include respond(desktop) {
+    flex: none;
+  }
+}
+
+.autor {
+  display: block;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-color, #252523);
+  padding: 8px 16px 0;
+
+  @include respond(tablet) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+// ── Hero importante ──────────────────────────────────────────────────────
+.important {
+  .mediaBox {
+    @include respond(tablet) {
+      aspect-ratio: 16 / 7;
+    }
+    @include respond(desktop) {
+      aspect-ratio: unset;
+    }
+  }
+
+  .headline {
+    @include respond(tablet) {
+      font-size: 32px;
+    }
+    @include respond(desktop) {
+      font-size: 38px;
+    }
+  }
+}

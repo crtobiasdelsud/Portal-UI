@@ -5,19 +5,14 @@ import { useTheme } from '../../context/SiteConfigContext.jsx'
 import AspectImage from '../../components/UI/AspectImage/AspectImage.jsx'
 import Carousel from '../Carousel/Carousel.jsx'
 import V0 from './variants/V0/V0'
-import V1 from './variants/V1/V1'
-import V2 from './variants/V2/V2'
-import V3 from './variants/V3/V3'
-import V4 from './variants/V4/V4'
-import V5 from './variants/V5/V5'
 import V0Tablet from './variants/V0Tablet/V0Tablet'
 import V0Desktop from './variants/V0Desktop/V0Desktop'
 
-const VARIANTS = { '0': V0, '1': V1, '2': V2, '3': V3, '4': V4, '5': V5 }
+const VARIANTS = { '0': V0 }
 
 export default function ArticleHero({ titulo, volanta, copete, imagen, imagenes, imagenEpigrafe, focalPoint, isAmp = false, extras = null, hideImageOnDesktop = false }) {
   const theme   = useTheme()
-  const variant = String(theme.articleHero ?? 1)
+  const variant = String(theme.articleHero ?? 0)
 
   const inlineStyle = isAmp ? {} : {
     fontFamily:          theme.fontFamily,
@@ -80,7 +75,7 @@ export default function ArticleHero({ titulo, volanta, copete, imagen, imagenes,
   const imgOnlyClass = (!isAmp && hideImageOnDesktop) ? styles.imgHiddenDesktop : undefined
   const noImgMod     = (!isAmp && hideImageOnDesktop) ? ` ${styles.noImgDesktop}` : ''
 
-  const MobileVariant = VARIANTS[variant] ?? V1
+  const MobileVariant = VARIANTS[variant] ?? V0
 
   const sharedProps = {
     isAmp,

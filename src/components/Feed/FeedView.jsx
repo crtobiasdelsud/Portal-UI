@@ -2,9 +2,8 @@
 
 import { useTheme } from "../../context/SiteConfigContext.jsx"
 import V1 from './variants/V1/V1'
-import V2 from './variants/V2/V2'
 
-const VARIANTS = { '1': V1, '2': V2 }
+const VARIANTS = { '1': V1 }
 
 export default function FeedView({ articles = [] }) {
   const theme = useTheme()

@@ -3,11 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useTheme, useSiteConfig } from '../../context/SiteConfigContext.jsx'
 import V1 from './variants/V1/V1'
-import V2 from './variants/V2/V2'
-import V3 from './variants/V3/V3'
-import V4 from './variants/V4/V4'
 
-const VARIANTS = { '1': V1, '2': V2, '3': V3, '4': V4 }
+const VARIANTS = { '1': V1 }
 
 function formatDate(fechaPublicacion, useLongDate) {
   if (!fechaPublicacion) return null

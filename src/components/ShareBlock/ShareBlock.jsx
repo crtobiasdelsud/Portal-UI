@@ -3,10 +3,9 @@
 import { useEffect, useState } from 'react'
 import { useTheme } from '../../context/SiteConfigContext.jsx'
 import V1 from './variants/V1/V1'
-import V2 from './variants/V2/V2'
 import { NETWORK_ICONS } from './icons/index.js'
 
-const VARIANTS = { '1': V1, '2': V2 }
+const VARIANTS = { '1': V1 }
 
 function buildNetworks(url) {
   const encoded = encodeURIComponent(url)

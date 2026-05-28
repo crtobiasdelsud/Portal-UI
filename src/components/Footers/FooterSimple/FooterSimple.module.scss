@@ -26,7 +26,7 @@
 
 .container {
   width: 100%;
-  padding: 20px 30px 20px 50px;
+  padding: 20px 30px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -35,6 +35,10 @@
   margin-top: auto;
   min-height: 268px;
   color: var(--text-color, #fff);
+
+  @media (min-width: $tablet) {
+    padding: 20px 50px;
+  }
 }
 
 // ── MAIN ROW (2 columns) ──────────────────────────────────────────────────────
@@ -58,9 +62,12 @@
   align-items: center;
   gap: 14px;
   flex-shrink: 0;
+  min-width: 0;
+  max-width: 100%;
 
   @media (min-width: $tablet) {
     align-items: flex-start;
+    max-width: 320px;
   }
 }
 
@@ -103,10 +110,13 @@
 .logoWrap {
   display: flex;
   justify-content: center;
+  max-width: 100%;
 }
 
 .logoImg {
   height: 53px;
+  width: auto;
+  max-width: 280px;
   object-fit: contain;
 }
 

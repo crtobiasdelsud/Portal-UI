@@ -1,0 +1,164 @@
+@use "../../../../styles/index.scss" as *;
+
+.container {
+  background-color: var(--surface-color, transparent);
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0; // full bleed
+
+  @include respond(desktop) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+
+  @include respond(desktop) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+}
+
+.imgWrap {
+  position: relative;
+  width: 100%;
+
+  @include respond(desktop) {
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+.mediaBox {
+  position: relative;
+  width: 100%;
+  height: 55vh;
+
+  @include respond(tablet) {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  @include respond(desktop) {
+    height: 100%;
+    aspect-ratio: unset;
+  }
+}
+
+// ── Degradado negro sobre la base de la imagen ───────────────────────────
+.gradient {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 65%;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.5) 35%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+}
+
+// ── Texto blanco sobre el degradado ──────────────────────────────────────
+.overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  padding: 0 16px;
+  z-index: 1;
+  font-family: var(--font-family);
+}
+
+.volanta {
+  margin: 0 0 6px;
+  color: var(--primary-color, #4bac48);
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  @include respond(tablet) {
+    font-size: 26px;
+  }
+
+  @include respond(desktop) {
+    font-size: 28px;
+  }
+}
+
+.headline {
+  margin: 0;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+
+  @include respond(tablet) {
+    font-size: 30px;
+  }
+
+  @include respond(desktop) {
+    font-size: 32px;
+  }
+}
+
+// ── Copete debajo de la imagen ───────────────────────────────────────────
+.copete {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-color, #252523);
+  margin: 10px 0 0;
+  padding: 0 16px;
+
+  @include respond(tablet) {
+    padding: 0;
+  }
+
+  @include respond(desktop) {
+    flex: none;
+  }
+}
+
+.autor {
+  display: block;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-color, #252523);
+  padding: 8px 16px 0;
+
+  @include respond(tablet) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+// ── Hero importante ──────────────────────────────────────────────────────
+.important {
+  .mediaBox {
+    @include respond(tablet) {
+      aspect-ratio: 16 / 7;
+    }
+    @include respond(desktop) {
+      aspect-ratio: unset;
+    }
+  }
+
+  .headline {
+    @include respond(tablet) {
+      font-size: 32px;
+    }
+    @include respond(desktop) {
+      font-size: 38px;
+    }
+  }
+}
