@@ -61,7 +61,9 @@
   flex-direction: column;
   gap: 16px;
 
-  @include respond(tablet) {
+  // Grid difiere a laptop (≥960px). En tablet (768-960) los tracks 1fr 2fr
+  // dejan cartas muy angostas — preferimos flex column full width hasta laptop.
+  @include respond(laptop) {
     display: grid;
     grid-template-columns: 1fr 2fr;
     grid-template-rows: 1fr 1fr;
@@ -74,7 +76,7 @@
 
 // item 0 — grande a la DERECHA (col 2 = 2fr)
 .itemFirst {
-  @include respond(tablet) {
+  @include respond(laptop) {
     grid-column: 2;
     grid-row: 1 / span 2;
   }
@@ -82,7 +84,7 @@
 
 // item 1 — chica izquierda arriba
 .itemSecond {
-  @include respond(tablet) {
+  @include respond(laptop) {
     grid-column: 1;
     grid-row: 1;
     overflow: hidden;
@@ -91,7 +93,7 @@
 
 // item 2 — chica izquierda abajo
 .itemThird {
-  @include respond(tablet) {
+  @include respond(laptop) {
     grid-column: 1;
     grid-row: 2;
     overflow: hidden;

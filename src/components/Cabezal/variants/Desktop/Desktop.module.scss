@@ -62,7 +62,9 @@
 // ── Default ───────────────────────────────────────────────────────────────────
 .listDefault {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
+  // auto-fit colapsa tracks vacíos cuando hay menos cartas que columnas —
+  // así una carta sola toma el ancho completo en vez de quedar angosta.
+  grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
   gap: 16px;
 }
 

@@ -62,7 +62,10 @@
   flex-direction: column;
   gap: 16px;
 
-  @include respond(tablet) {
+  // Grid difiere a laptop (≥960px). Antes arrancaba en tablet (768px) y a esa
+  // altura los tracks 2fr 1fr no tienen ancho suficiente — las cartas quedan
+  // muy angostas en el rango 768-960. En mobile/tablet, flex column full width.
+  @include respond(laptop) {
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-template-rows: 1fr 1fr;
@@ -74,9 +77,9 @@
 .item { display: flex; width: 100%; > * { flex: 1; min-width: 0; } }
 
 .itemFirst {
-  @include respond(tablet) { grid-row: span 2; }
+  @include respond(laptop) { grid-row: span 2; }
 }
 
 .itemOther {
-  @include respond(tablet) { overflow: hidden; }
+  @include respond(laptop) { overflow: hidden; }
 }

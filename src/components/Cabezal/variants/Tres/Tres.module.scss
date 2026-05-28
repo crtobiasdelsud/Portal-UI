@@ -60,15 +60,11 @@
   flex-direction: column;
   gap: 16px;
 
-  // Intermedio (~480–768px): 2 columnas
-  @include respond(mobile) {
+  // Subido respecto a antes: la grid arranca recién en laptop (≥960px) para
+  // que en tablet (768-960) las 3 cartas no queden angostas. Hasta laptop
+  // quedan apiladas en flex column full width.
+  @include respond(laptop) {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-
-  // Ancho (≥768px): 3 columnas
-  @include respond(tablet) {
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
   }

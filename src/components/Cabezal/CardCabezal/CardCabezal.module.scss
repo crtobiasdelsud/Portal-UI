@@ -6,6 +6,12 @@
   gap: 12px;
   position: relative;
   padding: 10px 0;
+  // Algunos cards van envueltos en <Tooltip> que usa display: contents en su
+  // wrapper. Eso hace que el `> * { flex: 1 }` del .item de cada variant no
+  // llegue al article, y la carta queda angosta cuando el list está en flex
+  // column. Forzamos width: 100% acá para que siempre ocupe el contenedor.
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .imgLink {

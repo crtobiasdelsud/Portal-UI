@@ -62,7 +62,10 @@
   flex-direction: column;
   gap: 16px;
 
-  @include respond(tablet) {
+  // Grid difiere a laptop (≥960px) — en tablet (768-960) las 3 columnas
+  // dejan las cartas secundarias demasiado angostas. Hasta laptop quedan
+  // apiladas full width.
+  @include respond(laptop) {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
@@ -73,7 +76,7 @@
 
 // Primer artículo — ocupa las 3 columnas, separado con borde inferior
 .itemFirst {
-  @include respond(tablet) {
+  @include respond(laptop) {
     grid-column: 1 / 4;
     padding-bottom: 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);

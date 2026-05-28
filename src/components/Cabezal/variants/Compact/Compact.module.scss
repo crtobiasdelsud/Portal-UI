@@ -57,11 +57,14 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  // En mobile/tablet: flex column (1 carta full width). El grid arranca
+  // recién en laptop (≥960px), donde hay ancho real para multi-columna.
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 
-  @include respond(tablet) {
+  @include respond(laptop) {
+    display: grid;
     grid-template-columns: repeat(4, 1fr);
   }
 

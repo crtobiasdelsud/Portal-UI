@@ -62,7 +62,9 @@
   flex-direction: column;
   gap: 16px;
 
-  @include respond(tablet) {
+  // Grid difiere a laptop (≥960px) — en tablet (768-960) dos cartas a 1fr 1fr
+  // quedan demasiado angostas. Hasta laptop quedan apiladas full width.
+  @include respond(laptop) {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;

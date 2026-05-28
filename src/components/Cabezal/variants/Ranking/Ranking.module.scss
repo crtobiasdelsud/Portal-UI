@@ -65,7 +65,10 @@
   flex-direction: column;
   gap: 16px;
 
-  @include respond(tablet) {
+  // Grid difiere a laptop (≥960px) — en tablet (768-960) las 5 columnas de
+  // 214px no entran y las cartas quedan apretadas. Hasta laptop quedan
+  // apiladas en flex column full width.
+  @include respond(laptop) {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 214px));
     justify-content: start;
