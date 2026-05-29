@@ -3,14 +3,11 @@
 import styles from './ArticleHeroFull.module.scss'
 import { useSiteConfig } from '../../context/SiteConfigContext.jsx'
 import Carousel from '../Carousel/Carousel.jsx'
+import AspectImage from '../UI/AspectImage/AspectImage.jsx'
 
 export default function ArticleHeroFull({ titulo, copete, imagen, imagenes, imagenEpigrafe, focalPoint, categoria }) {
   const { config } = useSiteConfig()
   const siteName = config?.slots?.header?.settings?.siteName ?? ''
-
-  const objPos = focalPoint
-    ? `${focalPoint.x ?? 50}% ${focalPoint.y ?? 50}%`
-    : 'center center'
 
   // Slides del carrusel: `imagenes` (array) tiene prioridad; si no, la imagen
   // única. La primera es la principal.
@@ -20,26 +17,33 @@ export default function ArticleHeroFull({ titulo, copete, imagen, imagenes, imag
 
   const single = slides.length === 1 ? slides[0] : null
 
+  // Hero a pantalla casi completa → la imagen ocupa todo el ancho del viewport.
+  // `sizes="100vw"` deja que el navegador baje la variante responsive justa
+  // (ver AspectImage / ADR-0002) en vez del original a tamaño completo.
+  const heroSizes = '100vw'
+
   return (
     <div className={styles.hero}>
       {slides.length > 1 ? (
         <Carousel
-          images={slides.map((s) => ({ url: s.url, alt: titulo ?? '' }))}
+          images={slides.map((s) => ({ url: s.url, alt: titulo ?? '', variants: s.variants ?? null }))}
           focalPoint={focalPoint}
+          sizes={heroSizes}
           fill
           showEpigrafe={false}
           dotsPosition="top"
           priority
         />
       ) : single ? (
-        <img
+        <AspectImage
           src={single.url}
           alt={titulo ?? ''}
           className={styles.img}
-          style={{ objectPosition: objPos }}
-          decoding="async"
-          loading="eager"
-          fetchPriority="high"
+          fill
+          focalPoint={focalPoint}
+          variants={single.variants ?? null}
+          sizes={heroSizes}
+          priority
         />
       ) : null}
       <div className={styles.gradient} />

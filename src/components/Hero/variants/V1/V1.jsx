@@ -22,7 +22,12 @@ export default function V1({ article, important = false, inlineStyle }) {
             {article.volanta && <span className={styles.category}>{article.volanta}. </span>}
             {article.titulo}
           </p>
-          <p className={styles.copete}> {article.copete}</p>
+          {article.copete && (
+            <p
+              className={styles.copete}
+              dangerouslySetInnerHTML={{ __html: article.copete }}
+            />
+          )}
           {article.autor?.nombre && (
             <span className={styles.autor}>Por {article.autor.nombre}</span>
           )}
