@@ -260,7 +260,11 @@
     color: var(--text-color, #252523);
   }
 
-  @include respond(tablet) {
+  // Layout de imagen flex-fill solo desde laptop (>=960px), igual que la grilla
+  // `.list` de Categoria/CategoriaDos. En 768-960 la lista es columna flex sin
+  // altura definida: si esto arrancara en tablet, `flex:1`+`aspect-ratio:unset`
+  // colapsaria la imagen a 0. En ese rango la card queda en forma mobile (16:9).
+  @include respond(laptop) {
     height: 100%;
 
     .titulo {
@@ -284,7 +288,7 @@
 }
 
 .featuredLarge {
-  @include respond(tablet) {
+  @include respond(laptop) {
     .titulo {
       font-weight: 700;
       font-size: 2.125em;
@@ -307,7 +311,7 @@
     gap: 5px;
   }
 
-  @include respond(tablet) {
+  @include respond(laptop) {
     height: 100%;
 
     .imgLinkFill {
