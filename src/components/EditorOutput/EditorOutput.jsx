@@ -17,6 +17,24 @@ import { buildSrcSet, resolveImageSrc } from '../../utils/imageVariants.js'
  * queda el `height` del style por default — sin scroll, sólo con espacio
  * de más en el peor caso.
  */
+// twitframe.com (default de @editorjs/embed para Twitter) expiró y ahora
+// redirige a spam que setea X-Frame-Options → el tweet queda en blanco.
+// Reconstruimos el src al embed oficial de X desde la URL del post. Para
+// Instagram nos aseguramos del endpoint /embed (iframe-able). El resto de los
+// servicios usa el `embed` guardado tal cual.
+function resolveEmbedSrc({ service, embed, source }) {
+  const raw = source || embed || ''
+  if (service === 'twitter') {
+    const m = raw.match(/status(?:\/|%2F)(\d+)/)
+    if (m) return `https://platform.twitter.com/embed/Tweet.html?id=${m[1]}`
+  }
+  if (service === 'instagram') {
+    const base = (source || embed || '').split('?')[0]
+    if (base) return /\/embed\/?$/.test(base) ? base : `${base.replace(/\/+$/, '')}/embed`
+  }
+  return embed || source || ''
+}
+
 function EmbedIframe({ src, service, style }) {
   const ref = useRef(null)
   const [autoHeight, setAutoHeight] = useState(null)
@@ -193,7 +211,8 @@ function Block({ block, cls, isAmp }) {
 
     case "embed": {
       if (isAmp) return null  // AMP doesn't allow arbitrary iframes
-      const { service, embed, width, height, caption } = block.data
+      const { service, embed, source, width, height, caption } = block.data
+      const embedSrc = resolveEmbedSrc({ service, embed, source })
 
       // Tamaños por servicio: a los iframes cross-origin no se les puede medir
       // el contenido, así que les damos altos generosos para que el embed se
@@ -254,7 +273,7 @@ function Block({ block, cls, isAmp }) {
 
       return (
         <figure className={cls.embed} data-service={service}>
-          <EmbedIframe src={embed} service={service} style={iframeStyle} />
+          <EmbedIframe src={embedSrc} service={service} style={iframeStyle} />
           {caption && <figcaption>{caption}</figcaption>}
         </figure>
       )
