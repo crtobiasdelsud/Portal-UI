@@ -12,7 +12,7 @@ export default function Amp({ article, rank }) {
       <div className="card-cabezal__body">
         {volanta && <span className="card-cabezal__volanta">{volanta}.</span>}
         {titulo && <a href={href} className="card-cabezal__titulo">{titulo}</a>}
-        {copete && <p className="card-cabezal__copete">{copete}</p>}
+        {copete && <div className="card-cabezal__copete" dangerouslySetInnerHTML={{ __html: copete }} />}
       </div>
       {rank != null && <span className="card-cabezal__rank">{rank}</span>}
     </article>

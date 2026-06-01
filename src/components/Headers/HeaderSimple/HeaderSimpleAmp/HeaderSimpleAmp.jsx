@@ -18,12 +18,12 @@ export default function HeaderSimpleAmp({ settings = {} }) {
 
         <div className="header-simple__brand">
           {resolvedLogo ? (
-            <a href="/amp" aria-label={`Ir a inicio - ${siteName}`}>
-              <img src={resolvedLogo.src ?? resolvedLogo} alt={logoAlt || siteName} className="header-simple__logo-img" />
+            <a href="/" aria-label={`Ir a inicio - ${siteName}`}>
+              <amp-img src={resolvedLogo.src ?? resolvedLogo} alt={logoAlt || siteName} class="header-simple__logo-img" layout="fixed-height" height="30" />
             </a>
           ) : logoUrl ? (
-            <a href="/amp" aria-label={`Ir a inicio - ${siteName}`}>
-              <img src={logoUrl} alt={logoAlt || siteName} className="header-simple__logo-img" />
+            <a href="/" aria-label={`Ir a inicio - ${siteName}`}>
+              <amp-img src={logoUrl} alt={logoAlt || siteName} class="header-simple__logo-img" layout="fixed-height" height="30" />
             </a>
           ) : (
             <span className="header-simple__logo">{siteName}</span>
@@ -80,11 +80,11 @@ export default function HeaderSimpleAmp({ settings = {} }) {
           <div className="amp-sidebar__social">
             <span className="amp-sidebar__social-label">Seguinos en:</span>
             <div className="amp-sidebar__social-icons">
-              {social.facebook  && <a href={social.facebook}  aria-label="Facebook"  className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><img src="/icons/facebook.svg"  alt="Facebook"  /></a>}
-              {social.twitter   && <a href={social.twitter}   aria-label="X"         className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><img src="/icons/x.svg"         alt="X"         /></a>}
-              {social.instagram && <a href={social.instagram} aria-label="Instagram" className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><img src="/icons/instagram.svg" alt="Instagram" /></a>}
-              {social.youtube   && <a href={social.youtube}   aria-label="YouTube"   className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><img src="/icons/youtube.svg"   alt="YouTube"   /></a>}
-              {social.tiktok    && <a href={social.tiktok}    aria-label="TikTok"    className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><img src="/icons/tiktok.svg"    alt="TikTok"    /></a>}
+              {social.facebook  && <a href={social.facebook}  aria-label="Facebook"  className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><amp-img src="/icons/facebook.svg"  alt="Facebook"  width="24" height="24" layout="fixed" /></a>}
+              {social.twitter   && <a href={social.twitter}   aria-label="X"         className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><amp-img src="/icons/x.svg"         alt="X"         width="24" height="24" layout="fixed" /></a>}
+              {social.instagram && <a href={social.instagram} aria-label="Instagram" className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><amp-img src="/icons/instagram.svg" alt="Instagram" width="24" height="24" layout="fixed" /></a>}
+              {social.youtube   && <a href={social.youtube}   aria-label="YouTube"   className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><amp-img src="/icons/youtube.svg"   alt="YouTube"   width="24" height="24" layout="fixed" /></a>}
+              {social.tiktok    && <a href={social.tiktok}    aria-label="TikTok"    className="amp-sidebar__social-link" target="_blank" rel="noopener noreferrer"><amp-img src="/icons/tiktok.svg"    alt="TikTok"    width="24" height="24" layout="fixed" /></a>}
             </div>
           </div>
         </amp-sidebar>

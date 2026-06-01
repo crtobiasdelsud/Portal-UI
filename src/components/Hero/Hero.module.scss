@@ -19,6 +19,21 @@
    @include respond(tablet) {
     display: block;
   }
+
+  // Copete enriquecido: links, listas y saltos de línea
+  a {
+    color: var(--primary-color, #4bac48);
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+
+  ul {
+    margin: 0.4em 0;
+    padding-left: 1.25em;
+    list-style: disc;
+  }
+
+  li { margin: 0.15em 0; }
 }
 
 .container {

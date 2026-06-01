@@ -87,16 +87,20 @@
 .logoImg {
   height: 33px;
   width: auto;
+  max-width: 200px;
+  object-fit: contain;
   padding-left: 30px;
 
   @include respond(tablet) {
     height: 45px;
     width: auto;
+    max-width: 240px;
   }
 
   @include respond(desktop) {
-    width: 305px;
     height: 55px;
+    width: auto;
+    max-width: 280px;
   }
 }
 

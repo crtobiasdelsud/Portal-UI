@@ -36,14 +36,14 @@ export default function ArticleHero({ titulo, volanta, copete, imagen, imagenes,
   let ImgEl = null
   if (slides.length > 0) {
     if (isAmp) {
-      // AMP no ejecuta JS de cliente: muestra sólo la imagen principal.
-      // fetchpriority alta → es la imagen LCP del artículo.
+      // AMP no permite <img>: usamos <amp-img layout="fill"> dentro del
+      // wrap (position:relative + aspect-ratio). object-fit lo da el CSS.
       ImgEl = (
-        <img
+        <amp-img
           src={slides[0].url}
           alt={titulo ?? ''}
-          className="article-hero__img"
-          fetchPriority="high"
+          class="article-hero__img"
+          layout="fill"
         />
       )
     } else if (slides.length > 1) {

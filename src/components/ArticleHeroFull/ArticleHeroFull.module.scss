@@ -116,6 +116,22 @@
     line-height: 1.3em;
     padding-top: 1.875rem;
   }
+
+  // Copete enriquecido sobre fondo oscuro: links, listas y saltos
+  a {
+    color: #fff;
+    text-decoration: underline;
+    &:hover { opacity: 0.85; }
+  }
+
+  ul {
+    margin: 0.4em 0;
+    padding-left: 1.25em;
+    list-style: disc;
+    text-align: left;
+  }
+
+  li { margin: 0.15em 0; }
 }
 
 // ── Epígrafe de la imagen — crédito sutil en el borde inferior del hero ──────

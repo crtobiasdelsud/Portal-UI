@@ -65,7 +65,7 @@ export default function ArticleHeroFull({ titulo, copete, imagen, imagenes, imag
           </div>
         )}
         <h1 className={styles.titulo}>{titulo}</h1>
-        {copete && <p className={styles.copete}>{copete}</p>}
+        {copete && <div className={styles.copete} dangerouslySetInnerHTML={{ __html: copete }} />}
       </div>
     </div>
   )

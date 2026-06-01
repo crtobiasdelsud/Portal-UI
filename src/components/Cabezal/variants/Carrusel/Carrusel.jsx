@@ -51,8 +51,19 @@ export default function Carrusel({ titulo, verMasUrl, articles, getSlotProps }) 
     if (!target) return
 
     const delta = target.getBoundingClientRect().left - track.children[snapped].getBoundingClientRect().left
+
     isJumping.current = true
-    track.scrollBy({ left: delta, behavior: 'instant' })
+    const prevSnap = track.style.scrollSnapType
+    const prevBehavior = track.style.scrollBehavior
+    // En WebKit (iOS) el snap mandatory y el scroll-behavior:smooth del CSS pelean
+    // contra scrollBy({behavior:'instant'}) → glitch. Los apagamos para el salto.
+    track.style.scrollSnapType = 'none'
+    track.style.scrollBehavior = 'auto'
+    track.scrollLeft += delta            // salto directo, no scrollBy
+    void track.offsetWidth               // reflow: asienta la posición antes de re-snap
+    track.style.scrollSnapType = prevSnap // re-snap mientras behavior sigue 'auto' (sin animar)
+    void track.offsetWidth
+    track.style.scrollBehavior = prevBehavior
     requestAnimationFrame(() => { isJumping.current = false })
   }, [articles.length])
 
@@ -63,7 +74,10 @@ export default function Carrusel({ titulo, verMasUrl, articles, getSlotProps }) 
       const firstReal = track?.children[CLONE_COUNT]
       if (!firstReal) return
       const delta = firstReal.getBoundingClientRect().left - track.getBoundingClientRect().left
-      track.scrollBy({ left: delta, behavior: 'instant' })
+      const prevBehavior = track.style.scrollBehavior
+      track.style.scrollBehavior = 'auto'
+      track.scrollLeft += delta
+      track.style.scrollBehavior = prevBehavior
     })
   }, [])
 

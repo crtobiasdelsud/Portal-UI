@@ -23,7 +23,7 @@ export default function V1({ article, important = false, inlineStyle }) {
             {article.titulo}
           </p>
           {article.copete && (
-            <p
+            <div
               className={styles.copete}
               dangerouslySetInnerHTML={{ __html: article.copete }}
             />

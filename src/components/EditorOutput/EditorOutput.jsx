@@ -172,7 +172,13 @@ function Block({ block, cls, isAmp }) {
         <figure className={cls.image}>
           <div className={cls.imageWrap}>
             {isAmp
-              ? <img src={src} alt={alt} />
+              ? <amp-img
+                  src={src}
+                  alt={alt}
+                  width={w || 1200}
+                  height={h || 675}
+                  layout="responsive"
+                />
               : <img
                   src={imgSrc}
                   alt={alt}
@@ -367,7 +373,7 @@ function Block({ block, cls, isAmp }) {
       if (isAmp) {
         return (
           <div className={cls.authorBlock}>
-            {photo && <img src={photo} alt={name} />}
+            {photo && <amp-img src={photo} alt={name} width="48" height="48" layout="fixed" />}
             <div>
               <div>Por <strong>{name}</strong></div>
               {dateTime && <div>{dateTime}</div>}
@@ -401,7 +407,10 @@ function Block({ block, cls, isAmp }) {
           <p className={cls.relatedTitle}>Lee además</p>
           {articles.map((a) => (
             <a key={a.id} href={`/${a.slug || a.id}`} className={cls.relatedItem}>
-              {a.image && <img src={a.image} alt={a.title} className={cls.relatedImg} width={80} height={60} loading="lazy" decoding="async" />}
+              {a.image && (isAmp
+                ? <amp-img src={a.image} alt={a.title} class={cls.relatedImg} width="80" height="60" layout="fixed" />
+                : <img src={a.image} alt={a.title} className={cls.relatedImg} width={80} height={60} loading="lazy" decoding="async" />
+              )}
               <div className={cls.relatedInfo}>
                 {a.volanta && <span className={cls.relatedVolanta}>{a.volanta}</span>}
                 <span className={cls.relatedItemTitle}>{a.title}</span>

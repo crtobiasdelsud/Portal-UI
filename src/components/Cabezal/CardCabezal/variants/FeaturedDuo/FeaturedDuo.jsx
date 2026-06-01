@@ -27,7 +27,7 @@ export default function FeaturedDuo({ article }) {
           {volanta && <span className={styles.volanta}>{volanta}.</span>}
           {titulo && <Link href={href} className={styles.titulo}>{titulo}</Link>}
         </div>
-        {copete && <p className={styles.copete}>{copete}</p>}
+        {copete && <div className={styles.copete} dangerouslySetInnerHTML={{ __html: copete }} />}
         {autor?.nombre && <span className={styles.autor}>Por {autor.nombre}</span>}
       </div>
     </article>

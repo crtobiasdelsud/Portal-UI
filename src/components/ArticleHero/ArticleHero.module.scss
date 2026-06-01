@@ -52,6 +52,15 @@
 
     &:hover { text-decoration: underline; }
   }
+
+  // Listas y saltos del copete enriquecido
+  ul {
+    margin: 0.4em 0;
+    padding-left: 1.25em;
+    list-style: disc;
+  }
+
+  li { margin: 0.15em 0; }
 }
 
 .imgWrap {

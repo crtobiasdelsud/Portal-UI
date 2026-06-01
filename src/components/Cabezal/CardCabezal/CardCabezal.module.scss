@@ -95,6 +95,21 @@
   opacity: 0.7;
   line-height: 1.4;
   margin: 0;
+
+  // Copete enriquecido: links, listas y saltos de línea
+  a {
+    color: var(--primary-color, #af0437);
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+
+  ul {
+    margin: 0.3em 0;
+    padding-left: 1.1em;
+    list-style: disc;
+  }
+
+  li { margin: 0.1em 0; }
 }
 
 .rank {
