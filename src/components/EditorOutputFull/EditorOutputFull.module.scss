@@ -137,7 +137,7 @@
   z-index: 1;
   margin: 0;
   padding: 10px 14px;
-  font-family: "Inter", "Helvetica", Arial, sans-serif;
+  font-family: var(--font-inter, "Inter", "Helvetica", Arial, sans-serif);
   font-size: 0.8rem;
   line-height: 1.35;
   color: #fff;

@@ -11,7 +11,6 @@ export default function FeedView({ articles = [] }) {
 
   const inlineStyle = {
     backgroundColor:     theme.surface,
-    fontFamily:          theme.fontFamily,
     '--primary-color':   theme.primary,
     '--secondary-color': theme.secondary,
     '--text-color':      theme.textColor ?? '#1a1a1a',

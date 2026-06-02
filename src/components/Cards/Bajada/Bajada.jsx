@@ -18,7 +18,6 @@ export default function Bajada({ settings = {}, isAmp = false }) {
 
   const inlineStyle = isAmp ? {} : {
     backgroundColor:    theme.surface,
-    fontFamily:         theme.fontFamily,
     '--primary-color':  theme.primary,
     '--text-color':     theme.textColor,
     '--surface-color':  theme.surface,

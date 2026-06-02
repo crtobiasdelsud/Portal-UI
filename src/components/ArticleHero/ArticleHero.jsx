@@ -15,7 +15,6 @@ export default function ArticleHero({ titulo, volanta, copete, imagen, imagenes,
   const variant = String(theme.articleHero ?? 0)
 
   const inlineStyle = isAmp ? {} : {
-    fontFamily:          theme.fontFamily,
     '--primary-color':   theme.primary,
     '--surface-color':   theme.surface,
     '--secondary-color': theme.secondary,

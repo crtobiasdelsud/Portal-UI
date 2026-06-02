@@ -13,7 +13,6 @@ export default function HeroView({ article, important = false }) {
 
   const inlineStyle = {
     backgroundColor:   theme.surface,
-    fontFamily:        theme.fontFamily,
     '--primary-color': theme.primary,
     '--text-color':    theme.textColor,
     '--surface-color': theme.surface,
