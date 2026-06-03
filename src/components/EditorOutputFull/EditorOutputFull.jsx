@@ -220,7 +220,7 @@ function Block({ block, cls, isAmp }) {
       const MIN_HEIGHT = {
         instagram: 800,
         tiktok: 800,
-        twitter: 700,
+        twitter: 560,
         reddit: 700,
         facebook: 700,
         imgur: 600,

@@ -78,7 +78,7 @@ export default function ArticleCard({
               <span className={styles.category}>
                 {article.volanta}.
               </span>
-
+              {' '}
               {article.titulo}
             </p>
 

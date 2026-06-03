@@ -35,14 +35,54 @@ function resolveEmbedSrc({ service, embed, source }) {
   return embed || source || ''
 }
 
+// Carga widgets.js de Twitter una sola vez (idempotente). Resuelve con el
+// objeto `window.twttr` listo, o `null` si la carga falla (en ese caso el
+// iframe directo queda como fallback).
+let twttrReady = null
+function loadTwitterWidgets() {
+  if (typeof window === 'undefined') return Promise.resolve(null)
+  if (window.twttr?.widgets) return Promise.resolve(window.twttr)
+  if (twttrReady) return twttrReady
+  twttrReady = new Promise((resolve) => {
+    const s = document.createElement('script')
+    s.src = 'https://platform.twitter.com/widgets.js'
+    s.async = true
+    s.onload = () => resolve(window.twttr || null)
+    s.onerror = () => resolve(null)
+    document.head.appendChild(s)
+  })
+  return twttrReady
+}
+
 function EmbedIframe({ src, service, style }) {
   const ref = useRef(null)
   const [autoHeight, setAutoHeight] = useState(null)
+  const [twitterDone, setTwitterDone] = useState(false)
+
+  // Twitter: el iframe directo a platform.twitter.com NO reporta su altura, así
+  // que con alto fijo los tweets cortos dejan hueco y los largos hacen scroll
+  // interno. widgets.js (twttr.widgets.createTweet) inyecta el tweet y lo mide
+  // solo → altura exacta, sin blanco ni scroll.
+  const tweetId = service === 'twitter' ? (String(src).match(/[?&]id=(\d+)/)?.[1] || null) : null
 
   useEffect(() => {
-    // Servicios que se sabe que postean MEASURE: Instagram. (Twitter usa
-    // su propio widgets.js para inyectar; nuestro iframe directo no recibe
-    // MEASURE de Twitter. TikTok tampoco postea altura.)
+    if (!tweetId) return
+    let cancelled = false
+    const el = ref.current
+    if (!el) return
+    loadTwitterWidgets().then((twttr) => {
+      if (cancelled || !twttr?.widgets || !el) return
+      el.innerHTML = ''
+      twttr.widgets
+        .createTweet(tweetId, el, { align: 'center', dnt: true })
+        .then(() => { if (!cancelled) setTwitterDone(true) })
+    })
+    return () => { cancelled = true }
+  }, [tweetId])
+
+  useEffect(() => {
+    // Servicios que se sabe que postean MEASURE: Instagram. (Twitter se maneja
+    // arriba con widgets.js. TikTok no postea altura.)
     if (service !== 'instagram') return
 
     function handleMessage(event) {
@@ -60,6 +100,14 @@ function EmbedIframe({ src, service, style }) {
     window.addEventListener('message', handleMessage)
     return () => window.removeEventListener('message', handleMessage)
   }, [service])
+
+  // Twitter via widget: contenedor que crece con el tweet. `minHeight` es solo
+  // placeholder anti-CLS hasta que widgets.js mida; después el widget fija su
+  // propia altura exacta. Si no hubo tweetId (URL rara), cae al iframe normal.
+  if (tweetId) {
+    const { height, ...rest } = style || {}
+    return <div ref={ref} style={{ ...rest, minHeight: twitterDone ? undefined : height }} />
+  }
 
   const finalStyle = autoHeight != null ? { ...style, height: autoHeight } : style
   return <iframe ref={ref} src={src} style={finalStyle} allowFullScreen />
@@ -238,7 +286,7 @@ function Block({ block, cls, isAmp }) {
       const MIN_HEIGHT = {
         instagram: 800,
         tiktok: 800,
-        twitter: 700,
+        twitter: 560,
         reddit: 700,
         facebook: 700,
         imgur: 600,

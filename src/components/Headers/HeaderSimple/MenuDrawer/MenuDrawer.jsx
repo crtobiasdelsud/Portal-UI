@@ -95,6 +95,7 @@ export default function MenuDrawer({
             className={`${styles.drawer} ${fullscreen ? styles.drawerFullscreen : styles.drawerSidebar} ${open ? styles.drawerOpen : ''}`}
             style={drawerStyle}
             aria-hidden={!open}
+            inert={!open}
           >
             <div className={styles.drawerHeader}>
               <div className={styles.drawerLogo}>
