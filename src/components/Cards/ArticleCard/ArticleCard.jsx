@@ -33,7 +33,6 @@ export default function ArticleCard({
   const primaryColor = theme.primary
   const textColor = theme.textColor
   const surfaceColor = theme.surface
-  const fontFamily = theme.fontFamily
 
   if (!article) return null
 
@@ -44,7 +43,6 @@ export default function ArticleCard({
 
   const inlineStyle = {
     backgroundColor: surfaceColor,
-    fontFamily,
     '--primary-color': primaryColor,
     '--text-color': textColor,
   }

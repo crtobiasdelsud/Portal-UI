@@ -90,7 +90,7 @@
 
 .copete {
   font-size: 0.78rem;
-  font-family: "Inter", "Helvetica", Arial, sans-serif;
+  font-family: var(--font-inter, "Inter", "Helvetica", Arial, sans-serif);
   color: var(--text-color, #252523);
   opacity: 0.7;
   line-height: 1.4;
@@ -269,7 +269,7 @@
     display: block;
     font-size: 0.9rem;
     opacity: 0.75;
-    font-family: "Inter", "Helvetica", Arial, sans-serif;
+    font-family: var(--font-inter, "Inter", "Helvetica", Arial, sans-serif);
     line-height: 1.5;
     margin: 0;
     color: var(--text-color, #252523);
@@ -371,7 +371,7 @@
   }
 
   .copete {
-    font-family: "Inter", "Helvetica", Arial, sans-serif;
+    font-family: var(--font-inter, "Inter", "Helvetica", Arial, sans-serif);
     display: block;
     opacity: 1;
     margin: 0;

@@ -6,7 +6,7 @@
   width: 100%;
   padding: 20px 16px;
   text-align: left;
-  font-family: "Frank Ruhl Libre", serif;
+  font-family: var(--font-titulo, "Frank Ruhl Libre", serif);
 }
 
 .headline {
@@ -17,12 +17,12 @@
   color: var(--text-color, #252523);
   margin: 0 0 1rem;
   text-align: left;
-  font-family: "Frank Ruhl Libre", serif;
+  font-family: var(--font-titulo, "Frank Ruhl Libre", serif);
 }
 
 .volanta {
   color: var(--primary-color, #B1043F);
-  font-family: "Frank Ruhl Libre", serif;
+  font-family: var(--font-titulo, "Frank Ruhl Libre", serif);
 }
 
 .copete {
