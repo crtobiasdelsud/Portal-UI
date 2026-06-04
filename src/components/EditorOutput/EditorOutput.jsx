@@ -57,7 +57,9 @@ function loadTwitterWidgets() {
 
 function EmbedIframe({ src, service, style }) {
   const safeSrc = sanitizeResourceUrl(src)
-  const ref = useRef(null)
+  const wrapRef = useRef(null)      // placeholder observado por IO
+  const contentRef = useRef(null)   // contenedor real del tweet/iframe (post-inView)
+  const [inView, setInView] = useState(false)
   const [autoHeight, setAutoHeight] = useState(null)
   const [twitterDone, setTwitterDone] = useState(false)
   if (!safeSrc) return null
@@ -68,10 +70,32 @@ function EmbedIframe({ src, service, style }) {
   // solo → altura exacta, sin blanco ni scroll.
   const tweetId = service === 'twitter' ? (String(src).match(/[?&]id=(\d+)/)?.[1] || null) : null
 
+  // Lazy load: difiere TODO (iframe src, widgets.js de Twitter, listener de
+  // Instagram MEASURE) hasta que el embed esté cerca del viewport. Sin esto,
+  // tweets / instagram / youtube debajo del fold cargan junto con la nota y
+  // pegan al LCP. El rootMargin de 400px precarga antes que el usuario llegue.
   useEffect(() => {
-    if (!tweetId) return
+    if (inView) return
+    if (typeof IntersectionObserver === 'undefined') { setInView(true); return }
+    const el = wrapRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some(e => e.isIntersecting)) {
+          setInView(true)
+          io.disconnect()
+        }
+      },
+      { rootMargin: '400px 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [inView])
+
+  useEffect(() => {
+    if (!inView || !tweetId) return
     let cancelled = false
-    const el = ref.current
+    const el = contentRef.current
     if (!el) return
     loadTwitterWidgets().then((twttr) => {
       if (cancelled || !twttr?.widgets || !el) return
@@ -81,16 +105,16 @@ function EmbedIframe({ src, service, style }) {
         .then(() => { if (!cancelled) setTwitterDone(true) })
     })
     return () => { cancelled = true }
-  }, [tweetId])
+  }, [inView, tweetId])
 
   useEffect(() => {
     // Servicios que se sabe que postean MEASURE: Instagram. (Twitter se maneja
     // arriba con widgets.js. TikTok no postea altura.)
-    if (service !== 'instagram') return
+    if (!inView || service !== 'instagram') return
 
     function handleMessage(event) {
       if (typeof event.origin !== 'string' || !event.origin.includes('instagram.com')) return
-      if (event.source !== ref.current?.contentWindow) return
+      if (event.source !== contentRef.current?.contentWindow) return
 
       let data = event.data
       if (typeof data === 'string') {
@@ -102,18 +126,24 @@ function EmbedIframe({ src, service, style }) {
 
     window.addEventListener('message', handleMessage)
     return () => window.removeEventListener('message', handleMessage)
-  }, [service])
+  }, [inView, service])
+
+  // Placeholder antes de inView: ocupa el lugar (height del callsite) pero no
+  // dispara ningún fetch. Reserva el espacio → no genera CLS al "hidratar".
+  if (!inView) {
+    return <div ref={wrapRef} style={style} aria-hidden="true" />
+  }
 
   // Twitter via widget: contenedor que crece con el tweet. `minHeight` es solo
   // placeholder anti-CLS hasta que widgets.js mida; después el widget fija su
   // propia altura exacta. Si no hubo tweetId (URL rara), cae al iframe normal.
   if (tweetId) {
     const { height, ...rest } = style || {}
-    return <div ref={ref} style={{ ...rest, minHeight: twitterDone ? undefined : height }} />
+    return <div ref={contentRef} style={{ ...rest, minHeight: twitterDone ? undefined : height }} />
   }
 
   const finalStyle = autoHeight != null ? { ...style, height: autoHeight } : style
-  return <iframe ref={ref} src={safeSrc} style={finalStyle} allowFullScreen />
+  return <iframe ref={contentRef} src={safeSrc} style={finalStyle} allowFullScreen />
 }
 
 // Fixed class names for AMP (no CSS Modules hashing)

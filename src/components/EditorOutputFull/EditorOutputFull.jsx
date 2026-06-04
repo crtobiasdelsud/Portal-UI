@@ -38,16 +38,39 @@ function resolveEmbedSrc({ service, embed, source }) {
 
 function EmbedIframe({ src, service, style }) {
   const safeSrc = sanitizeResourceUrl(src)
-  const ref = useRef(null)
+  const wrapRef = useRef(null)      // placeholder observado por IO
+  const contentRef = useRef(null)   // iframe real (post-inView)
+  const [inView, setInView] = useState(false)
   const [autoHeight, setAutoHeight] = useState(null)
   if (!safeSrc) return null
 
+  // Lazy load: difiere el iframe src y el listener de Instagram hasta que el
+  // embed esté cerca del viewport (400px de margen para precargar). Sin esto
+  // los embeds abajo del fold cargan junto con la nota y suben el LCP.
   useEffect(() => {
-    if (service !== 'instagram') return
+    if (inView) return
+    if (typeof IntersectionObserver === 'undefined') { setInView(true); return }
+    const el = wrapRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some(e => e.isIntersecting)) {
+          setInView(true)
+          io.disconnect()
+        }
+      },
+      { rootMargin: '400px 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [inView])
+
+  useEffect(() => {
+    if (!inView || service !== 'instagram') return
 
     function handleMessage(event) {
       if (typeof event.origin !== 'string' || !event.origin.includes('instagram.com')) return
-      if (event.source !== ref.current?.contentWindow) return
+      if (event.source !== contentRef.current?.contentWindow) return
 
       let data = event.data
       if (typeof data === 'string') {
@@ -59,10 +82,15 @@ function EmbedIframe({ src, service, style }) {
 
     window.addEventListener('message', handleMessage)
     return () => window.removeEventListener('message', handleMessage)
-  }, [service])
+  }, [inView, service])
+
+  // Placeholder antes de inView: ocupa el lugar pero no dispara fetch del iframe.
+  if (!inView) {
+    return <div ref={wrapRef} style={style} aria-hidden="true" />
+  }
 
   const finalStyle = autoHeight != null ? { ...style, height: autoHeight } : style
-  return <iframe ref={ref} src={safeSrc} style={finalStyle} allowFullScreen />
+  return <iframe ref={contentRef} src={safeSrc} style={finalStyle} allowFullScreen />
 }
 
 // Fixed class names for AMP (no CSS Modules hashing)
