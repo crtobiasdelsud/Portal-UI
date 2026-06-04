@@ -53,54 +53,26 @@
 }
 
 // ── Overlay SOBRE la imagen en todos los anchos (cajas blancas por línea) ──
+// Sin flex: queremos que volanta y headline fluyan inline en la misma línea
+// (cuando entran). Con flex-column eran filas separadas obligadas.
 .overlay {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 14px;
   padding: 0 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   font-family: var(--font-family);
 }
 
-.volantaWrap {
-  display: block;
-  margin-bottom: 5px;
-  max-width: 100%;
-}
-
-.headlineWrap {
-  display: block;
-  max-width: 100%;
-}
-
-// Cajas con fondo blanco que se clonan en cada línea de texto
-.volanta,
+// Una sola caja blanca contiene volanta + título: usamos el background y el
+// box-decoration-break solo en .headline. La .volanta queda como modificador
+// inline (color + peso) DENTRO de la misma caja, así no se ve corte entre
+// las dos partes del texto.
 .headline {
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   background: #fff;
   padding: 3px 7px;
-}
-
-.volanta {
-  color: var(--primary-color, #4bac48);
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.5;
-
-  @include respond(tablet) {
-    font-size: 26px;
-  }
-
-  @include respond(desktop) {
-    font-size: 28px;
-  }
-}
-
-.headline {
   color: var(--text-color, #252523);
   font-size: 20px;
   font-weight: 800;
@@ -114,6 +86,11 @@
   @include respond(desktop) {
     font-size: 32px;
   }
+}
+
+.volanta {
+  color: var(--primary-color, #4bac48);
+  font-weight: 700;
 }
 
 // ── Copete debajo de la imagen (si existe) ───────────────────────────────
@@ -152,8 +129,12 @@
     @include respond(tablet) {
       aspect-ratio: 16 / 7;
     }
+    // Desktop: V1 cap la imagen importante a 500px (sin esto el hero ocupa
+    // ~774px y rompe el ratio respecto a V1). Replicamos acá para que V2 y
+    // V1 tengan la misma altura en portada de escritorio.
     @include respond(desktop) {
       aspect-ratio: unset;
+      max-height: 500px;
     }
   }
 

@@ -1,5 +1,6 @@
 import { useAdapters } from '../../../../adapters/AdaptersContext.jsx'
 import AspectImage from '../../../UI/AspectImage/AspectImage.jsx'
+import { volantaWithStop } from '../../../../utils/volanta.js'
 import styles from './LeeAdemas.module.scss'
 
 function LeeAdemasCard({ article }) {
@@ -22,7 +23,7 @@ function LeeAdemasCard({ article }) {
       )}
       <div className={styles.body}>
         <Link href={href} className={styles.header}>
-          {volanta && <span className={styles.volanta}>{volanta}. </span>}
+          {volanta && <span className={styles.volanta}>{volantaWithStop(volanta)} </span>}
           {titulo  && <span className={styles.titulo}>{titulo}</span>}
         </Link>
       </div>

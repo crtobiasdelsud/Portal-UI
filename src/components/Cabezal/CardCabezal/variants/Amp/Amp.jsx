@@ -1,3 +1,5 @@
+import { volantaWithStop } from '../../../../../utils/volanta.js'
+
 export default function Amp({ article, rank }) {
   const { titulo, volanta, copete, imagen, slug } = article
   const href = slug ? `/${slug}` : '#'
@@ -10,7 +12,7 @@ export default function Amp({ article, rank }) {
         </a>
       )}
       <div className="card-cabezal__body">
-        {volanta && <span className="card-cabezal__volanta">{volanta}.</span>}
+        {volanta && <span className="card-cabezal__volanta">{volantaWithStop(volanta)}</span>}
         {titulo && <a href={href} className="card-cabezal__titulo">{titulo}</a>}
         {copete && <div className="card-cabezal__copete" dangerouslySetInnerHTML={{ __html: copete }} />}
       </div>

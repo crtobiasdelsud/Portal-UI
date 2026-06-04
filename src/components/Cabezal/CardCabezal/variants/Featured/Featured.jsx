@@ -2,6 +2,7 @@ import styles from '../../CardCabezal.module.scss'
 import { useAdapters } from '../../../../../adapters/AdaptersContext.jsx'
 import AspectImage from '../../../../UI/AspectImage/AspectImage.jsx'
 import Tooltip from '../../../../UI/ToolTip/ToolTip.jsx'
+import { volantaWithStop } from '../../../../../utils/volanta.js'
 
 export default function Featured({ article, large }) {
 
@@ -25,7 +26,7 @@ export default function Featured({ article, large }) {
       )}
       <div className={styles.body}>
         <div className={styles.header}>
-          {volanta && <span className={styles.volanta}>{volanta}.</span>}
+          {volanta && <span className={styles.volanta}>{volantaWithStop(volanta)}</span>}
           {titulo && <Link href={href} className={styles.titulo}>{titulo}</Link>}
         </div> 
         {autor?.nombre && <span className={styles.autor}>Por {autor.nombre}</span>}

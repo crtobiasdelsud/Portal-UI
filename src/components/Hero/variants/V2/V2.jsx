@@ -1,5 +1,6 @@
 import { useAdapters } from '../../../../adapters/AdaptersContext.jsx'
 import AspectImage from '../../../UI/AspectImage/AspectImage.jsx'
+import { volantaWithStop } from '../../../../utils/volanta.js'
 import s from './V2.module.scss'
 
 export default function V2({ article, important = false, inlineStyle }) {
@@ -21,10 +22,12 @@ export default function V2({ article, important = false, inlineStyle }) {
             </div>
           )}
           <div className={s.overlay}>
-            {article.volanta && (
-              <span className={s.volantaWrap}><span className={s.volanta}>{article.volanta}.</span></span>
-            )}{' '}
-            <span className={s.headlineWrap}><span className={s.headline}>{article.titulo}</span></span>
+            <span className={s.headline}>
+              {article.volanta && (
+                <span className={s.volanta}>{volantaWithStop(article.volanta)} </span>
+              )}
+              {article.titulo}
+            </span>
           </div>
         </div>
 

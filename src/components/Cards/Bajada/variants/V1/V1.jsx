@@ -1,5 +1,6 @@
 import shared from '../../Bajada.module.scss'
 import { stripHtml } from '../../../../../utils/stripHtml'
+import { volantaWithStop } from '../../../../../utils/volanta.js'
 import s from './V1.module.scss'
 
 export default function V1({ isAmp, inlineStyle, volanta, title, copete, authorId, vDesktop }) {
@@ -11,7 +12,7 @@ export default function V1({ isAmp, inlineStyle, volanta, title, copete, authorI
   return (
     <div className={className} style={inlineStyle}>
       <h2 className={isAmp ? 'bajada__headline' : shared.headline}>
-        <span className={isAmp ? 'bajada__volanta' : shared.volanta}>{volanta}. </span>
+        <span className={isAmp ? 'bajada__volanta' : shared.volanta}>{volantaWithStop(volanta)} </span>
         {title}
       </h2>
       {copete && <p className={isAmp ? 'bajada__copete' : shared.copete}>{stripHtml(copete)}</p>}

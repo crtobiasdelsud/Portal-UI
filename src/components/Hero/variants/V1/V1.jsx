@@ -1,5 +1,6 @@
 import { useAdapters } from '../../../../adapters/AdaptersContext.jsx'
 import AspectImage from '../../../UI/AspectImage/AspectImage.jsx'
+import { volantaWithStop } from '../../../../utils/volanta.js'
 import styles from '../../Hero.module.scss'
 
 export default function V1({ article, important = false, inlineStyle }) {
@@ -19,7 +20,7 @@ export default function V1({ article, important = false, inlineStyle }) {
         )}
         <div className={styles.body}>
           <p className={styles.headline}>
-            {article.volanta && <span className={styles.category}>{article.volanta}. </span>}
+            {article.volanta && <span className={styles.category}>{volantaWithStop(article.volanta)} </span>}
             {article.titulo}
           </p>
           {article.copete && (

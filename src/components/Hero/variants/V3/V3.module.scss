@@ -78,20 +78,22 @@
   font-family: var(--font-family);
 }
 
+// Volanta inline dentro del h2: misma línea que el título, color primario
+// uppercase. El tamaño chico la hace funcionar como "etiqueta de sección".
 .volanta {
-  margin: 0 0 6px;
   color: var(--primary-color, #4bac48);
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  white-space: nowrap;
 
   @include respond(tablet) {
-    font-size: 26px;
+    font-size: 18px;
   }
 
   @include respond(desktop) {
-    font-size: 28px;
+    font-size: 20px;
   }
 }
 
@@ -148,8 +150,12 @@
     @include respond(tablet) {
       aspect-ratio: 16 / 7;
     }
+    // Desktop: V1 cap la imagen importante a 500px (sin esto el hero ocupa
+    // ~774px y rompe el ratio respecto a V1). Replicamos acá para que V3 y
+    // V1 tengan la misma altura en portada de escritorio.
     @include respond(desktop) {
       aspect-ratio: unset;
+      max-height: 500px;
     }
   }
 

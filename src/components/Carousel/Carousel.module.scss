@@ -1,5 +1,5 @@
-// Carrusel de imágenes — navegación manual. Las flechas y los puntos se
-// posicionan en absoluto sobre el viewport.
+// Carrusel de imágenes — navegación nativa con scroll-snap. Las flechas y
+// los puntos disparan scrollBy sobre el mismo track. Swipe nativo en iOS.
 .carousel {
   position: relative;
   width: 100%;
@@ -16,6 +16,34 @@
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+}
+
+// Track horizontal scrollable con snap obligatorio: el navegador maneja el
+// swipe en mobile sin necesidad de listeners de touch.
+.track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  scroll-snap-align: start;
+  // Fuerza un slide por gesto incluso en swipes rápidos — mantiene la lógica
+  // de clones simple (sólo necesitamos 1 clon por lado).
+  scroll-snap-stop: always;
 }
 
 // Epígrafe — franja negra de altura fija (38px) sobre el borde inferior.

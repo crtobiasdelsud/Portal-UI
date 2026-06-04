@@ -1,5 +1,6 @@
 import { useAdapters } from '../../../../adapters/AdaptersContext.jsx'
 import AspectImage from '../../../UI/AspectImage/AspectImage.jsx'
+import { volantaWithStop } from '../../../../utils/volanta.js'
 import styles from './LoQueSeLee.module.scss'
 
 // View pura: recibe el artículo ya resuelto.
@@ -36,7 +37,7 @@ export default function LoQueSeLee({ article }) {
 
           <div className={styles.body}>
             <Link href={href} className={styles.textLink}>
-              {volanta && <span className={styles.volanta}>{volanta}. </span>}
+              {volanta && <span className={styles.volanta}>{volantaWithStop(volanta)} </span>}
               {titulo  && <span className={styles.titulo}>{titulo}</span>}
             </Link>
             {autor?.nombre && (

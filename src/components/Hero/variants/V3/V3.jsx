@@ -1,5 +1,6 @@
 import { useAdapters } from '../../../../adapters/AdaptersContext.jsx'
 import AspectImage from '../../../UI/AspectImage/AspectImage.jsx'
+import { volantaWithStop } from '../../../../utils/volanta.js'
 import s from './V3.module.scss'
 
 export default function V3({ article, important = false, inlineStyle }) {
@@ -22,8 +23,12 @@ export default function V3({ article, important = false, inlineStyle }) {
           )}
           <div className={s.gradient} aria-hidden="true" />
           <div className={s.overlay}>
-            {article.volanta && <p className={s.volanta}>{article.volanta}</p>}
-            <h2 className={s.headline}>{article.titulo}</h2>
+            <h2 className={s.headline}>
+              {article.volanta && (
+                <span className={s.volanta}>{volantaWithStop(article.volanta)} </span>
+              )}
+              {article.titulo}
+            </h2>
           </div>
         </div>
 

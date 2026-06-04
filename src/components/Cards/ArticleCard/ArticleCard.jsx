@@ -6,6 +6,7 @@ import { useTheme } from "../../../context/SiteConfigContext.jsx"
 import { useAdapters } from "../../../adapters/AdaptersContext.jsx"
 import AspectImage from "../../UI/AspectImage/AspectImage.jsx"
 import Tooltip from "../../UI/ToolTip/ToolTip.jsx"
+import { volantaWithStop } from "../../../utils/volanta.js"
 
 function buildTooltip(article) {
   const author = article.autor?.nombre
@@ -73,10 +74,12 @@ export default function ArticleCard({
             }`}
           >
             <p className={styles.headline}>
-              <span className={styles.category}>
-                {article.volanta}.
-              </span>
-              {' '}
+              {article.volanta && (
+                <span className={styles.category}>
+                  {volantaWithStop(article.volanta)}
+                </span>
+              )}
+              {article.volanta && ' '}
               {article.titulo}
             </p>
 

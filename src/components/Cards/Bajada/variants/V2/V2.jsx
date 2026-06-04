@@ -1,4 +1,5 @@
 import shared from '../../Bajada.module.scss'
+import { volantaWithStop } from '../../../../../utils/volanta.js'
 import s from './V2.module.scss'
 
 export default function V2({ isAmp, inlineStyle, volanta, title, authorId, vDesktop }) {
@@ -10,7 +11,7 @@ export default function V2({ isAmp, inlineStyle, volanta, title, authorId, vDesk
   return (
     <div className={className} style={inlineStyle}>
       <h2 className={isAmp ? 'bajada__headline' : shared.headline}>
-        <span className={isAmp ? 'bajada__volanta' : shared.volanta}>{volanta}. </span>
+        <span className={isAmp ? 'bajada__volanta' : shared.volanta}>{volantaWithStop(volanta)} </span>
         {title}
       </h2>
       {authorId && <span className={isAmp ? 'bajada__autor' : shared.autor}>Por {authorId}</span>}
