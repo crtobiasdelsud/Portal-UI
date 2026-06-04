@@ -1,5 +1,6 @@
 import { useAdapters } from '../../../../adapters/AdaptersContext.jsx'
 import { useAuthorDisplay } from '../../../../utils/authorDisplay.js'
+import { sanitizeInlineHtml } from '../../../../utils/sanitizeHtml.js'
 import AspectImage from '../../../UI/AspectImage/AspectImage.jsx'
 import styles from '../../Hero.module.scss'
 
@@ -30,7 +31,7 @@ export default function V1({ article, important = false, inlineStyle }) {
           {article.copete && (
             <div
               className={styles.copete}
-              dangerouslySetInnerHTML={{ __html: article.copete }}
+              dangerouslySetInnerHTML={{ __html: sanitizeInlineHtml(article.copete) }}
             />
           )}
           {displayName && (
