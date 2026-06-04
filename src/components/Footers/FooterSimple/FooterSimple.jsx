@@ -75,8 +75,8 @@ export default function FooterSimple({ isAmp = false }) {
         {categories.map(cat => (
           <li key={cat.id}>
             {isAmp
-              ? <a href={cat.slug} className={styles.navLink}>{cat.label}</a>
-              : <Link href={cat.slug} className={styles.navLink}>{cat.label}</Link>
+              ? <a href={cat.slug ? (cat.slug.startsWith('/') ? cat.slug : `/${cat.slug}`) : '#'} className={styles.navLink}>{cat.label}</a>
+              : <Link href={cat.slug ? (cat.slug.startsWith('/') ? cat.slug : `/${cat.slug}`) : '#'} className={styles.navLink}>{cat.label}</Link>
             }
           </li>
         ))}

@@ -4,11 +4,12 @@ import styles from "./ArticleCard.module.scss"
 import { IMAGE_SIZES } from "../../../constants/imageSizes.js"
 import { useTheme } from "../../../context/SiteConfigContext.jsx"
 import { useAdapters } from "../../../adapters/AdaptersContext.jsx"
+import { useAuthorDisplay } from "../../../utils/authorDisplay.js"
 import AspectImage from "../../UI/AspectImage/AspectImage.jsx"
 import Tooltip from "../../UI/ToolTip/ToolTip.jsx"
 
-function buildTooltip(article) {
-  const author = article.autor?.nombre
+function buildTooltip(article, authorName) {
+  const author = authorName
   const category = article.volanta
 
   return [
@@ -29,6 +30,9 @@ export default function ArticleCard({
 }) {
   const theme = useTheme()
   const { Image } = useAdapters()
+  // null-safe: el guard `if (!article)` está más abajo, pero el hook debe correr
+  // antes del early-return (reglas de hooks).
+  const { displayName, avatarSrc } = useAuthorDisplay(article?.autor, article?.publicarComoOrg)
 
   const primaryColor = theme.primary
   const textColor = theme.textColor
@@ -48,14 +52,13 @@ export default function ArticleCard({
   }
 
   return (
-    <Tooltip text={buildTooltip(article)}>
+    <Tooltip text={buildTooltip(article, displayName)}>
       <article
         style={inlineStyle}
         className={styles.container}
       >
         <a
-          rel="canonical"
-          href={article.slug}
+          href={article.slug ? `/${article.slug}` : '#'}
           className={isSmall ? styles.linkSmall : styles.link}
         >
           {article.imagen?.url && (
@@ -80,23 +83,23 @@ export default function ArticleCard({
               {article.titulo}
             </p>
 
-            {article.autor?.nombre && (
+            {displayName && (
               <span
                 className={`${styles.autor} ${
                   compact ? styles.autorCompact : ''
                 }`}
               >
-                Por {article.autor.nombre}
+                Por {displayName}
               </span>
             )}
           </div>
         </a>
 
-        {showAvatar && article.autor?.avatar && (
+        {showAvatar && avatarSrc && (
           <div className={styles.authorAvatarWrap}>
             <Image
-              src={article.autor.avatar}
-              alt={article.autor.nombre ?? ''}
+              src={avatarSrc}
+              alt={displayName ?? ''}
               width={100}
               height={100}
               className={styles.authorAvatar}

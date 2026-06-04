@@ -11,7 +11,7 @@ export default function Mobile({ titulo, verMasUrl, articles, tipo, isAmp }) {
       {titulo && (
         <div className="cabezal__header">
           <h2 className="cabezal__titulo">{titulo}</h2>
-          {verMasUrl && <a href={verMasUrl} className="cabezal__ver-mas">VER MÁS</a>}
+          {verMasUrl && <a href={verMasUrl} className="cabezal__ver-mas" aria-label={`Ver más de ${titulo}`}>VER MÁS</a>}
         </div>
       )}
       {articles.length > 0 && (
@@ -31,7 +31,7 @@ export default function Mobile({ titulo, verMasUrl, articles, tipo, isAmp }) {
       {titulo && (
         <div className={styles.header}>
           <h2 className={styles.titulo}>{titulo}</h2>
-          {verMasUrl && <a href={verMasUrl} className={styles.verMas}>VER MÁS</a>}
+          {verMasUrl && <a href={verMasUrl} className={styles.verMas} aria-label={`Ver más de ${titulo}`}>VER MÁS</a>}
         </div>
       )}
       {articles.length > 0 && (

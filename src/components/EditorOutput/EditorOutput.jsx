@@ -225,8 +225,11 @@ function Block({ block, cls, isAmp }) {
 
     case "image": {
       const src      = block.data.url || block.data.file?.url
-      const alt      = block.data.altText || block.data.caption || ""
       const epigrafe = block.data.epigrafe
+      // Imagen de contenido: preferimos un alt descriptivo. Cae al epígrafe antes
+      // que a "" para no dejar imágenes informativas sin texto alternativo (a11y/SEO).
+      // Sólo queda "" si no hay realmente ningún texto (imagen decorativa).
+      const alt      = block.data.altText || block.data.caption || epigrafe || ""
       // Variantes WebP + dimensiones que ahora persiste el ImageTool del CMS.
       // Imágenes legacy no las traen → degrada a `<img src>` plano (igual que antes).
       const variants = block.data.variants || block.data.file?.variants || null
@@ -471,7 +474,7 @@ function Block({ block, cls, isAmp }) {
       if (!articles?.length) return null
       return (
         <div className={cls.related}>
-          <p className={cls.relatedTitle}>Lee además</p>
+          <h3 className={cls.relatedTitle}>Lee además</h3>
           {articles.map((a) => (
             <a key={a.id} href={`/${a.slug || a.id}`} className={cls.relatedItem}>
               {a.image && (isAmp

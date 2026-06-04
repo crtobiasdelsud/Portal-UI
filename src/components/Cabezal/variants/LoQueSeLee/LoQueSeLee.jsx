@@ -1,4 +1,5 @@
 import { useAdapters } from '../../../../adapters/AdaptersContext.jsx'
+import { useAuthorDisplay } from '../../../../utils/authorDisplay.js'
 import AspectImage from '../../../UI/AspectImage/AspectImage.jsx'
 import styles from './LoQueSeLee.module.scss'
 
@@ -7,10 +8,13 @@ import styles from './LoQueSeLee.module.scss'
 // /api/portal/articles/trending?categoria=X y filtrar por excludeId.
 export default function LoQueSeLee({ article }) {
   const { Link } = useAdapters()
+  // El hook va antes del early-return para no violar las reglas de hooks; null-safe
+  // porque `article` puede ser null (ver guard debajo).
+  const { displayName } = useAuthorDisplay(article?.autor, article?.publicarComoOrg)
 
   if (!article) return null
 
-  const { titulo, volanta, imagen, slug, autor, focalPoint } = article
+  const { titulo, volanta, imagen, slug, focalPoint } = article
   const href = slug ? `/${slug}` : '#'
 
   return (
@@ -39,8 +43,8 @@ export default function LoQueSeLee({ article }) {
               {volanta && <span className={styles.volanta}>{volanta}. </span>}
               {titulo  && <span className={styles.titulo}>{titulo}</span>}
             </Link>
-            {autor?.nombre && (
-              <span className={styles.autor}>Por {autor.nombre}</span>
+            {displayName && (
+              <span className={styles.autor}>Por {displayName}</span>
             )}
           </div>
         </article>

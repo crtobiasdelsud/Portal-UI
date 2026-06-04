@@ -10,7 +10,7 @@ export default function V1({ articles, inlineStyle }) {
       <ul className={shared.list}>
         {articles.map((article) => (
           <li key={article.id} className={shared.containerItem}>
-            <Link href={article.slug} className={s.item}>
+            <Link href={article.slug ? `/${article.slug}` : '#'} className={s.item}>
               <span className={s.feedUi} aria-hidden="true">
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="4" cy="4" r="4" fill="currentColor" />

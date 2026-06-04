@@ -175,8 +175,11 @@ function Block({ block, cls, isAmp }) {
 
     case "image": {
       const src      = block.data.url || block.data.file?.url
-      const alt      = block.data.altText || block.data.caption || ""
       const epigrafe = block.data.epigrafe
+      // Imagen de contenido: preferimos un alt descriptivo. Cae al epígrafe antes
+      // que a "" para no dejar imágenes informativas sin texto alternativo (a11y/SEO).
+      // Sólo queda "" si no hay realmente ningún texto (imagen decorativa).
+      const alt      = block.data.altText || block.data.caption || epigrafe || ""
       return (
         <figure className={cls.image}>
           <div className={cls.imageWrap}>
@@ -405,7 +408,7 @@ function Block({ block, cls, isAmp }) {
       if (!articles?.length) return null
       return (
         <div className={cls.related}>
-          <p className={cls.relatedTitle}>Lee además</p>
+          <h3 className={cls.relatedTitle}>Lee además</h3>
           {articles.map((a) => (
             <a key={a.id} href={`/${a.slug || a.id}`} className={cls.relatedItem}>
               {a.image && <img src={a.image} alt={a.title} className={cls.relatedImg} />}

@@ -1,13 +1,15 @@
 import styles from '../../CardCabezal.module.scss'
 import { useAdapters } from '../../../../../adapters/AdaptersContext.jsx'
+import { useAuthorDisplay } from '../../../../../utils/authorDisplay.js'
 import AspectImage from '../../../../UI/AspectImage/AspectImage.jsx'
 import Tooltip from '../../../../UI/ToolTip/ToolTip.jsx'
 
 export default function FeaturedHorizontal({ article }) {
 
   const { Link } = useAdapters()
-  const { titulo, volanta, copete, imagen, slug, autor, focalPoint } = article
+  const { titulo, volanta, copete, imagen, slug, autor, publicarComoOrg, focalPoint } = article
   const href = slug ? `/${slug}` : '#'
+  const { displayName } = useAuthorDisplay(autor, publicarComoOrg)
 
   return (
 <Tooltip text={titulo}>
@@ -28,7 +30,7 @@ export default function FeaturedHorizontal({ article }) {
           {titulo && <Link href={href} className={styles.titulo}>{titulo}</Link>}
         </div>
         {copete && <div className={styles.copete} dangerouslySetInnerHTML={{ __html: copete }} />}
-        {autor?.nombre && <span className={styles.autor}>Por {autor.nombre}</span>}
+        {displayName && <span className={styles.autor}>Por {displayName}</span>}
       </div>
     </article>
     </Tooltip>

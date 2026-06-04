@@ -1,13 +1,15 @@
 import styles from '../../CardCabezal.module.scss'
 import { useAdapters } from '../../../../../adapters/AdaptersContext.jsx'
+import { useAuthorDisplay } from '../../../../../utils/authorDisplay.js'
 import AspectImage from '../../../../UI/AspectImage/AspectImage.jsx'
 import Tooltip from '../../../../UI/ToolTip/ToolTip.jsx'
 
 export default function Featured({ article, large }) {
 
   const { Link } = useAdapters()
-  const { titulo, volanta, copete, imagen, slug, autor, focalPoint } = article
+  const { titulo, volanta, copete, imagen, slug, autor, publicarComoOrg, focalPoint } = article
   const href = slug ? `/${slug}` : '#'
+  const { displayName } = useAuthorDisplay(autor, publicarComoOrg)
 
   return (
  <Tooltip text={titulo}>
@@ -27,8 +29,8 @@ export default function Featured({ article, large }) {
         <div className={styles.header}>
           {volanta && <span className={styles.volanta}>{volanta}.</span>}
           {titulo && <Link href={href} className={styles.titulo}>{titulo}</Link>}
-        </div> 
-        {autor?.nombre && <span className={styles.autor}>Por {autor.nombre}</span>}
+        </div>
+        {displayName && <span className={styles.autor}>Por {displayName}</span>}
       </div>
     </article>
     </Tooltip>

@@ -74,6 +74,7 @@
 .headlineWrap {
   display: block;
   max-width: 100%;
+  margin: 0; // el headline ahora es <h2>: anula el margin por defecto del UA para no romper el overlay
 }
 
 // Cajas con fondo blanco que se clonan en cada línea de texto

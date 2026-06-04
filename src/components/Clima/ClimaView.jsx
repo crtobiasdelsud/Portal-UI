@@ -33,7 +33,7 @@ export default function ClimaView({ weather }) {
             <span className={style.hourTime}>{h.time}</span>
             <img
               src={`/icons/timeIcons/${h.icon}.svg`}
-              alt={h.icon}
+              alt={h.condition ?? ''}
               className={style.hourIcon}
             />
             <span className={style.hourTemp}>{h.temp}°</span>
