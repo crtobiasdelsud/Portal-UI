@@ -73,6 +73,7 @@
   box-decoration-break: clone;
   background: #fff;
   padding: 3px 7px;
+  margin: 0; // h2 default UA margin desplaza el overlay anclado por bottom
   color: var(--text-color, #252523);
   font-size: 20px;
   font-weight: 800;

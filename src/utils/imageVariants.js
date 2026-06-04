@@ -3,6 +3,8 @@
 // El backend expone `imagen.variants.{thumb,medium,large,xl,og}`, cada una con
 // { url, width, height }. Ver ADR-0002 (editor-template-front/docs/adr).
 
+import { sanitizeResourceUrl } from './sanitizeHtml.js'
+
 // Variantes proporcionales utilizables como resolución alternativa en un srcset.
 // `og` queda fuera porque es un cover-crop 1200x630 (otra relación de aspecto).
 const SRCSET_VARIANTS = ['thumb', 'medium', 'large', 'xl']
@@ -20,7 +22,10 @@ export function buildSrcSet(variants) {
   const parts = []
   for (const name of SRCSET_VARIANTS) {
     const v = variants[name]
-    if (v?.url && v?.width) parts.push(`${v.url} ${v.width}w`)
+    const url = sanitizeResourceUrl(v?.url)
+    const widthValue = String(v?.width ?? '').trim()
+    const width = /^\d{1,5}$/.test(widthValue) ? Number.parseInt(widthValue, 10) : null
+    if (url && width && width > 0 && width <= 10000) parts.push(`${url} ${width}w`)
   }
   return parts.length ? parts.join(', ') : null
 }
@@ -34,5 +39,5 @@ export function buildSrcSet(variants) {
  * @returns {string|null}
  */
 export function resolveImageSrc(variants, fallbackUrl, preferred = 'large') {
-  return variants?.[preferred]?.url ?? fallbackUrl ?? null
+  return sanitizeResourceUrl(variants?.[preferred]?.url) ?? sanitizeResourceUrl(fallbackUrl) ?? null
 }

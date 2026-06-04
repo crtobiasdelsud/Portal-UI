@@ -1,5 +1,6 @@
 import shared from '../../ArticleHero.module.scss'
 import s from './V1.module.scss'
+import { sanitizeInlineHtml } from '../../../../utils/sanitizeHtml.js'
 
 export default function V1({ isAmp, inlineStyle, titulo, volanta, copete, ImgEl, ExtrasEl, imgWrapClass, noImgMod }) {
   const VolantaEl = volanta
@@ -9,7 +10,7 @@ export default function V1({ isAmp, inlineStyle, titulo, volanta, copete, ImgEl,
   const CopeteEl = copete
     ? <div
         className={isAmp ? 'article-hero__copete' : `${shared.copete} ${s.copete}`}
-        dangerouslySetInnerHTML={{ __html: copete }}
+        dangerouslySetInnerHTML={{ __html: sanitizeInlineHtml(copete) }}
       />
     : null
 

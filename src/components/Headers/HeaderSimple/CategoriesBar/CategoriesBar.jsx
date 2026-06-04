@@ -86,7 +86,7 @@ export default function CategoriesBar({
           className={`${styles.nav} ${dir === 'next' ? styles.slideNext : styles.slidePrev}`}
         >
           {orderedCats.flatMap((cat, i) => [
-            <Link key={cat.id} href={cat.slug} className={styles.link}>
+            <Link key={cat.id} href={cat.slug ? (cat.slug.startsWith('/') ? cat.slug : `/${cat.slug}`) : '#'} className={styles.link}>
               {cat.label.toUpperCase()}
             </Link>,
             i < orderedCats.length - 1

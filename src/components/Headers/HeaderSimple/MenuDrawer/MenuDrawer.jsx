@@ -160,7 +160,7 @@ export default function MenuDrawer({
                             {cat.subcategories.map(sub => (
                               <li key={sub.id}>
                                 <Link
-                                  href={sub.slug}
+                                  href={sub.slug ? (sub.slug.startsWith('/') ? sub.slug : `/${sub.slug}`) : '#'}
                                   className={styles.subLink}
                                   style={{ color: subTextColor }}
                                   onClick={() => setOpen(false)}
@@ -175,7 +175,7 @@ export default function MenuDrawer({
                     ) : (
                       <Tooltip text={cat.label}>
                         <Link
-                          href={cat.slug}
+                          href={cat.slug ? (cat.slug.startsWith('/') ? cat.slug : `/${cat.slug}`) : '#'}
                           className={styles.navLink}
                           onClick={() => setOpen(false)}
                         >

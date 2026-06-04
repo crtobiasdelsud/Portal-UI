@@ -4,6 +4,7 @@ import styles from './ArticleHeroFull.module.scss'
 import { useSiteConfig } from '../../context/SiteConfigContext.jsx'
 import Carousel from '../Carousel/Carousel.jsx'
 import AspectImage from '../UI/AspectImage/AspectImage.jsx'
+import { sanitizeInlineHtml } from '../../utils/sanitizeHtml.js'
 
 export default function ArticleHeroFull({ titulo, copete, imagen, imagenes, imagenEpigrafe, focalPoint, categoria }) {
   const { config } = useSiteConfig()
@@ -65,7 +66,7 @@ export default function ArticleHeroFull({ titulo, copete, imagen, imagenes, imag
           </div>
         )}
         <h1 className={styles.titulo}>{titulo}</h1>
-        {copete && <div className={styles.copete} dangerouslySetInnerHTML={{ __html: copete }} />}
+        {copete && <div className={styles.copete} dangerouslySetInnerHTML={{ __html: sanitizeInlineHtml(copete) }} />}
       </div>
     </div>
   )

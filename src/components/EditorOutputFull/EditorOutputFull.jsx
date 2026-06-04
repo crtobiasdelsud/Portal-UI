@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import styles from "./EditorOutputFull.module.scss"
 import { useTheme } from '../../context/SiteConfigContext.jsx'
 import { useAdapters } from '../../adapters/AdaptersContext.jsx'
+import { sanitizeEditorialHtml, sanitizeInlineHtml, sanitizeResourceUrl } from '../../utils/sanitizeHtml.js'
 
 /**
  * Iframe de embed con auto-resize por postMessage.
@@ -36,8 +37,10 @@ function resolveEmbedSrc({ service, embed, source }) {
 }
 
 function EmbedIframe({ src, service, style }) {
+  const safeSrc = sanitizeResourceUrl(src)
   const ref = useRef(null)
   const [autoHeight, setAutoHeight] = useState(null)
+  if (!safeSrc) return null
 
   useEffect(() => {
     if (service !== 'instagram') return
@@ -59,7 +62,7 @@ function EmbedIframe({ src, service, style }) {
   }, [service])
 
   const finalStyle = autoHeight != null ? { ...style, height: autoHeight } : style
-  return <iframe ref={ref} src={src} style={finalStyle} allowFullScreen />
+  return <iframe ref={ref} src={safeSrc} style={finalStyle} allowFullScreen />
 }
 
 // Fixed class names for AMP (no CSS Modules hashing)
@@ -129,16 +132,20 @@ function renderListItem(item) {
   return item.content ?? ''
 }
 
+function safeInlineHtml(value) {
+  return { __html: sanitizeInlineHtml(value) }
+}
+
 function Block({ block, cls, isAmp }) {
   const { Image } = useAdapters()
   switch (block.type) {
     case "paragraph":
-      return <p className={cls.paragraph} dangerouslySetInnerHTML={{ __html: block.data.text }} />
+      return <p className={cls.paragraph} dangerouslySetInnerHTML={safeInlineHtml(block.data.text)} />
 
     case "header": {
       const Tag = `h${block.data.level}`
       const clsKey = `h${block.data.level}`
-      return <Tag className={cls[clsKey]} dangerouslySetInnerHTML={{ __html: block.data.text }} />
+      return <Tag className={cls[clsKey]} dangerouslySetInnerHTML={safeInlineHtml(block.data.text)} />
     }
 
     case "list": {
@@ -147,7 +154,7 @@ function Block({ block, cls, isAmp }) {
       return (
         <Tag className={listCls}>
           {block.data.items.map((item, i) => (
-            <li key={i} dangerouslySetInnerHTML={{ __html: renderListItem(item) }} />
+            <li key={i} dangerouslySetInnerHTML={safeInlineHtml(renderListItem(item))} />
           ))}
         </Tag>
       )
@@ -159,7 +166,7 @@ function Block({ block, cls, isAmp }) {
           {block.data.items.map((item, i) => (
             <li key={i}>
               {!isAmp && <input type="checkbox" defaultChecked={item.checked} disabled />}
-              <span dangerouslySetInnerHTML={{ __html: item.text }} />
+              <span dangerouslySetInnerHTML={safeInlineHtml(item.text)} />
             </li>
           ))}
         </ul>
@@ -168,15 +175,19 @@ function Block({ block, cls, isAmp }) {
     case "quote":
       return (
         <blockquote className={cls.quote}>
-          <p dangerouslySetInnerHTML={{ __html: block.data.text }} />
-          {block.data.caption && <cite dangerouslySetInnerHTML={{ __html: block.data.caption }} />}
+          <p dangerouslySetInnerHTML={safeInlineHtml(block.data.text)} />
+          {block.data.caption && <cite dangerouslySetInnerHTML={safeInlineHtml(block.data.caption)} />}
         </blockquote>
       )
 
     case "image": {
-      const src      = block.data.url || block.data.file?.url
-      const alt      = block.data.altText || block.data.caption || ""
+      const src      = sanitizeResourceUrl(block.data.url || block.data.file?.url)
+      if (!src) return null
       const epigrafe = block.data.epigrafe
+      // Imagen de contenido: preferimos un alt descriptivo. Cae al epígrafe antes
+      // que a "" para no dejar imágenes informativas sin texto alternativo (a11y/SEO).
+      // Sólo queda "" si no hay realmente ningún texto (imagen decorativa).
+      const alt      = block.data.altText || block.data.caption || epigrafe || ""
       return (
         <figure className={cls.image}>
           <div className={cls.imageWrap}>
@@ -268,7 +279,7 @@ function Block({ block, cls, isAmp }) {
     }
 
     case "attaches": {
-      const href  = block.data.url || block.data.file?.url
+      const href  = sanitizeResourceUrl(block.data.url || block.data.file?.url)
       const label = block.data.name || block.data.title || block.data.file?.name || "Archivo adjunto"
       if (!href) return null
 
@@ -319,8 +330,8 @@ function Block({ block, cls, isAmp }) {
               <tr key={i}>
                 {row.map((cell, j) =>
                   block.data.withHeadings && i === 0
-                    ? <th key={j} dangerouslySetInnerHTML={{ __html: cell }} />
-                    : <td key={j} dangerouslySetInnerHTML={{ __html: cell }} />
+                    ? <th key={j} dangerouslySetInnerHTML={safeInlineHtml(cell)} />
+                    : <td key={j} dangerouslySetInnerHTML={safeInlineHtml(cell)} />
                 )}
               </tr>
             ))}
@@ -339,7 +350,8 @@ function Block({ block, cls, isAmp }) {
 
     case "raw":
       if (isAmp) return null  // arbitrary HTML not allowed in AMP
-      return <div className={cls.raw} dangerouslySetInnerHTML={{ __html: block.data.html }} />
+      const rawHtml = sanitizeEditorialHtml(block.data.html)
+      return rawHtml ? <div className={cls.raw} dangerouslySetInnerHTML={{ __html: rawHtml }} /> : null
 
     case "pullquote": {
       const { variant, text, color, align } = block.data
@@ -353,7 +365,7 @@ function Block({ block, cls, isAmp }) {
         return (
           <div className={cls.pullquote} style={pqStyle} data-align={align || "center"}>
             <span className={cls.pullquoteOpen}>&ldquo;</span>
-            <p dangerouslySetInnerHTML={{ __html: text }} />
+            <p dangerouslySetInnerHTML={safeInlineHtml(text)} />
             {hasClose && <span className={cls.pullquoteClose}>&rdquo;</span>}
           </div>
         )
@@ -362,7 +374,7 @@ function Block({ block, cls, isAmp }) {
       return (
         <div className={pullCls} style={pqStyle} data-align={align || "center"}>
           <span className={cls.pullquoteOpen}>&ldquo;</span>
-          <p dangerouslySetInnerHTML={{ __html: text }} />
+          <p dangerouslySetInnerHTML={safeInlineHtml(text)} />
           {hasClose && <span className={cls.pullquoteClose}>&rdquo;</span>}
         </div>
       )
@@ -370,11 +382,12 @@ function Block({ block, cls, isAmp }) {
 
     case "authorBlock": {
       const { variant, name, date, time, photo } = block.data
+      const safePhoto = sanitizeResourceUrl(photo)
       const dateTime = [date, time].filter(Boolean).join(" - ")
       if (isAmp) {
         return (
           <div className={cls.authorBlock}>
-            {photo && <img src={photo} alt={name} />}
+            {safePhoto && <img src={safePhoto} alt={name} />}
             <div>
               <div>Por <strong>{name}</strong></div>
               {dateTime && <div>{dateTime}</div>}
@@ -391,7 +404,7 @@ function Block({ block, cls, isAmp }) {
           background: isDark ? "#1a1f36" : "#f5f5f5",
           color: isDark ? "#fff" : "#444",
         }}>
-          {photo && <img src={photo} alt={name} style={{ width: 56, height: 56, objectFit: "cover", borderRadius: 4, flexShrink: 0 }} />}
+          {safePhoto && <img src={safePhoto} alt={name} style={{ width: 56, height: 56, objectFit: "cover", borderRadius: 4, flexShrink: 0 }} />}
           <div>
             <div style={{ fontSize: "0.85rem" }}>Por <strong>{name}</strong></div>
             {dateTime && <div style={{ fontSize: "0.8rem", opacity: 0.75 }}>{dateTime}</div>}
@@ -405,10 +418,10 @@ function Block({ block, cls, isAmp }) {
       if (!articles?.length) return null
       return (
         <div className={cls.related}>
-          <p className={cls.relatedTitle}>Lee además</p>
+          <h3 className={cls.relatedTitle}>Lee además</h3>
           {articles.map((a) => (
             <a key={a.id} href={`/${a.slug || a.id}`} className={cls.relatedItem}>
-              {a.image && <img src={a.image} alt={a.title} className={cls.relatedImg} />}
+              {sanitizeResourceUrl(a.image) && <img src={sanitizeResourceUrl(a.image)} alt={a.title} className={cls.relatedImg} />}
               <div className={cls.relatedInfo}>
                 {a.volanta && <span className={cls.relatedVolanta}>{a.volanta}</span>}
                 <span className={cls.relatedItemTitle}>{a.title}</span>

@@ -64,13 +64,13 @@ export default function HeaderSimpleAmp({ settings = {} }) {
                       <ul className="amp-sidebar__sub-list">
                         {cat.subcategories.map((sub) => (
                           <li key={sub.id}>
-                            <a href={sub.slug} className="amp-sidebar__sub-link">{sub.label}</a>
+                            <a href={sub.slug ? (sub.slug.startsWith('/') ? sub.slug : `/${sub.slug}`) : '#'} className="amp-sidebar__sub-link">{sub.label}</a>
                           </li>
                         ))}
                       </ul>
                     </details>
                   ) : (
-                    <a href={cat.slug} className="amp-sidebar__nav-link">{cat.label}</a>
+                    <a href={cat.slug ? (cat.slug.startsWith('/') ? cat.slug : `/${cat.slug}`) : '#'} className="amp-sidebar__nav-link">{cat.label}</a>
                   )}
                 </li>
               ))}

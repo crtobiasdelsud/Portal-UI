@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import styles from "./EditorOutput.module.scss"
 import { useTheme } from '../../context/SiteConfigContext.jsx'
 import { buildSrcSet, resolveImageSrc } from '../../utils/imageVariants.js'
+import { sanitizeEditorialHtml, sanitizeInlineHtml, sanitizeResourceUrl } from '../../utils/sanitizeHtml.js'
 
 /**
  * Iframe de embed con auto-resize por postMessage.
@@ -55,9 +56,11 @@ function loadTwitterWidgets() {
 }
 
 function EmbedIframe({ src, service, style }) {
+  const safeSrc = sanitizeResourceUrl(src)
   const ref = useRef(null)
   const [autoHeight, setAutoHeight] = useState(null)
   const [twitterDone, setTwitterDone] = useState(false)
+  if (!safeSrc) return null
 
   // Twitter: el iframe directo a platform.twitter.com NO reporta su altura, así
   // que con alto fijo los tweets cortos dejan hueco y los largos hacen scroll
@@ -110,7 +113,7 @@ function EmbedIframe({ src, service, style }) {
   }
 
   const finalStyle = autoHeight != null ? { ...style, height: autoHeight } : style
-  return <iframe ref={ref} src={src} style={finalStyle} allowFullScreen />
+  return <iframe ref={ref} src={safeSrc} style={finalStyle} allowFullScreen />
 }
 
 // Fixed class names for AMP (no CSS Modules hashing)
@@ -180,15 +183,19 @@ function renderListItem(item) {
   return item.content ?? ''
 }
 
+function safeInlineHtml(value) {
+  return { __html: sanitizeInlineHtml(value) }
+}
+
 function Block({ block, cls, isAmp }) {
   switch (block.type) {
     case "paragraph":
-      return <p className={cls.paragraph} dangerouslySetInnerHTML={{ __html: block.data.text }} suppressHydrationWarning />
+      return <p className={cls.paragraph} dangerouslySetInnerHTML={safeInlineHtml(block.data.text)} suppressHydrationWarning />
 
     case "header": {
       const Tag = `h${block.data.level}`
       const clsKey = `h${block.data.level}`
-      return <Tag className={cls[clsKey]} dangerouslySetInnerHTML={{ __html: block.data.text }} suppressHydrationWarning />
+      return <Tag className={cls[clsKey]} dangerouslySetInnerHTML={safeInlineHtml(block.data.text)} suppressHydrationWarning />
     }
 
     case "list": {
@@ -197,7 +204,7 @@ function Block({ block, cls, isAmp }) {
       return (
         <Tag className={listCls}>
           {block.data.items.map((item, i) => (
-            <li key={i} dangerouslySetInnerHTML={{ __html: renderListItem(item) }} suppressHydrationWarning />
+            <li key={i} dangerouslySetInnerHTML={safeInlineHtml(renderListItem(item))} suppressHydrationWarning />
           ))}
         </Tag>
       )
@@ -209,7 +216,7 @@ function Block({ block, cls, isAmp }) {
           {block.data.items.map((item, i) => (
             <li key={i}>
               {!isAmp && <input type="checkbox" defaultChecked={item.checked} disabled />}
-              <span dangerouslySetInnerHTML={{ __html: item.text }} suppressHydrationWarning />
+              <span dangerouslySetInnerHTML={safeInlineHtml(item.text)} suppressHydrationWarning />
             </li>
           ))}
         </ul>
@@ -218,22 +225,26 @@ function Block({ block, cls, isAmp }) {
     case "quote":
       return (
         <blockquote className={cls.quote} suppressHydrationWarning>
-          <p dangerouslySetInnerHTML={{ __html: block.data.text }} suppressHydrationWarning />
-          {block.data.caption && <cite dangerouslySetInnerHTML={{ __html: block.data.caption }} suppressHydrationWarning />}
+          <p dangerouslySetInnerHTML={safeInlineHtml(block.data.text)} suppressHydrationWarning />
+          {block.data.caption && <cite dangerouslySetInnerHTML={safeInlineHtml(block.data.caption)} suppressHydrationWarning />}
         </blockquote>
       )
 
     case "image": {
-      const src      = block.data.url || block.data.file?.url
-      const alt      = block.data.altText || block.data.caption || ""
+      const src      = sanitizeResourceUrl(block.data.url || block.data.file?.url)
+      if (!src) return null
       const epigrafe = block.data.epigrafe
+      // Imagen de contenido: preferimos un alt descriptivo. Cae al epígrafe antes
+      // que a "" para no dejar imágenes informativas sin texto alternativo (a11y/SEO).
+      // Sólo queda "" si no hay realmente ningún texto (imagen decorativa).
+      const alt      = block.data.altText || block.data.caption || epigrafe || ""
       // Variantes WebP + dimensiones que ahora persiste el ImageTool del CMS.
       // Imágenes legacy no las traen → degrada a `<img src>` plano (igual que antes).
       const variants = block.data.variants || block.data.file?.variants || null
       const w        = block.data.width  || block.data.file?.width  || null
       const h        = block.data.height || block.data.file?.height || null
       const srcSet   = buildSrcSet(variants)
-      const imgSrc   = srcSet ? resolveImageSrc(variants, src, 'large') : src
+      const imgSrc   = sanitizeResourceUrl(srcSet ? resolveImageSrc(variants, src, 'large') : src) || src
       return (
         <figure className={cls.image}>
           <div className={cls.imageWrap}>
@@ -334,7 +345,7 @@ function Block({ block, cls, isAmp }) {
     }
 
     case "attaches": {
-      const href  = block.data.url || block.data.file?.url
+      const href  = sanitizeResourceUrl(block.data.url || block.data.file?.url)
       const label = block.data.name || block.data.title || block.data.file?.name || "Archivo adjunto"
       if (!href) return null
 
@@ -385,8 +396,8 @@ function Block({ block, cls, isAmp }) {
               <tr key={i}>
                 {row.map((cell, j) =>
                   block.data.withHeadings && i === 0
-                    ? <th key={j} dangerouslySetInnerHTML={{ __html: cell }} suppressHydrationWarning />
-                    : <td key={j} dangerouslySetInnerHTML={{ __html: cell }} suppressHydrationWarning />
+                    ? <th key={j} dangerouslySetInnerHTML={safeInlineHtml(cell)} suppressHydrationWarning />
+                    : <td key={j} dangerouslySetInnerHTML={safeInlineHtml(cell)} suppressHydrationWarning />
                 )}
               </tr>
             ))}
@@ -405,7 +416,8 @@ function Block({ block, cls, isAmp }) {
 
     case "raw":
       if (isAmp) return null  // arbitrary HTML not allowed in AMP
-      return <div className={cls.raw} dangerouslySetInnerHTML={{ __html: block.data.html }} suppressHydrationWarning />
+      const rawHtml = sanitizeEditorialHtml(block.data.html)
+      return rawHtml ? <div className={cls.raw} dangerouslySetInnerHTML={{ __html: rawHtml }} suppressHydrationWarning /> : null
 
     case "pullquote": {
       const { variant, text, color, align } = block.data
@@ -419,7 +431,7 @@ function Block({ block, cls, isAmp }) {
         return (
           <div className={cls.pullquote} style={pqStyle} data-align={align || "center"}>
             <span className={cls.pullquoteOpen}>&ldquo;</span>
-            <p dangerouslySetInnerHTML={{ __html: text }} suppressHydrationWarning />
+            <p dangerouslySetInnerHTML={safeInlineHtml(text)} suppressHydrationWarning />
             {hasClose && <span className={cls.pullquoteClose}>&rdquo;</span>}
           </div>
         )
@@ -428,7 +440,7 @@ function Block({ block, cls, isAmp }) {
       return (
         <div className={pullCls} style={pqStyle} data-align={align || "center"}>
           <span className={cls.pullquoteOpen}>&ldquo;</span>
-          <p dangerouslySetInnerHTML={{ __html: text }} suppressHydrationWarning />
+          <p dangerouslySetInnerHTML={safeInlineHtml(text)} suppressHydrationWarning />
           {hasClose && <span className={cls.pullquoteClose}>&rdquo;</span>}
         </div>
       )
@@ -436,11 +448,12 @@ function Block({ block, cls, isAmp }) {
 
     case "authorBlock": {
       const { variant, name, date, time, photo } = block.data
+      const safePhoto = sanitizeResourceUrl(photo)
       const dateTime = [date, time].filter(Boolean).join(" - ")
       if (isAmp) {
         return (
           <div className={cls.authorBlock}>
-            {photo && <amp-img src={photo} alt={name} width="48" height="48" layout="fixed" />}
+            {safePhoto && <amp-img src={safePhoto} alt={name} width="48" height="48" layout="fixed" />}
             <div>
               <div>Por <strong>{name}</strong></div>
               {dateTime && <div>{dateTime}</div>}
@@ -457,7 +470,7 @@ function Block({ block, cls, isAmp }) {
           background: isDark ? "#1a1f36" : "#f5f5f5",
           color: isDark ? "#fff" : "#444",
         }}>
-          {photo && <img src={photo} alt={name} style={{ width: 56, height: 56, objectFit: "cover", borderRadius: 4, flexShrink: 0 }} />}
+          {safePhoto && <img src={safePhoto} alt={name} style={{ width: 56, height: 56, objectFit: "cover", borderRadius: 4, flexShrink: 0 }} />}
           <div>
             <div style={{ fontSize: "0.85rem" }}>Por <strong>{name}</strong></div>
             {dateTime && <div style={{ fontSize: "0.8rem", opacity: 0.75 }}>{dateTime}</div>}
@@ -471,12 +484,12 @@ function Block({ block, cls, isAmp }) {
       if (!articles?.length) return null
       return (
         <div className={cls.related}>
-          <p className={cls.relatedTitle}>Lee además</p>
+          <h3 className={cls.relatedTitle}>Lee además</h3>
           {articles.map((a) => (
             <a key={a.id} href={`/${a.slug || a.id}`} className={cls.relatedItem}>
-              {a.image && (isAmp
-                ? <amp-img src={a.image} alt={a.title} class={cls.relatedImg} width="80" height="60" layout="fixed" />
-                : <img src={a.image} alt={a.title} className={cls.relatedImg} width={80} height={60} loading="lazy" decoding="async" />
+              {sanitizeResourceUrl(a.image) && (isAmp
+                ? <amp-img src={sanitizeResourceUrl(a.image)} alt={a.title} class={cls.relatedImg} width="80" height="60" layout="fixed" />
+                : <img src={sanitizeResourceUrl(a.image)} alt={a.title} className={cls.relatedImg} width={80} height={60} loading="lazy" decoding="async" />
               )}
               <div className={cls.relatedInfo}>
                 {a.volanta && <span className={cls.relatedVolanta}>{a.volanta}</span>}
