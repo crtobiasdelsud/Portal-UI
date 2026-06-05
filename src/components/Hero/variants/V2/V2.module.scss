@@ -181,9 +181,16 @@
     background: #000; // fondo para el letterbox del object-fit: contain
   }
 
-  // contain en vez de cover: muestra la imagen completa, no recorta la cabeza.
+  // Mobile/tablet: cover (llena la pantalla, la imagen se agranda) con el encuadre
+  // hacia arriba para no cortar la cabeza/cara.
+  // Desktop: contain (muestra la imagen completa) centrado.
   .mediaBox img {
-    object-fit: contain !important;
+    object-position: 42% 15% !important;
+
+    @include respond(desktop) {
+      object-fit: contain !important;
+      object-position: 50% 50% !important;
+    }
   }
 
   // Scrim oscuro arriba: garantiza la legibilidad del header transparente sobre
