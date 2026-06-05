@@ -167,3 +167,56 @@
     }
   }
 }
+
+// ── Hero takeover (full-screen) ──────────────────────────────────────────
+// El hero "bomba" ocupa toda la pantalla, con el header transparente encima.
+// Va DESPUÉS de .important para anular su aspect-ratio 16/9.
+.takeover {
+  height: 100svh;
+
+  .imgWrap {
+    height: 100svh;
+  }
+
+  .mediaBox {
+    height: 100svh !important;
+    aspect-ratio: unset !important;
+    max-height: none !important;
+  }
+
+  // Scrim oscuro arriba: garantiza la legibilidad del header transparente sobre
+  // cualquier foto (se suma al degradado inferior .gradient ya existente).
+  .mediaBox::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 220px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  // Título en la parte de abajo del hero, en un recuadro de ~80% del ancho
+  // (10% de margen a cada lado), con el texto alineado a la izquierda.
+  .overlay {
+    top: auto;
+    bottom: 12%;
+    transform: none;
+    left: 10%;
+    right: 10%;
+    padding: 0;
+  }
+
+  .headline {
+    font-size: 28px;
+
+    @include respond(tablet) {
+      font-size: 44px;
+    }
+    @include respond(desktop) {
+      font-size: 56px;
+    }
+  }
+}

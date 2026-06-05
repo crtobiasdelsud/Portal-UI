@@ -42,6 +42,31 @@
   pointer-events: none;
 }
 
+// ── Modo takeover ───────────────────────────────────────────
+// Desktop: el header grande flota sobre el hero full-screen (fuera de flujo, sin
+// reservar alto). Al scrollear se oculta (.hidden) y aparece el compact sólido.
+.desktopSlotTakeover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+// Mobile: el header fijo no reserva alto (el slot ya va con height:0 inline) para
+// que el hero arranque debajo, a pantalla completa.
+.mobileSlotTakeover {
+  min-height: 0;
+}
+
+// Compact (sólido, fixed): en takeover se oculta mientras estás arriba para que
+// NO se vea por debajo del header transparente. Reaparece al scrollear, cuando el
+// header grande se esconde (.hidden). Sin esto se ven "dos navbar".
+// Selector compuesto para ganarle al `display:block` del media query de
+// .desktopCompactSlot (misma especificidad, pero esto suma una clase más).
+.desktopCompactSlot.compactHiddenTakeover {
+  display: none;
+}
+
 // ── Desktop compacto ────────────────────────────────────────
 .desktopCompactSlot {
   display: none;

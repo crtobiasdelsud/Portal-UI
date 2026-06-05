@@ -1,11 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { cloneElement, useEffect, useRef, useState } from "react"
 import styles from './HeaderSwitch.module.scss'
 import { DrawerProvider } from '../DrawerContext/DrawerContext'
 import LivePlayerHost from '../LivePlayerHost/LivePlayerHost'
 
-export default function HeaderSwitch({ mobile, desktop, desktopCompact, hasLive = false, liveUrl }) {
+export default function HeaderSwitch({ mobile, desktop, desktopCompact, hasLive = false, liveUrl, takeover = false }) {
   const [scrolled, setScrolled] = useState(false)
   // El <header> mobile es `position: fixed` (ver HeaderSimpleMobile.scss).
   // Medimos su altura real con ResizeObserver y la inyectamos como `height`
@@ -45,19 +45,19 @@ export default function HeaderSwitch({ mobile, desktop, desktopCompact, hasLive 
       <DrawerProvider>
         <div
           ref={mobileWrapperRef}
-          className={styles.mobileSlot}
-          style={{ height: mobileHeight }}
+          className={`${styles.mobileSlot} ${takeover ? styles.mobileSlotTakeover : ''}`}
+          style={{ height: takeover ? 0 : mobileHeight }}
         >
-          {mobile}
+          {takeover ? cloneElement(mobile, { scrolled }) : mobile}
         </div>
         {liveUrl && <LivePlayerHost liveUrl={liveUrl} />}
       </DrawerProvider>
 
       <DrawerProvider>
-        <div className={`${styles.desktopSlot} ${scrolled ? styles.hidden : ''}`}>
+        <div className={`${styles.desktopSlot} ${scrolled ? styles.hidden : ''} ${takeover ? styles.desktopSlotTakeover : ''}`}>
           {desktop}
         </div>
-        <div className={styles.desktopCompactSlot}>
+        <div className={`${styles.desktopCompactSlot} ${takeover && !scrolled ? styles.compactHiddenTakeover : ''}`}>
           {desktopCompact}
         </div>
         {liveUrl && <LivePlayerHost liveUrl={liveUrl} />}

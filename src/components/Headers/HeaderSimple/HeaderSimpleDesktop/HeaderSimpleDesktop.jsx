@@ -10,7 +10,7 @@ import { resolveLogoSrc } from "../_headerUtils"
 import { useAdapters } from '../../../../adapters/AdaptersContext.jsx'
 import { useCategories } from '../../../../context/SiteConfigContext.jsx'
 
-export default function HeaderSimpleDesktop({ settings = {}, categories: propCategories }) {
+export default function HeaderSimpleDesktop({ settings = {}, categories: propCategories, takeover = false }) {
   const { Link, Image } = useAdapters()
   const categoriesFromCtx = useCategories()
   const {
@@ -26,15 +26,16 @@ export default function HeaderSimpleDesktop({ settings = {}, categories: propCat
   const categories   = propCategories ?? categoriesFromCtx
 
   const inlineStyle = {
-    backgroundColor,
-    borderBottomColor: primaryColor,
+    // En takeover el fondo es transparente (el header flota sobre el hero).
+    backgroundColor: takeover ? 'transparent' : backgroundColor,
+    borderBottomColor: takeover ? 'transparent' : primaryColor,
     '--primary-color':       primaryColor,
-    '--text-color':          textColor,
+    '--text-color':          takeover ? '#fff' : textColor,
     '--social-hover-filter': primaryColor ? hexToCssFilter(primaryColor) : 'none',
   }
 
   return (
-    <header className={styles.container} style={inlineStyle}>
+    <header className={`${styles.container} ${takeover ? styles.takeover : ''}`} style={inlineStyle}>
       <div className={styles.topRow}>
 
         <div className={styles.brandCol}>
@@ -68,11 +69,12 @@ export default function HeaderSimpleDesktop({ settings = {}, categories: propCat
       </div>
 
       <CategoriesBar
+        takeover={takeover}
         categories={categories}
         primaryColor={primaryColor}
         secondaryColor={secondaryColor}
-        textColor={textColor}
-        backgroundColor={backgroundColor}
+        textColor={takeover ? '#fff' : textColor}
+        backgroundColor={takeover ? 'transparent' : backgroundColor}
         social={social}
         resolvedLogo={resolvedLogo}
         logoUrl={logoUrl}

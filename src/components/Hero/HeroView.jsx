@@ -7,7 +7,7 @@ import V3 from './variants/V3/V3'
 
 const VARIANTS = { '1': V1, '2': V2, '3': V3 }
 
-export default function HeroView({ article, important = false }) {
+export default function HeroView({ article, important = false, takeover = false }) {
   const theme = useTheme()
   const v = String(theme.hero ?? 1)
 
@@ -20,5 +20,5 @@ export default function HeroView({ article, important = false }) {
 
   const Variant = VARIANTS[v] ?? V1
 
-  return <Variant article={article} important={important} inlineStyle={inlineStyle} />
+  return <Variant article={article} important={important} takeover={takeover} inlineStyle={inlineStyle} />
 }

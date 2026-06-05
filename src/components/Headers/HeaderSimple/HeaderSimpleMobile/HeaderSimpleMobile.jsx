@@ -9,7 +9,7 @@ import DateTime from '../../../../components/DateTime/DateTime.jsx'
 import { useAdapters } from '../../../../adapters/AdaptersContext.jsx'
 import { useCategories } from '../../../../context/SiteConfigContext.jsx'
 
-export default function HeaderSimpleMobile({ settings = {}, categories: propCategories }) {
+export default function HeaderSimpleMobile({ settings = {}, categories: propCategories, takeover = false, scrolled = false }) {
   const { Link, Image } = useAdapters()
   const categoriesFromCtx = useCategories()
   const {
@@ -24,16 +24,23 @@ export default function HeaderSimpleMobile({ settings = {}, categories: propCate
   const resolvedLogo = resolveLogoSrc(logoUrl, logo)
   const categories   = propCategories ?? categoriesFromCtx
 
+  // Takeover: transparente sobre el hero mientras no se scrollea; al scrollear
+  // (scrolled) vuelve sólido con el fondo normal.
+  const transparent = takeover && !scrolled
+
   const inlineStyle = {
-    backgroundColor,
-    borderBottomColor: primaryColor,
+    backgroundColor: transparent ? 'transparent' : backgroundColor,
+    borderBottomColor: transparent ? 'transparent' : primaryColor,
     '--primary-color':       primaryColor,
-    '--text-color':          textColor,
+    '--text-color':          transparent ? '#fff' : textColor,
     '--social-hover-filter': primaryColor ? hexToCssFilter(primaryColor) : 'none',
   }
 
   return (
-    <header className={styles.containerInFixed} style={inlineStyle}>
+    <header
+      className={`${styles.containerInFixed} ${takeover ? styles.takeover : ''} ${transparent ? styles.transparent : ''}`}
+      style={inlineStyle}
+    >
       <div className={styles.dateTimeBar}>
         <DateTime part="date" />
         <DateTime part="time" />

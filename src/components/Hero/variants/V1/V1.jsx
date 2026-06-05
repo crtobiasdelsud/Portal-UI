@@ -5,12 +5,12 @@ import AspectImage from '../../../UI/AspectImage/AspectImage.jsx'
 import { volantaWithStop } from '../../../../utils/volanta.js'
 import styles from '../../Hero.module.scss'
 
-export default function V1({ article, important = false, inlineStyle }) {
+export default function V1({ article, important = false, takeover = false, inlineStyle }) {
   const { Link } = useAdapters()
   const { displayName } = useAuthorDisplay(article.autor, article.publicarComoOrg)
 
   return (
-    <article style={inlineStyle} className={`${styles.container} ${important ? styles.important : ''}`}>
+    <article style={inlineStyle} className={`${styles.container} ${important ? styles.important : ''} ${takeover ? styles.takeover : ''}`}>
       <Link href={article.slug ? `/${article.slug}` : '#'} className={styles.link}>
         {article.imagen?.url && (
           <AspectImage

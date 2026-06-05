@@ -21,6 +21,7 @@ export default function CategoriesBar({
   searchEnabled,
   embedUrl,
   embedIcon,
+  takeover = false,
 }) {
 
   const { Link } = useAdapters()
@@ -51,7 +52,7 @@ export default function CategoriesBar({
   }
 
   return (
-    <div className={styles.bar} style={barStyle}>
+    <div className={`${styles.bar} ${takeover ? styles.takeover : ''}`} style={barStyle}>
       <MenuDrawer
         categories={categories}
         social={social}

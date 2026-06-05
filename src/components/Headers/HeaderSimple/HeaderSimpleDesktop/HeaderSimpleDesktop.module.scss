@@ -16,6 +16,31 @@
   }
 }
 
+// ── Modo takeover: header transparente sobre el hero full-screen ────────────
+.takeover {
+  position: static; // el slot (.desktopSlotTakeover) maneja el posicionamiento
+  box-shadow: none;
+  border-bottom: none;
+
+  .topRow {
+    box-shadow: none;
+  }
+
+  // Logo monocromo → blanco. (Si el logo es a color, puede necesitar una versión
+  // clara aparte; esto cubre el caso típico de logo oscuro.)
+  .logoImg {
+    filter: brightness(0) invert(1);
+  }
+
+  .logo {
+    color: #fff;
+  }
+
+  .social a {
+    color: #fff;
+  }
+}
+
 .topRow {
   padding: 15px;
   height: 64px;
