@@ -69,6 +69,11 @@
 // inline (color + peso) DENTRO de la misma caja, así no se ve corte entre
 // las dos partes del texto.
 .headline {
+  // INLINE a propósito: box-decoration-break: clone solo parte el fondo por
+  // renglón en cajas inline. En un h2 block-level el background es UN rectángulo
+  // macizo que cubre todas las líneas (el "bloque horrible"). Inline + clone hace
+  // que cada renglón sea su propia caja blanca ajustada al texto (efecto resaltador).
+  display: inline;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   background: #fff;
@@ -77,7 +82,11 @@
   color: var(--text-color, #252523);
   font-size: 20px;
   font-weight: 800;
-  line-height: 1.55;
+  // Cada renglón es una caja blanca clonada (box-decoration-break). El hueco
+  // entre renglones es line-height − altura_de_fuente − 2·padding(3px). Con 1.55
+  // ese hueco caía a ~2px y las cajas se tocaban según el título; 1.9 garantiza
+  // ~9px parejo. Tablet/desktop ya tienen aire suficiente con 1.7.
+  line-height: 1.9;
 
   @include respond(tablet) {
     font-size: 30px;
@@ -127,15 +136,21 @@
 // ── Hero importante ──────────────────────────────────────────────────────
 .important {
   .mediaBox {
+    // aspect 16/9 (NO 16/7): con object-fit cover, una caja más ancha que la
+    // imagen (16:9) recorta arriba/abajo y corta la cabeza del sujeto. 16/9 iguala
+    // el ratio típico de la foto → no recorta en vertical y la imagen "ocupa más".
     @include respond(tablet) {
-      aspect-ratio: 16 / 7;
+      aspect-ratio: 16 / 9;
     }
-    // Desktop: V1 cap la imagen importante a 500px (sin esto el hero ocupa
-    // ~774px y rompe el ratio respecto a V1). Replicamos acá para que V2 y
-    // V1 tengan la misma altura en portada de escritorio.
+    // Desktop: el hero importante va a todo el ancho (banner), sin un hermano
+    // flex que defina el alto de la fila → el `height: 100%` heredado del base
+    // colapsa a 0 y la imagen (AspectImage en modo `fill`, absolute) desaparece.
+    // Le damos alto propio derivado del ancho con aspect-ratio 16/9; el tope alto
+    // (760px) sólo recorta en pantallas muy anchas para no desbordar la pantalla.
     @include respond(desktop) {
-      aspect-ratio: unset;
-      max-height: 500px;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      max-height: 760px;
     }
   }
 

@@ -82,19 +82,12 @@
 // uppercase. El tamaño chico la hace funcionar como "etiqueta de sección".
 .volanta {
   color: var(--primary-color, #4bac48);
-  font-size: 14px;
+  // Mismo tamaño que el título (como en V2): antes tenía font-size propio chico
+  // (14/18/20) y quedaba diminuta al lado del headline de 32px. Hereda del h2.
+  font-size: inherit;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  white-space: nowrap;
-
-  @include respond(tablet) {
-    font-size: 18px;
-  }
-
-  @include respond(desktop) {
-    font-size: 20px;
-  }
 }
 
 .headline {
@@ -147,15 +140,21 @@
 // ── Hero importante ──────────────────────────────────────────────────────
 .important {
   .mediaBox {
+    // aspect 16/9 (NO 16/7): con object-fit cover, una caja más ancha que la
+    // imagen (16:9) recorta arriba/abajo y corta la cabeza del sujeto. 16/9 iguala
+    // el ratio típico de la foto → no recorta en vertical y la imagen "ocupa más".
     @include respond(tablet) {
-      aspect-ratio: 16 / 7;
+      aspect-ratio: 16 / 9;
     }
-    // Desktop: V1 cap la imagen importante a 500px (sin esto el hero ocupa
-    // ~774px y rompe el ratio respecto a V1). Replicamos acá para que V3 y
-    // V1 tengan la misma altura en portada de escritorio.
+    // Desktop: el hero importante va a todo el ancho (banner), sin un hermano
+    // flex que defina el alto de la fila → el `height: 100%` heredado del base
+    // colapsa a 0 y la imagen (AspectImage en modo `fill`, absolute) desaparece.
+    // Le damos alto propio derivado del ancho con aspect-ratio 16/9; el tope alto
+    // (760px) sólo recorta en pantallas muy anchas para no desbordar la pantalla.
     @include respond(desktop) {
-      aspect-ratio: unset;
-      max-height: 500px;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      max-height: 760px;
     }
   }
 
