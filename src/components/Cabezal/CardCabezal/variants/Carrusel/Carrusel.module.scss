@@ -38,13 +38,10 @@
   text-decoration: none;
   flex-shrink: 0;
   overflow: hidden;
-}
-
-.img {
-  width: 100%;
+  // Alto fijo + position relative para que AspectImage (modo fill) ocupe la caja
+  // y aplique el focal point por object-position.
   height: 190px;
-  object-fit: cover;
-  display: block;
+  position: relative;
 }
 
 .body {

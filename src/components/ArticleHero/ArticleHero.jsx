@@ -91,16 +91,28 @@ export default function ArticleHero({ titulo, volanta, copete, imagen, imagenes,
 
   if (isAmp) return <MobileVariant {...sharedProps} />
 
+  // Las 3 variantes se rinden a la vez (se togglean por CSS), pero solo UNA
+  // puede emitir <h1> o el DOM tendría 3 <h1> idénticos (malo para SEO). Como
+  // Google indexa mobile-first, el <h1> real va en la variante mobile (la
+  // visible para el crawler); tablet/desktop usan <p> — visualmente idéntico
+  // por las clases compartidas.
+  //
+  // Con `hideImageOnDesktop` la imagen del hero solo se ve en mobile (tablet y
+  // desktop la ocultan por CSS), así que pasarle `ImgEl` a esas variantes deja
+  // 2 <img eager fetchpriority=high> muertos en el DOM. Se les pasa null para
+  // que ni se materialicen.
+  const heroImgFor = (variantVisible) => (hideImageOnDesktop && !variantVisible ? null : ImgEl)
+
   return (
     <>
       <div className={styles.mobileOnly}>
-        <MobileVariant {...sharedProps} />
+        <MobileVariant {...sharedProps} titleTag="h1" ImgEl={heroImgFor(true)} />
       </div>
       <div className={styles.tabletOnly}>
-        <V0Tablet {...sharedProps} />
+        <V0Tablet {...sharedProps} titleTag="p" ImgEl={heroImgFor(false)} />
       </div>
       <div className={styles.desktopUp}>
-        <V0Desktop {...sharedProps} />
+        <V0Desktop {...sharedProps} titleTag="p" ImgEl={heroImgFor(false)} />
       </div>
     </>
   )

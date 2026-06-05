@@ -182,20 +182,11 @@
     height: 100svh !important;
     aspect-ratio: unset !important;
     max-height: none !important;
-    background: #000; // fondo para el letterbox del object-fit: contain
   }
 
-  // Mobile/tablet: cover (llena la pantalla, la imagen se agranda) con el encuadre
-  // hacia arriba para no cortar la cabeza/cara.
-  // Desktop: contain (muestra la imagen completa) centrado.
-  .mediaBox img {
-    object-position: 42% 15% !important;
-
-    @include respond(desktop) {
-      object-fit: contain !important;
-      object-position: 50% 50% !important;
-    }
-  }
+  // cover en todos los tamaños: llena la pantalla sin barras negras. El focal
+  // point REAL del editor (AspectImage lo aplica inline vía object-position)
+  // mantiene el sujeto en cuadro; sin focal, cae a centro.
 
   // Scrim oscuro arriba: garantiza la legibilidad del header transparente sobre
   // cualquier foto (se suma al degradado inferior .gradient ya existente).

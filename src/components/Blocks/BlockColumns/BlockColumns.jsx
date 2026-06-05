@@ -7,7 +7,11 @@ const RANK_TO_AREA = ["hero", "recommended", "feed"]
 export default function BlockColumns({ widgets, registry, settings = {} }) {
   const sorted = [...widgets].sort((a, b) => a.priority - b.priority)
 
-  const hasImportant = sorted.some((w) => w.settings?.important === true)
+  const importantHero = sorted.find((w) => w.settings?.important === true)
+  const hasImportant = !!importantHero
+  // Nota elegida por el editor para el hero fantasma (settings del hero bomba).
+  // Si no hay, queda `{}` → nota automática (random), como antes.
+  const fantasmaArticleId = importantHero?.settings?.fantasmaArticleId
   const layout = settings.layout ?? 'default'
 
   const gridClass = layout === 'categoriaDos'
@@ -39,7 +43,7 @@ export default function BlockColumns({ widgets, registry, settings = {} }) {
         {hasImportant && HeroWidget && (
           <div className={style.item} style={{ gridArea: "fantasma" }}>
             <WidgetErrorBoundary>
-              <HeroWidget settings={{}} />
+              <HeroWidget settings={fantasmaArticleId ? { articleId: fantasmaArticleId } : {}} />
             </WidgetErrorBoundary>
           </div>
         )}
