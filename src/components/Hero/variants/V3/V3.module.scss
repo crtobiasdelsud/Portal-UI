@@ -124,21 +124,28 @@
   }
 }
 
+// Autor DENTRO del overlay, debajo del título, sobre la imagen.
 .autor {
   display: block;
+  margin-top: 8px;
   font-size: 12px;
-  font-weight: 300;
-  color: var(--text-color, #252523);
-  padding: 8px 16px 0;
-
-  @include respond(tablet) {
-    padding-left: 0;
-    padding-right: 0;
-  }
+  font-weight: 400;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 // ── Hero importante ──────────────────────────────────────────────────────
 .important {
+  // El degradado y el título están anclados al fondo de .imgWrap. Si imgWrap no
+  // comparte el alto del mediaBox (la imagen 16/9), el degradado corta antes y
+  // queda una franja clara abajo. En desktop el base le pone `flex: 1`, que lo
+  // desalinea → acá lo forzamos a envolver exactamente al mediaBox.
+  .imgWrap {
+    @include respond(desktop) {
+      flex: none;
+    }
+  }
+
   .mediaBox {
     // aspect 16/9 (NO 16/7): con object-fit cover, una caja más ancha que la
     // imagen (16:9) recorta arriba/abajo y corta la cabeza del sujeto. 16/9 iguala

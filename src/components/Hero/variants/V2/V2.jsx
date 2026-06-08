@@ -32,12 +32,11 @@ export default function V2({ article, important = false, takeover = false, inlin
               )}
               {article.titulo}
             </h2>
+            {displayName && (
+              <span className={s.autor}>Por {displayName}</span>
+            )}
           </div>
         </div>
-
-        {displayName && (
-          <span className={s.autor}>Por {displayName}</span>
-        )}
       </Link>
     </article>
   )

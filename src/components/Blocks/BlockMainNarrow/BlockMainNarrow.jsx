@@ -1,5 +1,6 @@
 import style from "./BlockMainNarrow.module.scss"
 import WidgetErrorBoundary from "../WidgetErrorBoundary"
+import { WidgetThemeScope } from "../../../context/SiteConfigContext.jsx"
 
 export default function BlockMainNarrow({ widgets, registry }) {
   const widget = widgets?.[0]
@@ -11,7 +12,9 @@ export default function BlockMainNarrow({ widgets, registry }) {
   return (
     <section className={style.container}>
       <WidgetErrorBoundary>
-        <Widget settings={widget.settings} />
+        <WidgetThemeScope override={widget.settings?.theme}>
+          <Widget settings={widget.settings} />
+        </WidgetThemeScope>
       </WidgetErrorBoundary>
     </section>
   )

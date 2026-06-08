@@ -26,9 +26,11 @@ export default function HeaderSimpleDesktop({ settings = {}, categories: propCat
   const categories   = propCategories ?? categoriesFromCtx
 
   const inlineStyle = {
-    // En takeover el fondo es transparente (el header flota sobre el hero).
-    backgroundColor: takeover ? 'transparent' : backgroundColor,
-    borderBottomColor: takeover ? 'transparent' : primaryColor,
+    // En takeover el fondo/borde los maneja el `.takeover` del scss (efecto
+    // glass: blur + tinte oscuro). Dejamos estas props en undefined para no
+    // pisar con un inline el background del scss.
+    backgroundColor: takeover ? undefined : backgroundColor,
+    borderBottomColor: takeover ? undefined : primaryColor,
     '--primary-color':       primaryColor,
     '--text-color':          takeover ? '#fff' : textColor,
     '--social-hover-filter': primaryColor ? hexToCssFilter(primaryColor) : 'none',

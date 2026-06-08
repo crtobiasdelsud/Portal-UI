@@ -9,21 +9,23 @@ import { DrawerProvider } from '../DrawerContext/DrawerContext'
 import { useCategories, useSiteConfig } from '../../../../context/SiteConfigContext.jsx'
 import { useOptionalAdapters } from '../../../../adapters/AdaptersContext.jsx'
 
-export default function HeaderSimpleSwitch({ settings = {}, isAmp = false, forceMode }) {
+export default function HeaderSimpleSwitch({ settings = {}, isAmp = false, forceMode, takeover: takeoverProp }) {
   if (isAmp) return <HeaderSimpleAmp settings={settings} />
 
   const categories = useCategories()
 
   // Modo "takeover": en la home, si hay un hero marcado como importante, el header
-  // se vuelve transparente y flota sobre el hero full-screen. Se detecta acá (no
-  // en el flow del CMS, que usa forceMode y un contexto sin slots.main).
+  // se vuelve transparente y flota sobre el hero full-screen. En el flow normal se
+  // auto-detecta acá; el preview del CMS (forceMode) lo fuerza con `takeoverProp`
+  // porque usa un contexto/pathname propios.
   const { slots } = useSiteConfig()
   const pathname  = useOptionalAdapters()?.pathname
-  const takeover  =
+  const takeover  = takeoverProp ?? (
     pathname === '/' &&
     (slots?.main?.grid?.blocks ?? []).some((b) =>
       (b.components ?? []).some((c) => c.type === 'HERO_BLOCK' && c.settings?.important)
     )
+  )
 
   // forceMode lo usa el preview del CMS para mostrar una sola variant a la vez.
   // CategoriesBar/MenuDrawer dependen de DrawerProvider, así que también
@@ -31,14 +33,14 @@ export default function HeaderSimpleSwitch({ settings = {}, isAmp = false, force
   if (forceMode === 'mobile') {
     return (
       <DrawerProvider>
-        <HeaderSimpleMobile settings={settings} categories={categories} />
+        <HeaderSimpleMobile settings={settings} categories={categories} takeover={takeover} />
       </DrawerProvider>
     )
   }
   if (forceMode === 'desktop') {
     return (
       <DrawerProvider>
-        <HeaderSimpleDesktop settings={settings} categories={categories} />
+        <HeaderSimpleDesktop settings={settings} categories={categories} takeover={takeover} />
       </DrawerProvider>
     )
   }

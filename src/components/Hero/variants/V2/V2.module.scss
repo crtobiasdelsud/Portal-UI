@@ -120,17 +120,17 @@
   }
 }
 
+// Autor DENTRO del overlay, debajo del título, sobre la imagen. `display: table`
+// → arranca en línea nueva pero la caja ajusta al texto (como el resaltador del
+// título). Cajita blanca porque V2 no tiene degradado y la foto puede ser clara.
 .autor {
-  display: block;
+  display: table;
+  margin-top: 8px;
   font-size: 12px;
-  font-weight: 300;
+  font-weight: 600;
   color: var(--text-color, #252523);
-  padding: 8px 16px 0;
-
-  @include respond(tablet) {
-    padding-left: 0;
-    padding-right: 0;
-  }
+  background: #fff;
+  padding: 2px 7px;
 }
 
 // ── Hero importante ──────────────────────────────────────────────────────

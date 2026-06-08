@@ -16,11 +16,18 @@
   }
 }
 
-// ── Modo takeover: header transparente sobre el hero full-screen ────────────
+// ── Modo takeover: header glass sobre el hero full-screen ───────────────────
+// En vez de transparente puro usamos un "frosted glass" tipo iOS: blur del
+// fondo + un tinte oscuro semitransparente. El tinte es la clave de
+// legibilidad: garantiza contraste del texto/logo blancos sobre cualquier
+// imagen del hero (clara u oscura), donde el blur solo no alcanzaría.
 .takeover {
   position: static; // el slot (.desktopSlotTakeover) maneja el posicionamiento
   box-shadow: none;
-  border-bottom: none;
+  background: rgba(20, 20, 22, 0.08);
+  backdrop-filter: blur(4px) saturate(150%);
+  -webkit-backdrop-filter: blur(4px) saturate(150%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12); // hairline tipo iOS
 
   .topRow {
     box-shadow: none;

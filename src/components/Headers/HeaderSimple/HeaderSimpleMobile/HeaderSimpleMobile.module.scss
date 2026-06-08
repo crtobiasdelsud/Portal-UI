@@ -19,11 +19,15 @@
   transition: background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-// Takeover transparente (arriba, sin scroll): sin sombra, logo en blanco y un
-// degradado sutil para legibilidad. Al scrollear vuelve sólido (sin .transparent).
+// Takeover glass (arriba, sin scroll): blur del fondo + degradado oscuro que
+// oscurece sobre todo la zona superior (barra de fecha/logo) para legibilidad.
+// El blur da el efecto frosted tipo iOS. Al scrollear vuelve sólido (sin
+// .transparent).
 .takeover.transparent {
   box-shadow: none;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.14) 0%, rgba(0, 0, 0, 0) 100%);
+  backdrop-filter: blur(4px) saturate(150%);
+  -webkit-backdrop-filter: blur(4px) saturate(150%);
 
   .dateTimeBar {
     border-bottom-color: rgba(255, 255, 255, 0.25);

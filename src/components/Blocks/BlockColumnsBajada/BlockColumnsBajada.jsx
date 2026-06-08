@@ -1,5 +1,6 @@
 import style from "./BlockColumnsBajada.module.scss"
 import WidgetErrorBoundary from "../WidgetErrorBoundary"
+import { WidgetThemeScope } from "../../../context/SiteConfigContext.jsx"
 
 // rank 0 (prioridad más baja) = bajada abajo full width
 // rank 1 y 2 = dos cards arriba
@@ -27,7 +28,9 @@ export default function BlockColumnsBajada({ widgets, registry }) {
           return (
             <div key={rank} className={style.item} style={{ gridArea: area }}>
               <WidgetErrorBoundary>
-                <Widget settings={settings} />
+                <WidgetThemeScope override={settings?.theme}>
+                  <Widget settings={settings} />
+                </WidgetThemeScope>
               </WidgetErrorBoundary>
             </div>
           )

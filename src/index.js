@@ -10,6 +10,7 @@ export {
 export {
   SiteConfigProvider,
   PreviewThemeProvider,
+  WidgetThemeScope,
   useSiteConfig,
   useTheme,
   useRawConfig,
