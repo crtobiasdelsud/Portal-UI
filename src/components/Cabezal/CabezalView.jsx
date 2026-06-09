@@ -1,5 +1,6 @@
 'use client'
 
+import { useTheme } from '../../context/SiteConfigContext.jsx'
 import Default       from './variants/Default/Default.jsx'
 import Medium        from './variants/Medium/Medium.jsx'
 import Horizontal    from './variants/Horizontal/Horizontal.jsx'
@@ -74,16 +75,33 @@ export default function CabezalView({
   isAmp = false,
   getSlotProps,
 }) {
+  const theme = useTheme()
+
+  // 6 CSS vars completas para que el override por widget (WidgetThemeScope)
+  // aplique a cualquier variant del cabezal. Wrapper con `display: contents`
+  // para no inyectar nada en el layout — las vars cascadean al hijo igual.
+  // Las vars solo se setean si el theme tiene un valor (evita pisar el global
+  // con `undefined`, que en CSS borra la herencia).
+  const themeStyle = {
+    display: 'contents',
+    ...(theme.primary    ? { '--primary-color':    theme.primary }    : {}),
+    ...(theme.secondary  ? { '--secondary-color':  theme.secondary }  : {}),
+    ...(theme.accent     ? { '--accent-color':     theme.accent }     : {}),
+    ...(theme.background ? { '--background-color': theme.background } : {}),
+    ...(theme.surface    ? { '--surface-color':    theme.surface }    : {}),
+    ...(theme.textColor  ? { '--text-color':       theme.textColor }  : {}),
+  }
+
   const isLoQueSeLee = tipo === 'loQueSeLee' || tipo === 'loqueselee'
 
   if (isLoQueSeLee) {
     if (!article) return null
-    return <LoQueSeLee article={article} />
+    return <div style={themeStyle}><LoQueSeLee article={article} /></div>
   }
 
   // `etiquetas` recibe los tags del artículo en curso, no un array de artículos.
   if (tipo === 'etiquetas') {
-    return <Etiquetas tags={tags} />
+    return <div style={themeStyle}><Etiquetas tags={tags} /></div>
   }
 
   if (!titulo && !articles.length) return null
@@ -96,13 +114,15 @@ export default function CabezalView({
 
   const Component = VARIANTS[tipo] ?? Default
   return (
-    <Component
-      titulo={titulo}
-      verMasUrl={verMasUrl}
-      articles={capped}
-      tipo={tipo}
-      isAmp={isAmp}
-      getSlotProps={getSlotProps}
-    />
+    <div style={themeStyle}>
+      <Component
+        titulo={titulo}
+        verMasUrl={verMasUrl}
+        articles={capped}
+        tipo={tipo}
+        isAmp={isAmp}
+        getSlotProps={getSlotProps}
+      />
+    </div>
   )
 }

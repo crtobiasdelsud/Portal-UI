@@ -70,9 +70,15 @@ export default function ShareBlock({ isAmp = false, settings = {} }) {
   // ShareBlock va dentro del cuerpo del artículo (lo setea el widget del CMS).
   const borderLeft = settings?.borderLeft ?? false
 
+  // 6 CSS vars completas para que el override por widget aplique sobre cualquier
+  // estilo del variant (ver WidgetThemeScope).
   const inlineStyle = isAmp ? {} : {
-    '--primary-color': theme.primary,
-    '--surface-color': theme.surface,
+    '--primary-color':    theme.primary,
+    '--secondary-color':  theme.secondary,
+    '--accent-color':     theme.accent,
+    '--background-color': theme.background,
+    '--surface-color':    theme.surface,
+    '--text-color':       theme.textColor,
   }
 
   return (

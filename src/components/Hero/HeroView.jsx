@@ -11,11 +11,17 @@ export default function HeroView({ article, important = false, takeover = false 
   const theme = useTheme()
   const v = String(theme.hero ?? 1)
 
+  // Exponemos las 6 CSS vars del theme para que el override por widget (via
+  // WidgetThemeScope) se aplique siempre — la cascada solo "se ve" si la var
+  // esta declarada aca y consumida en el SCSS del variant.
   const inlineStyle = {
-    backgroundColor:   theme.surface,
-    '--primary-color': theme.primary,
-    '--text-color':    theme.textColor,
-    '--surface-color': theme.surface,
+    backgroundColor:      theme.surface,
+    '--primary-color':    theme.primary,
+    '--secondary-color':  theme.secondary,
+    '--accent-color':     theme.accent,
+    '--background-color': theme.background,
+    '--surface-color':    theme.surface,
+    '--text-color':       theme.textColor,
   }
 
   const Variant = VARIANTS[v] ?? V1
