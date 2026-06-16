@@ -1,0 +1,39 @@
+import styles from '../../CardCabezal.module.scss'
+import { useAdapters } from '../../../../../adapters/AdaptersContext.jsx'
+import AspectImage from '../../../../UI/AspectImage/AspectImage.jsx'
+import Tooltip from '../../../../UI/ToolTip/ToolTip.jsx'
+import { volantaWithStop } from '../../../../../utils/volanta.js'
+
+/**
+ * Card "mini": versión reducida para grillas densas (tipo `mini`). Imagen 16:9
+ * + volanta + título completo (sin recortar). El tamaño chico recién aplica en
+ * desktop; en mobile la grilla apila a 1 columna y se ve como las demás.
+ */
+export default function Mini({ article }) {
+  const { Link } = useAdapters()
+  const { titulo, volanta, imagen, slug, focalPoint } = article
+  const href = slug ? `/${slug}` : '#'
+
+  return (
+    <Tooltip text={titulo}>
+      <article className={`${styles.card} ${styles.mini}`}>
+        {imagen?.url && (
+          <Link href={href} className={styles.imgLink}>
+            <AspectImage
+              src={imagen.url}
+              alt={imagen.alt ?? titulo ?? ''}
+              aspect="16:9"
+              focalPoint={focalPoint}
+            />
+          </Link>
+        )}
+        <div className={styles.body}>
+          <div className={styles.header}>
+            {volanta && <span className={styles.volanta}>{volantaWithStop(volanta)}</span>}
+            {titulo && <Link href={href} className={styles.titulo}>{titulo}</Link>}
+          </div>
+        </div>
+      </article>
+    </Tooltip>
+  )
+}

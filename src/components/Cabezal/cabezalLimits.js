@@ -30,6 +30,7 @@ export const CABEZAL_LIMITS = {
   medium:       { min: 3,  max: 9,  step: 3, default: 3  },
   horizontal:   { min: 3,  max: 9,  step: 3, default: 3  },
   compact:      { min: 6,  max: 12, step: 6, default: 6  },
+  mini:         { min: 5,  max: 15, step: 5, default: 5  },  // grilla de 5 → 5,10,15
   ranking:      { min: 5,  max: 10, step: 5, default: 5  },
   // Listas libres (slider / scroll)
   carrusel:     { min: 4,  max: 12, step: 1, default: 6  },

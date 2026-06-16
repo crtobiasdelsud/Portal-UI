@@ -19,8 +19,11 @@ const CLONE_COUNT = 1
  * los puntos disparan `scrollBy` y `setScrollLeft` sobre ese mismo track.
  *
  * @param {object} props
- * @param {{ url: string, alt?: string, epigrafe?: string, variants?: object }[]} props.images
- * @param {object}  [props.focalPoint]   - { x, y, zoom } aplicado a todas.
+ * @param {{ url: string, alt?: string, epigrafe?: string, variants?: object, focalPoint?: object }[]} props.images
+ * @param {object}  [props.focalPoint]   - { x, y, zoom } fallback SOLO para el
+ *                                         caso de 1 imagen. En multi-slide cada
+ *                                         foto usa su propio `img.focalPoint`
+ *                                         (sin fallback cruzado entre slides).
  * @param {string}  [props.aspect]       - '16:9' | '4:3'.
  * @param {string}  [props.sizes]        - hint de tamaño para el srcset.
  * @param {boolean} [props.fill]         - true → ocupa el contenedor padre
@@ -192,7 +195,7 @@ export default function Carousel({
             alt={only.alt ?? ''}
             aspect={aspect}
             fill
-            focalPoint={focalPoint}
+            focalPoint={only.focalPoint ?? focalPoint}
             variants={only.variants ?? null}
             sizes={sizes}
             priority={priority}
@@ -219,7 +222,10 @@ export default function Carousel({
         alt={img.alt ?? ''}
         aspect={aspect}
         fill
-        focalPoint={focalPoint}
+        // Multi-slide: cada foto usa SOLO su propio focal. Si no tiene, va
+        // centrada (default de AspectImage) — NO hereda el de otra slide, así el
+        // encuadre de la principal no se aplica al resto de la galería.
+        focalPoint={img.focalPoint ?? null}
         variants={img.variants ?? null}
         sizes={sizes}
         priority={isPriority}

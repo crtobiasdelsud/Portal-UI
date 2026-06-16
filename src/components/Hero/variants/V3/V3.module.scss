@@ -46,8 +46,13 @@
   }
 
   @include respond(desktop) {
+    // height:100% llena la columna cuando el bloque la ESTIRA (BLOCK_COLUMNS:
+    // grid con align-items:stretch). Si la columna NO define alto (p. ej.
+    // BLOCK_HERO_TRIO / main+sidebar con align-items:start), height:100% cae a
+    // `auto` y entonces el aspect-ratio 16/9 le da alto propio → el hero no
+    // colapsa ni se estira. Con alto definido, el browser ignora el aspect-ratio.
     height: 100%;
-    aspect-ratio: unset;
+    aspect-ratio: 16 / 9;
   }
 }
 

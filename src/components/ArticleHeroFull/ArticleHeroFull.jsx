@@ -27,7 +27,7 @@ export default function ArticleHeroFull({ titulo, copete, imagen, imagenes, imag
     <div className={styles.hero}>
       {slides.length > 1 ? (
         <Carousel
-          images={slides.map((s) => ({ url: s.url, alt: titulo ?? '', variants: s.variants ?? null }))}
+          images={slides.map((s) => ({ url: s.url, alt: titulo ?? '', variants: s.variants ?? null, focalPoint: s.focalPoint ?? null }))}
           focalPoint={focalPoint}
           sizes={heroSizes}
           fill

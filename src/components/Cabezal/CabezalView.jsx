@@ -5,6 +5,7 @@ import Default       from './variants/Default/Default.jsx'
 import Medium        from './variants/Medium/Medium.jsx'
 import Horizontal    from './variants/Horizontal/Horizontal.jsx'
 import Compact       from './variants/Compact/Compact.jsx'
+import Mini          from './variants/Mini/Mini.jsx'
 import Categoria     from './variants/Categoria/Categoria.jsx'
 import CategoriaDos  from './variants/CategoriaDos/CategoriaDos.jsx'
 import UnaDetallada  from './variants/UnaDetallada/UnaDetallada.jsx'
@@ -24,6 +25,7 @@ const VARIANTS = {
   medium:        Medium,
   horizontal:    Horizontal,
   compact:       Compact,
+  mini:          Mini,
   categoria:     Categoria,
   categoriaDos:  CategoriaDos,
   categoriadós:  CategoriaDos,

@@ -48,7 +48,7 @@ export default function ArticleHero({ titulo, volanta, copete, imagen, imagenes,
     } else if (slides.length > 1) {
       ImgEl = (
         <Carousel
-          images={slides.map((s) => ({ url: s.url, alt: titulo ?? '', epigrafe: s.epigrafe, variants: s.variants ?? null }))}
+          images={slides.map((s) => ({ url: s.url, alt: titulo ?? '', epigrafe: s.epigrafe, variants: s.variants ?? null, focalPoint: s.focalPoint ?? null }))}
           focalPoint={focalPoint}
           sizes={heroSizes}
           fill

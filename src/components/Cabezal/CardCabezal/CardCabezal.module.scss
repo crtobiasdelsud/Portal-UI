@@ -344,6 +344,30 @@
 }
 
 
+// ── Mini (tipo `mini`: grilla densa de cartas chicas) ─────────────────────────
+// Card reducida: imagen 16:9 + volanta + título COMPLETO (sin recortar). El
+// tamaño chico recién aplica desde laptop; en mobile/tablet queda como una card
+// normal (la grilla apila a 1 columna), así que se ve igual que las demás.
+.mini {
+  gap: 8px;
+  padding: 6px 0;
+
+  .body {
+    gap: 4px;
+  }
+
+  @include respond(laptop) {
+    .titulo {
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .volanta {
+      font-size: 15px;
+    }
+  }
+}
+
 .mediumContainer {
   width: 100%;
   height: 300px;
