@@ -43,7 +43,10 @@ export default function ArticleHero({ titulo, volanta, copete, imagen, imagenes,
           alt={titulo ?? ''}
           class="article-hero__img"
           layout="fill"
-        />
+        >
+          {/* Placeholder si la imagen falla (AMP no deja colapsar el hueco). */}
+          <div fallback="" className="article-hero__img-fallback">Imagen no disponible</div>
+        </amp-img>
       )
     } else if (slides.length > 1) {
       ImgEl = (

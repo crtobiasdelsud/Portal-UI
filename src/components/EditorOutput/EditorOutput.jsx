@@ -285,7 +285,12 @@ function Block({ block, cls, isAmp }) {
                   width={w || 1200}
                   height={h || 675}
                   layout="responsive"
-                />
+                >
+                  {/* AMP no permite JS para colapsar el hueco si la imagen
+                      falla; el `fallback` es lo válido: muestra un placeholder
+                      prolijo en lugar de un recuadro vacío. */}
+                  <div fallback="" className="eo-image-fallback">Imagen no disponible</div>
+                </amp-img>
               : <img
                   src={imgSrc}
                   alt={alt}

@@ -122,16 +122,32 @@ function sanitizeUrl(value, attrName) {
     .toLowerCase()
 
   if (!normalized) return null
-  if (normalized.startsWith('#')) return trimmed
-  if (normalized.startsWith('//')) return trimmed
-  if (/^(\/|\.\.?\/|\?)/.test(normalized)) return trimmed
+
+  // URL devuelta SIN espacios, caracteres de control ni invisibles Unicode
+  // (zero-width U+200B–U+200D, word-joiner U+2060, BOM U+FEFF). El editor a
+  // veces los pega al final de la URL: la validación de protocolo ya los ignora,
+  // pero si se devolvían tal cual rompían la carga del recurso —p. ej. <amp-img>
+  // tiraba "Failed to load: …png". Una URL válida no lleva whitespace, así que
+  // quitarlo es seguro y no altera la ruta real.
+  const safe = Array.from(trimmed).filter((ch) => {
+    const c = ch.codePointAt(0)
+    if (c <= 0x1f || c === 0x7f) return false           // control
+    if (c === 0x200b || c === 0x200c || c === 0x200d) return false // zero-width
+    if (c === 0x2060 || c === 0xfeff) return false       // word-joiner, BOM
+    return !/\s/.test(ch)                                // cualquier whitespace
+  }).join('')
+  if (!safe) return null
+
+  if (normalized.startsWith('#')) return safe
+  if (normalized.startsWith('//')) return safe
+  if (/^(\/|\.\.?\/|\?)/.test(normalized)) return safe
 
   const protocolMatch = normalized.match(/^([a-z][a-z0-9+.-]*:)/)
-  if (!protocolMatch) return trimmed
+  if (!protocolMatch) return safe
   if (!SAFE_PROTOCOLS.has(protocolMatch[1])) return null
   if (attrName === 'src' && !/^https?:/.test(protocolMatch[1])) return null
 
-  return trimmed
+  return safe
 }
 
 function sanitizeNumeric(value) {

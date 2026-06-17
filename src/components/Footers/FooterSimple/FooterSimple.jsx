@@ -137,11 +137,73 @@ export default function FooterSimple({ isAmp = false }) {
   )
 
   if (isAmp) {
+    // Markup AMP dedicado con clases fijas `footer-simple__*` (las del partial
+    // SCSS compilado a amp-custom) y <amp-img> — NO clases de CSS module, que en
+    // AMP no existen. Misma estructura que el footer real: fila de 2 columnas
+    // (izq logo+slogan+legal / der categorías + redes+links) y barra inferior.
+    const catHref = (slug) => (slug ? (slug.startsWith('/') ? slug : `/${slug}`) : '#')
+    // Sin `style` inline: AMP lo prohíbe. Los colores del footer llegan por las
+    // vars globales --footer-bg/--footer-text/--footer-accent (ver _document.jsx).
     return (
-      <footer className="footer-simple" style={inlineStyle}>
-        {logoEl}{sloganEl}{socialEl}{navEl}
-        <hr className="footer-simple__divider" />
-        {legalEl}{staticLinksEl}{bottomEl}
+      <footer className="footer-simple">
+        <div className="footer-simple__main">
+
+          <div className="footer-simple__left">
+            {(logoUrl || iconUrl) && (
+              <div className="footer-simple__logo-wrap">
+                <a href="/" aria-label={`Ir a inicio - ${siteName ?? ''}`}>
+                  <amp-img src={logoUrl || iconUrl} alt={logoAlt || siteName} class="footer-simple__logo-img" layout="fixed-height" height="53" />
+                </a>
+              </div>
+            )}
+            {slogan && <p className="footer-simple__slogan">{slogan}</p>}
+            <div className="footer-simple__legal">
+              {legal.owner    && <p className="footer-simple__legal-row">Propietario: <strong>{legal.owner}</strong></p>}
+              {legal.director && <p className="footer-simple__legal-row">Director: <strong>{legal.director}</strong></p>}
+              {legal.edition  && <p className="footer-simple__legal-row">Edición: <strong>{legal.edition}</strong></p>}
+              <p className="footer-simple__legal-row">Fecha: <strong>{formatFecha()}</strong></p>
+              {legal.dnda     && <p className="footer-simple__legal-row">DNDA: <strong>{legal.dnda}</strong></p>}
+              {legal.address  && <p className="footer-simple__legal-row">Domicilio legal: <strong>{legal.address}</strong></p>}
+            </div>
+          </div>
+
+          <div className="footer-simple__right">
+            {categories.length > 0 && (
+              <nav className="footer-simple__nav">
+                <ul className="footer-simple__nav-list">
+                  {categories.map((cat) => (
+                    <li key={cat.id}>
+                      <a href={catHref(cat.slug)} className="footer-simple__nav-link">{cat.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
+            <div className="footer-simple__social-row">
+              <div className="footer-simple__social">
+                {social.facebook  && <a href={social.facebook}  aria-label="Facebook"  className="footer-simple__social-link" target="_blank" rel="noopener noreferrer"><amp-img src="/icons/facebook.svg"  alt="Facebook"  width="22" height="22" layout="fixed" /></a>}
+                {social.instagram && <a href={social.instagram} aria-label="Instagram" className="footer-simple__social-link" target="_blank" rel="noopener noreferrer"><amp-img src="/icons/instagram.svg" alt="Instagram" width="22" height="22" layout="fixed" /></a>}
+                {social.tiktok    && <a href={social.tiktok}    aria-label="TikTok"    className="footer-simple__social-link" target="_blank" rel="noopener noreferrer"><amp-img src="/icons/tiktok.svg"    alt="TikTok"    width="22" height="22" layout="fixed" /></a>}
+                {social.youtube   && <a href={social.youtube}   aria-label="YouTube"   className="footer-simple__social-link" target="_blank" rel="noopener noreferrer"><amp-img src="/icons/youtube.svg"   alt="YouTube"   width="22" height="22" layout="fixed" /></a>}
+              </div>
+              {allLinks.length > 0 && (
+                <div className="footer-simple__links">
+                  {allLinks.map(({ label, href }, i) => (
+                    <span key={href} className="footer-simple__link-item">
+                      {i > 0 && <span className="footer-simple__link-sep">/</span>}
+                      <a href={href} className="footer-simple__link">{label}</a>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+        </div>
+
+        {bottomBarContent && (
+          <div className="footer-simple__bottom">{bottomBarContent}</div>
+        )}
       </footer>
     )
   }
