@@ -79,6 +79,7 @@ export { default as BlockMain }           from './components/Blocks/BlockMain/Bl
 export { default as BlockMainNarrow }     from './components/Blocks/BlockMainNarrow/BlockMainNarrow.jsx'
 export { default as BlockMainSidebar }    from './components/Blocks/BlockMainSidebar/BlockMainSidebar.jsx'
 export { default as BlockHeroTrio }       from './components/Blocks/BlockHeroTrio/BlockHeroTrio.jsx'
+export { default as BlockHeroTrioLeft }   from './components/Blocks/BlockHeroTrioLeft/BlockHeroTrioLeft.jsx'
 export { default as BlockStack }          from './components/Blocks/BlockStack/BlockStack.jsx'
 export { default as WidgetErrorBoundary } from './components/Blocks/WidgetErrorBoundary.jsx'
 
