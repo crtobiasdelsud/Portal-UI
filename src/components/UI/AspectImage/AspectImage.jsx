@@ -3,6 +3,14 @@ import { buildSrcSet, resolveImageSrc } from '../../../utils/imageVariants.js'
 const RATIOS = {
   '16:9': '16/9',
   '4:3':  '4/3',
+  '1:1':  '1/1',
+}
+
+// Dimensiones intrínsecas por aspecto (para reservar espacio y evitar CLS).
+const DIMS = {
+  '4:3':  [1200, 900],
+  '1:1':  [1200, 1200],
+  '16:9': [1600, 900],
 }
 
 /**
@@ -47,7 +55,7 @@ export default function AspectImage({
   // width/height intrínsecos según el aspect: el CSS sigue controlando el tamaño
   // real (width/height 100%), pero estos atributos le dan al navegador el ratio
   // para reservar espacio y evitar CLS (audit "image elements without w/h").
-  const [imgW, imgH] = aspect === '4:3' ? [1200, 900] : [1600, 900]
+  const [imgW, imgH] = DIMS[aspect] ?? DIMS['16:9']
 
   const wrapStyle = fill
     ? { position: 'absolute', inset: 0, overflow: 'hidden', ...style }

@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.2.0] — 2026-06-18
+
+### Added
+
+Widget y screen **Mundial 2026**, copiando el diseño "Mundial 2026 · El Editor
+Platense": verde petróleo `#034134`, papel cálido, serif Frank Ruhl Libre, borde
+superior verde y banderas SVG geométricas. Componentes "vista pura" (cada app
+pega al proxy `/api/portal/mundial` y les pasa la data resuelta).
+
+- **`components/Mundial2026/Mundial2026View.jsx`** (nuevo): widget tira de
+  resultados (variante **V2**: celdas con aire + banderas grandes). Estado por
+  partido (EN VIVO con punto pulsante + minuto / horario "Hoy 21:00" / Finalizado),
+  dos equipos por celda (bandera + código + marcador, ganador/perdedor resaltado),
+  fila scrollable. Cabecera con barra verde, "Mundial 2026", fase y slot de
+  sponsor opcional. Prop `bare` para insertarlo dentro de la sección.
+- **`components/Mundial2026/MundialBoardView.jsx`** (nuevo): sección completa para
+  `/mundial` (variante "Página"): la tira arriba, partido destacado (matchcard con
+  goleador y sede) y sidebar con **Posiciones**, **Goleadores** y **Próximos
+  partidos**.
+- **`components/Mundial2026/flags.jsx`** (nuevo): banderas SVG geométricas + nombres
+  por código de 3 letras (TLA) y componente `<Flag size="sm|md|lg">`.
+- **`components/Mundial2026/mundialFormat.js`** (nuevo): etiquetas de horario es-AR
+  ("Hoy 21:00" / "Mañana 16:00").
+- La paleta del diseño va scopeada al contenedor (no se filtra al resto del portal).
+- Exportados desde el barrel: `Mundial2026View`, `MundialBoardView`.
+
 ## [Unreleased] — 2026-06-04
 
 ### Added

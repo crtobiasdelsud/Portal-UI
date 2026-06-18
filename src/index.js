@@ -88,6 +88,7 @@ export { default as WidgetErrorBoundary } from './components/Blocks/WidgetErrorB
 export { default as FeedView }        from './components/Feed/FeedView.jsx'
 export { default as HeroView }        from './components/Hero/HeroView.jsx'
 export { default as RecommendedView } from './components/Recommended/RecommendedView.jsx'
+export { default as NotaDestacadaView } from './components/NotaDestacada/NotaDestacadaView.jsx'
 export { default as CabezalView }     from './components/Cabezal/CabezalView.jsx'
 export { CABEZAL_LIMITS, getCabezalLimit, cabezalLimitOptions, clampCabezalLimit, boundCabezalLimit } from './components/Cabezal/cabezalLimits.js'
 export { default as LoQueSeLeeSkeleton } from './components/Cabezal/variants/LoQueSeLee/LoQueSeLeeSkeleton.jsx'
@@ -100,6 +101,10 @@ export { default as ArticleBodyView } from './components/Cards/ArticleBody/Artic
 // === Client-side widgets que auto-fetchean su data (vía adapter) ===
 export { default as DolarTicker }         from './components/DolarTicker/DolarTicker.jsx'
 export { default as DolarTickerOriginal } from './components/DolarTickerOriginal/DolarTickerOriginal.jsx'
+
+// === Mundial 2026 (widget de home + board para la screen /mundial) ===
+export { default as Mundial2026View }  from './components/Mundial2026/Mundial2026View.jsx'
+export { default as MundialBoardView } from './components/Mundial2026/MundialBoardView.jsx'
 
 // === Editor.js renderers ===
 export { default as EditorOutput, EditorBlocks }         from './components/EditorOutput/EditorOutput.jsx'

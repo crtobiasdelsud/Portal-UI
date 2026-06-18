@@ -1,0 +1,42 @@
+// Bandera geométrica simple (3:2), reutilizable por widget y board.
+.fl {
+  display: inline-block;
+  width: 23px;
+  height: 15.5px;
+  border-radius: 2.5px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  flex: none;
+  background: #eee;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Bandera por imagen (logo/escudo del proveedor — Promiedos sirve 60x60).
+// Caja cuadrada (aspect 1:1, ancho derivado del alto) + `contain` para NO
+// recortar la imagen. Sin fondo ni borde, que la imagen ya trae el suyo.
+.img {
+  width: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  object-position: center;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.md {
+  width: 28px;
+  height: 19px;
+  border-radius: 3px;
+}
+
+.lg {
+  width: 34px;
+  height: 23px;
+  border-radius: 3px;
+}
