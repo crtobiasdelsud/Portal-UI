@@ -58,6 +58,18 @@ const nextConfig = {
 
 ## Setup mínimo
 
+### Convención de identidad editorial
+
+Cuando una app consumidora inyecta `siteConfig` con `slots.header.settings`, el
+paquete distingue:
+
+- `siteName` → branding visual del medio
+- `publisherName` → firma organizacional para bylines / author display
+
+Para autoría organizacional, `Portal-UI` resuelve `publisherName || siteName`.
+Esto evita que un cambio de branding visual cambie automáticamente la firma
+editorial de notas o previews si el tenant define `publisherName`.
+
 ### Next (App Router)
 
 ```jsx

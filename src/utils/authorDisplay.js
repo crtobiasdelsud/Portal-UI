@@ -1,4 +1,5 @@
 import { useSiteConfig } from '../context/SiteConfigContext.jsx'
+import { resolveAuthorDisplay } from './authorDisplay.shared.js'
 
 /**
  * Resuelve cómo mostrar la autoría de un artículo contemplando "Publicar como
@@ -10,22 +11,12 @@ import { useSiteConfig } from '../context/SiteConfigContext.jsx'
  * @param {Object} [params]
  * @param {{ nombre?: string, slug?: string, avatar?: string }|null} [params.autor]
  * @param {boolean} [params.publicarComoOrg=false]
+ * @param {string|null} [params.publisherName] Nombre editorial del publisher (slots.header.settings.publisherName)
  * @param {string|null} [params.siteName] Nombre del sitio (slots.header.settings.siteName)
  * @param {string|null} [params.iconUrl]  Logo del sitio (slots.header.settings.iconUrl)
  * @returns {{ isOrg: boolean, displayName: string|null, authorSlug: string|null, avatarSrc: string|null }}
  */
-export function resolveAuthorDisplay({
-  autor = null,
-  publicarComoOrg = false,
-  siteName = null,
-  iconUrl = null,
-} = {}) {
-  const isOrg = publicarComoOrg || !autor
-  const displayName = isOrg ? (siteName ?? null) : (autor?.nombre ?? null)
-  const authorSlug = !isOrg ? (autor?.slug ?? null) : null
-  const avatarSrc = (!isOrg && autor?.avatar) ? autor.avatar : (iconUrl ?? null)
-  return { isOrg, displayName, authorSlug, avatarSrc }
-}
+export { resolveAuthorDisplay }
 
 /**
  * Hook de conveniencia: resuelve la autoría leyendo `siteName`/`iconUrl` del
@@ -42,6 +33,7 @@ export function useAuthorDisplay(autor, publicarComoOrg = false) {
   return resolveAuthorDisplay({
     autor,
     publicarComoOrg,
+    publisherName: settings.publisherName ?? null,
     siteName: settings.siteName ?? null,
     iconUrl: settings.iconUrl ?? null,
   })
