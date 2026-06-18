@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTheme, useSiteConfig } from '../../context/SiteConfigContext.jsx'
+import { resolveAuthorDisplay } from '../../utils/authorDisplay.shared.js'
 import V1 from './variants/V1/V1'
 
 const VARIANTS = { '1': V1 }
@@ -22,15 +23,15 @@ export default function AuthorBlock({ autor, publicarComoOrg = false, fechaPubli
   const v          = String(theme.authorBlock ?? 1)
 
   const settings    = slots?.header?.settings ?? {}
-  const iconUrl     = settings.iconUrl ?? null
-  const siteName    = settings.siteName ?? null
-
-  const useOrg      = publicarComoOrg || !autor
-  const displayName = useOrg ? siteName : autor?.nombre
-  const authorSlug  = !useOrg ? (autor?.slug ?? null) : null
+  const { displayName, authorSlug, avatarSrc } = resolveAuthorDisplay({
+    autor,
+    publicarComoOrg,
+    publisherName: settings.publisherName ?? null,
+    siteName: settings.siteName ?? null,
+    iconUrl: settings.iconUrl ?? null,
+  })
 
   const showAvatar  = v === '1' || v === '2'
-  const avatarSrc   = (!useOrg && autor?.avatar) ? autor.avatar : (iconUrl || '/profile-placeholder.svg')
   const useLongDate = v === '1' || v === '2'
 
   const [dateStr, setDateStr] = useState(null)
@@ -55,7 +56,7 @@ export default function AuthorBlock({ autor, publicarComoOrg = false, fechaPubli
     authorSlug,
     dateStr,
     ampDate,
-    avatarSrc,
+    avatarSrc: avatarSrc || '/profile-placeholder.svg',
     showAvatar,
     v,
   }
