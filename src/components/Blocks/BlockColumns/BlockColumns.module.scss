@@ -56,6 +56,20 @@
   }
 }
 
+/* Espejo de gridNormal: hero ancho (2 cols) a la IZQUIERDA + los 2 widgets
+   acompañantes (1 col c/u) a la derecha. Apilado en mobile como el resto. */
+.gridHeroLeft {
+  grid-template-areas:
+    "hero"
+    "recommended"
+    "feed";
+
+  @include respond(desktop) {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: "hero hero recommended feed";
+  }
+}
+
 .item {
   min-width: 0;
   overflow: hidden;

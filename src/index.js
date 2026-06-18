@@ -74,6 +74,7 @@ export { default as FooterSimple } from './components/Footers/FooterSimple/Foote
 
 // === Blocks (containers que iteran widgets via registry) ===
 export { default as BlockColumns }        from './components/Blocks/BlockColumns/BlockColumns.jsx'
+export { default as BlockColumnsHeroLeft } from './components/Blocks/BlockColumnsHeroLeft/BlockColumnsHeroLeft.jsx'
 export { default as BlockColumnsBajada }  from './components/Blocks/BlockColumnsBajada/BlockColumnsBajada.jsx'
 export { default as BlockMain }           from './components/Blocks/BlockMain/BlockMain.jsx'
 export { default as BlockMainNarrow }     from './components/Blocks/BlockMainNarrow/BlockMainNarrow.jsx'

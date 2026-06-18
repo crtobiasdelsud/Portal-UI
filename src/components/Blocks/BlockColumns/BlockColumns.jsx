@@ -15,7 +15,9 @@ export default function BlockColumns({ widgets, registry, settings = {} }) {
   const fantasmaArticleId = importantHero?.settings?.fantasmaArticleId
   const layout = settings.layout ?? 'default'
 
-  const gridClass = layout === 'categoriaDos'
+  const gridClass = layout === 'heroIzquierda'
+    ? style.gridHeroLeft
+    : layout === 'categoriaDos'
     ? style.gridCategoriaDos
     : hasImportant ? style.gridFeatured : style.gridNormal
 
