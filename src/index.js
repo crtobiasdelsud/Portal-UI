@@ -83,6 +83,7 @@ export { default as BlockHeroTrio }       from './components/Blocks/BlockHeroTri
 export { default as BlockHeroTrioLeft }   from './components/Blocks/BlockHeroTrioLeft/BlockHeroTrioLeft.jsx'
 export { default as BlockStack }          from './components/Blocks/BlockStack/BlockStack.jsx'
 export { default as WidgetErrorBoundary } from './components/Blocks/WidgetErrorBoundary.jsx'
+export { default as WidgetFrame }         from './components/Blocks/WidgetFrame.jsx'
 
 // === Views con data layer en cada app (split data/view) ===
 export { default as FeedView }        from './components/Feed/FeedView.jsx'

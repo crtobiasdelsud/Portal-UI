@@ -1,6 +1,6 @@
 import style from "./BlockColumns.module.scss"
 import WidgetErrorBoundary from "../WidgetErrorBoundary"
-import { WidgetThemeScope } from "../../../context/SiteConfigContext.jsx"
+import WidgetFrame from "../WidgetFrame"
 
 // área según ranking de prioridad (menor número = más importante)
 const RANK_TO_AREA = ["hero", "recommended", "feed"]
@@ -37,11 +37,9 @@ export default function BlockColumns({ widgets, registry, settings = {} }) {
 
           return (
             <div key={rank} className={style.item} style={{ gridArea: area }}>
-              <WidgetErrorBoundary>
-                <WidgetThemeScope override={settings?.theme}>
-                  <Widget settings={settings} />
-                </WidgetThemeScope>
-              </WidgetErrorBoundary>
+              <WidgetFrame settings={settings}>
+                <Widget settings={settings} />
+              </WidgetFrame>
             </div>
           )
         })}

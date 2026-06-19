@@ -1,6 +1,5 @@
 import style from "./BlockMainSidebar.module.scss"
-import WidgetErrorBoundary from "../WidgetErrorBoundary"
-import { WidgetThemeScope } from "../../../context/SiteConfigContext.jsx"
+import WidgetFrame from "../WidgetFrame"
 
 export default function BlockMainSidebar({ widgets = [], sidebarWidgets = [], children, sidebarChildren, registry }) {
   return (
@@ -11,11 +10,9 @@ export default function BlockMainSidebar({ widgets = [], sidebarWidgets = [], ch
           const Widget = registry?.[widget.type]
           if (!Widget) return null
           return (
-            <WidgetErrorBoundary key={widget.type + i}>
-              <WidgetThemeScope override={widget.settings?.theme}>
-                <Widget settings={widget.settings} />
-              </WidgetThemeScope>
-            </WidgetErrorBoundary>
+            <WidgetFrame key={widget.type + i} settings={widget.settings}>
+              <Widget settings={widget.settings} />
+            </WidgetFrame>
           )
         })}
       </div>
@@ -25,11 +22,9 @@ export default function BlockMainSidebar({ widgets = [], sidebarWidgets = [], ch
           const Widget = registry?.[widget.type]
           if (!Widget) return null
           return (
-            <WidgetErrorBoundary key={widget.type + i}>
-              <WidgetThemeScope override={widget.settings?.theme}>
-                <Widget settings={widget.settings} />
-              </WidgetThemeScope>
-            </WidgetErrorBoundary>
+            <WidgetFrame key={widget.type + i} settings={widget.settings}>
+              <Widget settings={widget.settings} />
+            </WidgetFrame>
           )
         })}
       </div>

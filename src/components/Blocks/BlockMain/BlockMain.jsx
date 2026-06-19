@@ -1,6 +1,5 @@
 import style from "./BlockMain.module.scss"
-import WidgetErrorBoundary from "../WidgetErrorBoundary"
-import { WidgetThemeScope } from "../../../context/SiteConfigContext.jsx"
+import WidgetFrame from "../WidgetFrame"
 
 export default function BlockMain({ widgets, registry }) {
   const widget = widgets?.[0]
@@ -11,11 +10,9 @@ export default function BlockMain({ widgets, registry }) {
 
   return (
     <section className={style.container}>
-      <WidgetErrorBoundary>
-        <WidgetThemeScope override={widget.settings?.theme}>
-          <Widget settings={widget.settings} />
-        </WidgetThemeScope>
-      </WidgetErrorBoundary>
+      <WidgetFrame settings={widget.settings}>
+        <Widget settings={widget.settings} />
+      </WidgetFrame>
     </section>
   )
 }
