@@ -17,7 +17,7 @@ export default function MundialBoardView({ data }) {
   const standings = Array.isArray(data?.standings) ? data.standings : []
   const scorers = Array.isArray(data?.scorers) ? data.scorers : []
 
-  const featured = matches.find((m) => m.status === 'live') || matches[0] || null
+  const featured = pickFeatured(matches)
   const fixtures = matches.filter((m) => m.status === 'scheduled').slice(0, 4)
 
   const hasContent = matches.length || standings.length || scorers.length
@@ -58,6 +58,28 @@ export default function MundialBoardView({ data }) {
       </div>
     </div>
   )
+}
+
+/**
+ * Partido destacado de la sección: el que se está jugando (en vivo), si no el
+ * último jugado (finalizado más reciente), si no el próximo programado. Recién
+ * como último recurso el primero del torneo. Ordena por `datetime` para no
+ * depender del orden con que llegue el array del proveedor.
+ */
+function pickFeatured(matches) {
+  if (!matches.length) return null
+  const time = (m) => (m.datetime ? new Date(m.datetime).getTime() : 0)
+
+  const live = matches.filter((m) => m.status === 'live')
+  if (live.length) return live.sort((a, b) => time(b) - time(a))[0]
+
+  const finished = matches.filter((m) => m.status === 'finished')
+  if (finished.length) return finished.sort((a, b) => time(b) - time(a))[0] // último jugado
+
+  const scheduled = matches.filter((m) => m.status === 'scheduled')
+  if (scheduled.length) return scheduled.sort((a, b) => time(a) - time(b))[0] // próximo
+
+  return matches[0]
 }
 
 function HistorySection({ matches }) {
