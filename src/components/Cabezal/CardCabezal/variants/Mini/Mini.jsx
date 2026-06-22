@@ -24,6 +24,8 @@ export default function Mini({ article }) {
               alt={imagen.alt ?? titulo ?? ''}
               aspect="16:9"
               focalPoint={focalPoint}
+              variants={imagen.variants ?? null}
+              sizes="(min-width: 1024px) 240px, (min-width: 768px) 33vw, 100vw"
             />
           </Link>
         )}

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from "./EditorOutputFull.module.scss"
 import { useTheme } from '../../context/SiteConfigContext.jsx'
-import { useAdapters } from '../../adapters/AdaptersContext.jsx'
+import { buildSrcSet, resolveImageSrc } from '../../utils/imageVariants.js'
 import { sanitizeEditorialHtml, sanitizeInlineHtml, sanitizeResourceUrl } from '../../utils/sanitizeHtml.js'
 
 /**
@@ -165,7 +165,6 @@ function safeInlineHtml(value) {
 }
 
 function Block({ block, cls, isAmp }) {
-  const { Image } = useAdapters()
   switch (block.type) {
     case "paragraph":
       return <p className={cls.paragraph} dangerouslySetInnerHTML={safeInlineHtml(block.data.text)} />
@@ -216,17 +215,38 @@ function Block({ block, cls, isAmp }) {
       // que a "" para no dejar imágenes informativas sin texto alternativo (a11y/SEO).
       // Sólo queda "" si no hay realmente ningún texto (imagen decorativa).
       const alt      = block.data.altText || block.data.caption || epigrafe || ""
+      // Variantes WebP + dimensiones que ahora persiste el ImageTool del CMS.
+      // Imágenes legacy no las traen → degrada a `<img src>` plano (igual que antes).
+      const variants = block.data.variants || block.data.file?.variants || null
+      const w        = block.data.width  || block.data.file?.width  || null
+      const h        = block.data.height || block.data.file?.height || null
+      const srcSet   = buildSrcSet(variants)
+      const imgSrc   = sanitizeResourceUrl(srcSet ? resolveImageSrc(variants, src, 'large') : src) || src
       return (
         <figure className={cls.image}>
           <div className={cls.imageWrap}>
             {isAmp
-              ? <img src={src} alt={alt} />
-              : <Image
+              ? <amp-img
                   src={src}
                   alt={alt}
-                  width={0}
-                  height={0}
-                  sizes="(max-width: 768px) 100vw, 800px"
+                  width={w || 1200}
+                  height={h || 675}
+                  layout="responsive"
+                >
+                  {/* AMP no permite JS para colapsar el hueco si la imagen
+                      falla; el `fallback` es lo válido: muestra un placeholder
+                      prolijo en lugar de un recuadro vacío. */}
+                  <div fallback="" className="eo-image-fallback">Imagen no disponible</div>
+                </amp-img>
+              : <img
+                  src={imgSrc}
+                  alt={alt}
+                  // width/height intrínsecos → el navegador reserva espacio por
+                  // el aspect-ratio y evita CLS, aunque el CSS lo muestre a 100%.
+                  {...(w && h ? { width: w, height: h } : {})}
+                  {...(srcSet ? { srcSet, sizes: "(max-width: 768px) 100vw, 800px" } : {})}
+                  loading="lazy"
+                  decoding="async"
                   style={{ width: "100%", height: "auto" }}
                 />
             }

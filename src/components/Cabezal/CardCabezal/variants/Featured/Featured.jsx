@@ -23,6 +23,8 @@ export default function Featured({ article, large }) {
             aspect="16:9"
             fill
             focalPoint={focalPoint}
+            variants={imagen.variants ?? null}
+            sizes="(min-width: 1024px) 640px, 100vw"
           />
         </Link>
       )}

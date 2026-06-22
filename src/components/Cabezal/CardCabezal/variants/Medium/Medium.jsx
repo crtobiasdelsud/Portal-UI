@@ -22,6 +22,8 @@ export default function Medium({ article }) {
             alt={imagen.alt ?? titulo ?? ''}
             aspect="16:9"
             focalPoint={focalPoint}
+            variants={imagen.variants ?? null}
+            sizes="(min-width: 1024px) 360px, (min-width: 768px) 50vw, 100vw"
           />
         </Link>
       )}

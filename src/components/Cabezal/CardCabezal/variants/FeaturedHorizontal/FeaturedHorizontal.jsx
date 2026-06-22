@@ -23,6 +23,8 @@ export default function FeaturedHorizontal({ article }) {
             alt={imagen.alt ?? titulo ?? ''}
             aspect="16:9"
             focalPoint={focalPoint}
+            variants={imagen.variants ?? null}
+            sizes="(min-width: 768px) 40vw, 100vw"
           />
         </Link>
       )}

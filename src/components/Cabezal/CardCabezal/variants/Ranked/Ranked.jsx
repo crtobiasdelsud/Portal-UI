@@ -21,6 +21,8 @@ export default function Ranked({ article, rank, rankVariant }) {
             alt={imagen.alt ?? titulo ?? ''}
             aspect="16:9"
             focalPoint={focalPoint}
+            variants={imagen.variants ?? null}
+            sizes="(min-width: 1024px) 300px, (min-width: 768px) 33vw, 50vw"
           />
         </Link>
       )}
