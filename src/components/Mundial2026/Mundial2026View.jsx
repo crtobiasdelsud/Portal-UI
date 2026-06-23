@@ -17,7 +17,7 @@ import { useOptionalAdapters } from '../../adapters/AdaptersContext.jsx'
  *   dentro de esa página). `settings.href` permite cambiar el destino.
  *
  * Props:
- *   - data, settings: { limit, sponsorLabel, href }
+ *   - data, settings: { limit, href }  // limit topeado a 6 partidos
  *   - bare: sin chrome de tarjeta ni link (para insertar dentro de /mundial)
  */
 
@@ -41,13 +41,13 @@ export default function Mundial2026View({ data, settings = {}, bare = false }) {
   if (!matches.length) return null
 
   const sorted = sortMatches(matches)
-  const liveCount = sorted.filter((m) => m.status === 'live').length
-  // Default: mostrar al menos los partidos en vivo (mín. 2 celdas para acompañar).
-  const limit = Number.isFinite(settings.limit) ? settings.limit : Math.max(liveCount, 2)
-  const visibles = sorted.slice(0, Math.max(1, limit))
+  // Tope duro: como máximo 6 partidos. settings.limit puede pedir menos.
+  const MAX_MATCHES = 6
+  const requested = Number.isFinite(settings.limit) ? settings.limit : MAX_MATCHES
+  const limit = Math.min(MAX_MATCHES, Math.max(1, requested))
+  const visibles = sorted.slice(0, limit)
 
   const phase = data?.phase || 'Fase de grupos'
-  const sponsorLabel = settings.sponsorLabel
   const href = settings.href || '/mundial'
 
   const inner = (
@@ -56,12 +56,6 @@ export default function Mundial2026View({ data, settings = {}, bare = false }) {
         <span className={style.bar} />
         <h4 className={style.title}>{data?.tournament || 'Mundial 2026'}</h4>
         <span className={style.ph}>{phase}</span>
-        {sponsorLabel && (
-          <span className={style.spon}>
-            <span className={style.sponLbl}>Ofrecido por</span>
-            <span className={style.sponSlot}>{sponsorLabel}</span>
-          </span>
-        )}
         {!bare && <span className={style.go} aria-hidden="true">Ver Mundial ›</span>}
       </div>
 
