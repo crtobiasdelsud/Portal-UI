@@ -24,7 +24,7 @@ export const ISO2 = {
   CPV: 'cv', CUW: 'cw', HON: 'hn', JAM: 'jm', VEN: 've', BOL: 'bo',
   TUR: 'tr', GRE: 'gr', ROU: 'ro', ROM: 'ro', CZE: 'cz', HUN: 'hu',
   IRL: 'ie', IRE: 'ie', SVN: 'si', SVK: 'sk', MLI: 'ml', COD: 'cd',
-  BFA: 'bf', NIR: 'gb-nir', PAN: 'pa',
+  BFA: 'bf', NIR: 'gb-nir', PAN: 'pa', BIH: 'ba', IRQ: 'iq',
 }
 
 // SVG geométrico (offline) del set original del diseño.
