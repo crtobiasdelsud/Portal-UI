@@ -9,7 +9,7 @@ const dayKey = (d) =>
   new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: TZ }).format(d)
 
 const timeStr = (d) =>
-  new Intl.DateTimeFormat('es-AR', { hour: '2-digit', minute: '2-digit', timeZone: TZ }).format(d)
+  new Intl.DateTimeFormat('es-AR', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: TZ }).format(d)
 
 /** Devuelve { day, time } — day ∈ {'Hoy','Mañana','12 jun', ...}. */
 export function kickoffParts(datetime) {

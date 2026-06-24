@@ -21,7 +21,9 @@ export default function DolarTickerOriginal() {
   const [animKey, setAnimKey] = useState(0)
   const intervalRef = useRef(null)
 
-  const v = String(theme.dolar ?? 1)
+  // Modo oscuro retirado: el ticker es siempre el clásico (claro / v1), sin
+  // importar theme.dolar (configs viejas o theme global quedan en claro).
+  const v = '1'
   const isLight = v === '1'
   const navIcon = isLight ? arrowBackBlack : arrowBackWhite
 

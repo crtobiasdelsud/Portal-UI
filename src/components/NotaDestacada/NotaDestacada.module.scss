@@ -5,6 +5,14 @@
   margin: 0 0 8px;
   display: flex;
   flex-direction: column;
+  // En mobile el widget ocupa todo el ancho y el contenido quedaba pegado a
+  // los bordes; le damos aire lateral. En tablet+ va dentro del grid y no lo
+  // necesita.
+  padding: 0 16px;
+
+  @include respond(tablet) {
+    padding: 0;
+  }
 }
 
 .link {
@@ -17,6 +25,16 @@
 .media {
   width: 100%;
   background: #dcd9d0;
+
+  // En mobile la imagen iba 1:1 → quedaba mucho más alta que las otras tarjetas
+  // (16:9). La bajamos a 16:9 para igualar la altura. AspectImage fija el ratio
+  // inline en su div interno (sin clase), por eso targeteamos `> div` con
+  // !important. En tablet+ vuelve al 1:1 del diseño.
+  > div { aspect-ratio: 16 / 9 !important; }
+
+  @include respond(tablet) {
+    > div { aspect-ratio: 1 / 1 !important; }
+  }
 }
 
 .body {
@@ -52,11 +70,15 @@
   line-height: 1.5;
   color: var(--text-color, #3d3d3d);
   opacity: 0.85;
-  // máx 3 líneas
-  display: -webkit-box;
+  // En mobile se oculta (solo título + nombre). De tablet+ se muestra clampeado a 3 líneas.
+  display: none;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+
+  @include respond(tablet) {
+    display: -webkit-box;
+  }
 }
 
 .autor {
@@ -74,6 +96,12 @@
   border-radius: 50%;
   object-fit: cover;
   flex: none;
+  // En mobile se oculta el logo/avatar (solo queda el nombre). En tablet+ vuelve.
+  display: none;
+
+  @include respond(tablet) {
+    display: block;
+  }
 }
 
 .autorName {
