@@ -227,3 +227,13 @@
   .code { font-size: 14.5px; }
   .sc { font-size: 20px; }
 }
+
+// ── Mobile: cabecera compacta ──────────────────────────────
+// En pantallas chicas la fase ("Copa del Mundo · 16avos de final") apretaba el
+// título contra "Ver Mundial ›" → la sacamos y dejamos solo título + CTA.
+@media (max-width: 600px) {
+  .head { gap: 9px; padding: 11px 14px; }
+  .title { font-size: 16px; }
+  .ph { display: none; }
+  .go { font-size: 10px; }
+}
