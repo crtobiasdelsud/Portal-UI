@@ -15,7 +15,11 @@
   --line-2: #efece4;
   --paper: #ffffff;
 
-  background: var(--paper);
+  // Fondo transparente por defecto → el "Color de fondo"/imagen que setees en el
+  // editor (se aplican al wrapper que envuelve el widget) quedan visibles. Antes
+  // era `var(--paper)` opaco y tapaba cualquier fondo del editor. En el home el
+  // fondo de página es blanco, así que el aspecto por defecto no cambia.
+  background: var(--mwid-bg, transparent);
   border: 1px solid var(--line);
   border-top: 3px solid var(--green);
   color: var(--ink);
