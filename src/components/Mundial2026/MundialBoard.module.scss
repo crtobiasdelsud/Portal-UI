@@ -477,6 +477,15 @@
 
 .brTabOn { background: var(--green); color: #fff; border-color: var(--green); }
 
+// Chips de filtro por etapa (vista lista). Mismo look que el selector del cuadro
+// (.brTab); acá envuelven en varias filas en vez de scrollear.
+.histFilter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
 .histGroup { margin-bottom: 22px; }
 
 .histRound {

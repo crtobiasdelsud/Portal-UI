@@ -85,9 +85,16 @@ function pickFeatured(matches) {
 
 function HistorySection({ matches }) {
   const [view, setView] = useState('list')
+  const [round, setRound] = useState('all')
   // Final arriba de todo: knockout (Final→16avos) primero, después los grupos.
   const rounds = orderRoundsFinalFirst(groupByRound(matches))
   const hasBracket = rounds.some((r) => r.label in KO_RANK)
+
+  // Chips de filtro de la lista: en orden cronológico (Fecha 1 → Final), inverso
+  // al de la lista. Si la etapa activa ya no existe (cambió la data), "todas".
+  const chrono = [...rounds].reverse()
+  const activeRound = round !== 'all' && chrono.some((r) => r.label === round) ? round : 'all'
+  const shown = activeRound === 'all' ? rounds : rounds.filter((r) => r.label === activeRound)
 
   return (
     <section className={style.history} aria-label="Todos los partidos">
@@ -109,10 +116,28 @@ function HistorySection({ matches }) {
         )}
       </div>
 
+      {view === 'list' && chrono.length > 1 && (
+        <div className={style.histFilter} role="tablist" aria-label="Filtrar por etapa">
+          <button
+            type="button" role="tab" aria-selected={activeRound === 'all'}
+            className={`${style.brTab} ${activeRound === 'all' ? style.brTabOn : ''}`.trim()}
+            onClick={() => setRound('all')}
+          >Todos</button>
+          {chrono.map((r) => (
+            <button
+              key={r.label} type="button" role="tab"
+              aria-selected={activeRound === r.label}
+              className={`${style.brTab} ${activeRound === r.label ? style.brTabOn : ''}`.trim()}
+              onClick={() => setRound(r.label)}
+            >{ROUND_SHORT[r.label] || r.label}</button>
+          ))}
+        </div>
+      )}
+
       {view === 'bracket' ? (
         <BracketView rounds={rounds} />
       ) : (
-        rounds.map(({ label, items }) => (
+        shown.map(({ label, items }) => (
           <div key={label} className={style.histGroup}>
             <h3 className={style.histRound}>{label}</h3>
             <div className={style.histList}>
@@ -195,6 +220,10 @@ const BRACKET_SHORT = {
   '16avos de final': '16avos', 'Octavos de final': 'Octavos',
   'Cuartos de final': 'Cuartos', 'Semifinales': 'Semis', 'Final': 'Final',
 }
+
+// Etiqueta corta para los chips de filtro de la lista (grupos + llaves). Los
+// grupos ("Fecha N") no necesitan abreviarse → caen al label completo.
+const ROUND_SHORT = { ...BRACKET_SHORT, 'Tercer puesto': '3º puesto' }
 
 /**
  * Vista de llave: una columna por ronda eliminatoria.
