@@ -2,7 +2,7 @@ import { useAdapters } from '../../../../adapters/AdaptersContext.jsx'
 import shared from '../../AuthorBlock.module.scss'
 import s from './V1.module.scss'
 
-export default function V1({ isAmp, inlineStyle, displayName, authorSlug, dateStr, ampDate, avatarSrc, showAvatar, v }) {
+export default function V1({ isAmp, inlineStyle, displayName, authorSlug, publicationDate, avatarSrc, showAvatar, v }) {
   const { Link } = useAdapters()
   if (isAmp) {
     return (
@@ -12,7 +12,11 @@ export default function V1({ isAmp, inlineStyle, displayName, authorSlug, dateSt
         )}
         <div className="author-block__info">
           <span className="author-block__name">Por <strong>{displayName}</strong></span>
-          {ampDate && <span className="author-block__date">{ampDate}</span>}
+          {publicationDate && (
+            <time className="author-block__date" dateTime={publicationDate.dateTime}>
+              {publicationDate.label}
+            </time>
+          )}
         </div>
       </div>
     )
@@ -31,7 +35,11 @@ export default function V1({ isAmp, inlineStyle, displayName, authorSlug, dateSt
             : <strong>Por{' '} {displayName}</strong>
           }
         </span>
-        {dateStr && <span className={`${shared.date} ${s.date}`}>{dateStr}</span>}
+        {publicationDate && (
+          <time className={`${shared.date} ${s.date}`} dateTime={publicationDate.dateTime}>
+            {publicationDate.label}
+          </time>
+        )}
       </div>
     </div>
   )
