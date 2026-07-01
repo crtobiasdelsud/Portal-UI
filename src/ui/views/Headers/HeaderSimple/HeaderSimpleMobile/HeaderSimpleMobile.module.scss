@@ -1,0 +1,110 @@
+@use "../../../../../styles/index" as *;
+
+.containerInFixed {
+  display: flex;
+  flex-direction: column;
+  /* position: fixed (no sticky) para ser inmune a ancestors con
+     `overflow: hidden|auto|scroll`. HeaderSwitch mide su altura con
+     ResizeObserver y aplica esa altura al `.mobileSlot` para reservar el
+     espacio en el flujo. */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1002;
+  box-sizing: border-box;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
+  container-type: inline-size;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+// Takeover glass (arriba, sin scroll): blur del fondo + degradado oscuro que
+// oscurece sobre todo la zona superior (barra de fecha/logo) para legibilidad.
+// El blur da el efecto frosted tipo iOS. Al scrollear vuelve sólido (sin
+// .transparent).
+.takeover.transparent {
+  box-shadow: none;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.14) 0%, rgba(0, 0, 0, 0) 100%);
+  backdrop-filter: blur(4px) saturate(150%);
+  -webkit-backdrop-filter: blur(4px) saturate(150%);
+
+  .dateTimeBar {
+    border-bottom-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .logoImg {
+    filter: brightness(0) invert(1);
+  }
+
+  .logo {
+    color: #fff;
+  }
+}
+
+.dateTimeBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.topRow {
+  padding: 15px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.brandCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.centerCol {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.socialCol {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: bold;
+  letter-spacing: -0.5px;
+}
+
+.logoImg {
+  height: 33px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+
+  @include respond(tablet) {
+    height: 45px;
+    width: auto;
+    max-width: 240px;
+  }
+}

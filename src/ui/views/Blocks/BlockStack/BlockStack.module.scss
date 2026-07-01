@@ -1,0 +1,18 @@
+@use "../../../../styles/index.scss" as *;
+
+.container {
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.item {
+  border-bottom: 1px solid rgba(37, 37, 35, 0.1);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}

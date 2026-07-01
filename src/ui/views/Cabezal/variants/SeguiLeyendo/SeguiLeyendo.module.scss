@@ -1,0 +1,48 @@
+@use "../../../../../styles/index" as *;
+
+.container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sectionHeader {
+  padding-left: 10px;
+  border-left: 3px solid var(--primary-color, #af0437);
+  margin-bottom: 12px;
+}
+
+.sectionTitle {
+  font-family: var(--font-titulo, "Frank Ruhl Libre", serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary-color, #af0437);
+  letter-spacing: -0.01em;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.card {
+  padding: 10px 0;
+}
+
+.link {
+  display: block;
+  font-family: var(--font-titulo, "Frank Ruhl Libre", serif);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-color, #252523);
+  text-decoration: none;
+  line-height: 1.45;
+}

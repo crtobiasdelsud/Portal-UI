@@ -1,0 +1,597 @@
+@use "../../../styles/index.scss" as *;
+
+.root {
+  --green: #034134;
+  --green-2: #0a5d49;
+  --live: #b3261e;
+  --ink: #141414;
+  --ink-2: #3d3d3d;
+  --muted: #6f6f6f;
+  --faint: #9a968c;
+  --line: #e3e1da;
+  --line-2: #efece4;
+  --paper: #ffffff;
+  --bg: #ffffff;
+
+  background: #ffffff;
+  color: var(--ink);
+  font-family: var(--font-inter, 'Inter', system-ui, sans-serif);
+  margin-top: 24px;
+}
+
+.stripwrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+// ── Sección ────────────────────────────────────────────────
+.sec {
+  padding: 30px 30px 36px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.secHead {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.kick {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--green);
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.h2 {
+  font-family: var(--font-titulo, 'Frank Ruhl Libre', Georgia, serif);
+  font-size: 34px;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+}
+
+.ln {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+  margin-bottom: 10px;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  grid-template-areas:
+    "feat side"
+    "hist side";
+  gap: 34px;
+  align-items: start;
+}
+
+.feat { grid-area: feat; min-width: 0; }
+.side { grid-area: side; }
+.histArea { grid-area: hist; min-width: 0; }
+
+// ── Partido destacado ──────────────────────────────────────
+.matchcard {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--green);
+}
+
+.mcTop {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 22px;
+  border-bottom: 1px solid var(--line-2);
+}
+
+.mcLive { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; color: var(--live); }
+.mcMin { font-size: 11px; font-weight: 700; color: var(--live); }
+.mcFinal { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; color: var(--faint); }
+.mcTime { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--green); }
+
+.grp {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.liveDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--live);
+  flex: none;
+  animation: mundialBoardPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes mundialBoardPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.82); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liveDot { animation: none; }
+}
+
+.mcBody {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 26px 24px 22px;
+  gap: 18px;
+}
+
+.mcSide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+  text-align: center;
+}
+
+.nm {
+  font-family: var(--font-titulo, 'Frank Ruhl Libre', Georgia, serif);
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.mcSide.lose .nm { color: var(--faint); }
+
+.mcScore {
+  font-family: var(--font-titulo, 'Frank Ruhl Libre', Georgia, serif);
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.dash { color: var(--line); font-weight: 500; }
+
+.mcMeta {
+  padding: 0 24px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.sg { display: flex; align-items: center; gap: 7px; }
+.sg b { color: var(--ink-2); font-weight: 600; }
+.sgFaint { color: var(--faint); }
+
+.bul {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  flex: none;
+}
+
+// ── Sidebar ────────────────────────────────────────────────
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.panelH {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.pBar { width: 4px; height: 16px; background: var(--green); flex: none; }
+
+.pTitle {
+  font-family: var(--font-titulo, 'Frank Ruhl Libre', Georgia, serif);
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.pGrp {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+// ── Tabla de posiciones ────────────────────────────────────
+.stand {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--faint);
+    font-weight: 600;
+    text-align: right;
+    padding: 9px 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  th.lft { text-align: left; padding-left: 16px; }
+
+  td {
+    padding: 9px 8px;
+    text-align: right;
+    border-bottom: 1px solid var(--line-2);
+    color: var(--ink-2);
+  }
+
+  td.lft {
+    text-align: left;
+    padding-left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  td.pos { color: var(--faint); font-weight: 700; width: 14px; }
+  tr:nth-child(-n + 2) td.pos { color: var(--green); }
+  td.pts { font-weight: 800; color: var(--ink); }
+  tr:last-child td { border-bottom: 0; }
+}
+
+// ── Goleadores ─────────────────────────────────────────────
+.scorers { display: flex; flex-direction: column; }
+
+.scorer {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--line-2);
+
+  &:last-child { border-bottom: 0; }
+}
+
+.scNm { font-size: 13.5px; font-weight: 600; }
+.scNm small { color: var(--faint); font-weight: 500; margin-left: 5px; }
+.scG {
+  font-family: var(--font-titulo, 'Frank Ruhl Libre', Georgia, serif);
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--green);
+}
+
+// ── Próximos ───────────────────────────────────────────────
+.fixt { display: flex; flex-direction: column; }
+
+.fix {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line-2);
+
+  &:last-child { border-bottom: 0; }
+}
+
+.pair { display: flex; flex-direction: column; gap: 6px; }
+.pr { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+
+.when {
+  text-align: right;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green);
+  line-height: 1.35;
+}
+
+.when small { display: block; color: var(--faint); font-weight: 500; }
+
+.empty { text-align: center; opacity: 0.6; padding: 48px 16px; }
+
+// ── Historial: todos los partidos ──────────────────────────
+.history { margin-top: 28px; }
+
+.histHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.histTitle {
+  font-family: var(--font-titulo, 'Frank Ruhl Libre', Georgia, serif);
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 3px solid var(--green);
+  display: inline-block;
+}
+
+// Toggle Lista / Cuadro
+.toggle {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  background: #fff;
+  flex: none;
+}
+
+.tgBtn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 18px;
+  line-height: 1;
+  transition: background 0.15s, color 0.15s;
+
+  & + & { border-left: 1px solid var(--line); }
+}
+
+.tgOn { background: var(--green); color: #fff; }
+
+// ── Cuadro (llave eliminatoria) ────────────────────────────
+// Cuadro: una ronda a la vez (la elegís con el selector). Más cómodo que el
+// bracket completo apretado — vale igual en desktop y mobile.
+.bracket {
+  display: block;
+}
+
+.brCol {
+  display: none;
+  width: 100%;
+}
+
+.brColOn {
+  display: flex;
+  flex-direction: column;
+}
+
+.brColHead {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--green);
+  margin: 0 0 10px;
+}
+
+// El tab activo ya indica la ronda → no repetimos el título de la columna
+// (el "Tercer puesto" bajo la Final, que está anidado, sí se mantiene).
+.brColOn > .brColHead { display: none; }
+
+.brColBody {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.brMatch {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--green);
+}
+
+.brTeam {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 9px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  border-bottom: 1px solid var(--line-2);
+
+  &:last-child { border-bottom: 0; }
+}
+
+.brName {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brScore {
+  font-family: var(--font-titulo, 'Frank Ruhl Libre', Georgia, serif);
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--ink);
+  min-width: 14px;
+  text-align: right;
+}
+
+.brWin .brName { color: var(--ink); font-weight: 800; }
+.brWin .brScore { color: var(--green); }
+.brLose .brName { color: var(--faint); }
+.brLose .brScore { color: var(--faint); }
+
+.brThird {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+}
+
+// Selector de ronda del cuadro.
+.brTabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.brTab {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: #fff;
+  cursor: pointer;
+  flex: none;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 14px;
+  line-height: 1;
+}
+
+.brTabOn { background: var(--green); color: #fff; border-color: var(--green); }
+
+// Chips de filtro por etapa (vista lista). Mismo look que el selector del cuadro
+// (.brTab); acá envuelven en varias filas en vez de scrollear.
+.histFilter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.histGroup { margin-bottom: 22px; }
+
+.histRound {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--green);
+  margin: 0 0 10px;
+}
+
+.histList {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--green);
+}
+
+.histRow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line-2);
+
+  &:last-child { border-bottom: 0; }
+}
+
+.histTeam {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.histHome { justify-content: flex-end; text-align: right; }
+
+.histName {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.histTeam.lose .histName { color: var(--faint); }
+
+.histScore {
+  font-family: var(--font-titulo, 'Frank Ruhl Libre', Georgia, serif);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--ink);
+  min-width: 52px;
+  text-align: center;
+  letter-spacing: 0.02em;
+
+  i { color: var(--line); font-style: normal; margin: 0 4px; }
+}
+
+.histLive { color: var(--live); font-weight: 700; }
+
+.histVs {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+
+  small {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--faint);
+    text-transform: capitalize;
+  }
+}
+
+.histMeta {
+  min-width: 58px;
+  text-align: right;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--faint);
+}
+
+@media (max-width: 560px) {
+  .histName { font-size: 12px; }
+  .histRow { gap: 8px; padding: 10px 12px; }
+  .histMeta { display: none; }
+}
+
+@media (max-width: 980px) {
+  .grid2 {
+    grid-template-columns: 1fr;
+    // Mobile: destacado → Goleadores/Próximos (sidebar) → Todos los partidos.
+    grid-template-areas:
+      "feat"
+      "side"
+      "hist";
+  }
+}
+
+@media (max-width: 640px) {
+  .sec { padding: 24px 16px 32px; }
+}

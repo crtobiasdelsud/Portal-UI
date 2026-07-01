@@ -1,0 +1,51 @@
+@use "../../../../../styles/index" as *;
+
+.root {
+  background: var(--surface-color, #f0f0f0);
+  height: auto;
+  max-height: none;
+}
+
+.imgWrap {
+  aspect-ratio: 16 / 9;
+  flex: none;
+}
+
+.text {
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+
+.volanta {
+  align-self: flex-start;
+  background: transparent;
+  color: var(--primary-color, #b1043f);
+  padding: 0;
+  font-family: var(--font-inter, "Inter", "Helvetica", Arial, sans-serif);
+  font-size: 1em;
+  font-weight: 500;
+  line-height: 1.7625rem;
+
+  @include respond(tablet) {
+    font-size: 24px;
+    font-weight: 700;
+  }
+}
+
+.titulo {
+  color: var(--text-color, #252523);
+  font-size: clamp(32px, 5vw, 60px);
+}
+
+.copete {
+  font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: 400;
+    line-height: 24px;
+    color: var(--text-color, #252523);
+
+  @include respond(tablet) { font-size: 1rem; }
+}

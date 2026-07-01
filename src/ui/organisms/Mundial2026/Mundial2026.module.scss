@@ -1,0 +1,243 @@
+@use "../../../styles/index.scss" as *;
+
+// Paleta del diseño "Mundial 2026 · El Editor" (verde petróleo, papel cálido),
+// scopeada al contenedor para no filtrar al resto del portal.
+.mwid {
+  --green: #034134;
+  --green-2: #0a5d49;
+  --green-tint: #eef3f1;
+  --live: #b3261e;
+  --ink: #141414;
+  --ink-2: #3d3d3d;
+  --muted: #6f6f6f;
+  --faint: #9a968c;
+  --line: #e3e1da;
+  --line-2: #efece4;
+  --paper: #ffffff;
+
+  // Fondo transparente por defecto → el "Color de fondo"/imagen que setees en el
+  // editor (se aplican al wrapper que envuelve el widget) quedan visibles. Antes
+  // era `var(--paper)` opaco y tapaba cualquier fondo del editor. En el home el
+  // fondo de página es blanco, así que el aspecto por defecto no cambia.
+  background: var(--mwid-bg, transparent);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--green);
+  color: var(--ink);
+  font-family: var(--font-inter, 'Inter', system-ui, sans-serif);
+}
+
+.bare {
+  border: 0;
+  border-top: 0;
+
+  .head { background: #faf9f6; }
+}
+
+// Widget clickeable → /mundial. El <a>/<Link> envuelve toda la tarjeta.
+.link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+
+  &:hover {
+    box-shadow: 0 6px 22px -14px rgba(3, 65, 52, 0.55);
+  }
+
+  &:hover .go {
+    color: var(--green-2);
+    gap: 8px;
+  }
+}
+
+// Hint "Ver Mundial ›" a la derecha de la cabecera (header claro → verde).
+.go {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: none;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--green);
+  transition: gap 0.15s ease, color 0.15s ease;
+}
+
+// ── Cabecera ───────────────────────────────────────────────
+.head {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.bar {
+  width: 4px;
+  height: 19px;
+  background: var(--green);
+  flex: none;
+}
+
+.title {
+  font-family: var(--font-titulo, 'Frank Ruhl Libre', Georgia, serif);
+  font-weight: 800;
+  font-size: 17px;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.ph {
+  color: var(--faint);
+  font-size: 12px;
+  font-weight: 500;
+  padding-left: 10px;
+  border-left: 1px solid var(--line);
+  margin-left: 2px;
+}
+
+.spon {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.sponLbl {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 600;
+}
+
+.sponSlot {
+  min-height: 22px;
+  padding: 4px 10px;
+  border: 1px dashed var(--line);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: var(--faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+// ── Fila de celdas ─────────────────────────────────────────
+.row {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.cell {
+  flex: 1 0 0;
+  min-width: 184px;
+  padding: 13px 18px 14px;
+  border-left: 1px solid var(--line-2);
+
+  &:first-child { border-left: 0; }
+}
+
+// ── Estado del partido ─────────────────────────────────────
+.st {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 18px;
+  margin-bottom: 11px;
+}
+
+.stText {
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.stLive .stText { color: var(--live); }
+.stTime .stText { color: var(--green); }
+.stFinal .stText { color: var(--faint); }
+
+.min {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--live);
+}
+
+.liveDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--live);
+  animation: mundialPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes mundialPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.82); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liveDot { animation: none; }
+}
+
+// ── Equipo ─────────────────────────────────────────────────
+.team {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 9px;
+  padding: 3px 0;
+
+  & + & { margin-top: 2px; }
+}
+
+.code {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  letter-spacing: 0.02em;
+}
+
+.sc {
+  font-family: var(--font-titulo, 'Frank Ruhl Libre', Georgia, serif);
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--ink);
+  min-width: 14px;
+  text-align: right;
+}
+
+.win .code { color: var(--ink); font-weight: 700; }
+.lose .code { color: var(--faint); }
+.lose .sc { color: var(--faint); font-weight: 700; }
+
+.vs {
+  font-size: 11px;
+  color: var(--faint);
+  font-weight: 600;
+}
+
+// ── V2 · más aire + banderas grandes ───────────────────────
+.v2 {
+  .cell { padding: 16px 20px 18px; min-width: 200px; }
+  .team { padding: 5px 0; gap: 11px; }
+  .code { font-size: 14.5px; }
+  .sc { font-size: 20px; }
+}
+
+// ── Mobile: cabecera compacta ──────────────────────────────
+// En pantallas chicas la fase ("Copa del Mundo · 16avos de final") apretaba el
+// título contra "Ver Mundial ›" → la sacamos y dejamos solo título + CTA.
+@media (max-width: 600px) {
+  .head { gap: 9px; padding: 11px 14px; }
+  .title { font-size: 16px; }
+  .ph { display: none; }
+  .go { font-size: 10px; }
+}

@@ -1,0 +1,95 @@
+@use "../../../styles/index.scss" as *;
+
+// ── Base ─────────────────────────────────────────────────────────────────────
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  background: var(--surface-color, #f5f5f5);
+  font-family: var(--font-inter, Inter, sans-serif);
+  color: var(--text-color, #252523);
+  font-size: 14px;
+  line-height: 14px;
+
+  @include respond(desktop) {
+    padding: 14px 16px;
+  }
+}
+
+// Barra lateral con el color primario. Se activa con la prop `borderLeft`
+// (la setea el widget del CMS cuando el ShareBlock va en el cuerpo del artículo).
+.borderLeft {
+  border-left: 4px solid var(--primary-color, #B1043F);
+  padding-left: 12px;
+
+  @include respond(desktop) {
+    padding-left: 16px;
+  }
+}
+
+.label {
+  font-size: 14px;
+  line-height: 14px;
+
+  color: var(--text-color, #252523);
+  font-family: var(--font-inter, Inter, sans-serif);
+  white-space: nowrap;
+  margin-right: 10px;
+
+  @include respond(desktop) {
+    margin-right: 20px;
+  }
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  @include respond(desktop) {
+    gap: 12px;
+  }
+
+  // Non-AMP: el componente Icon renderiza <a><span aria-hidden/></a>.
+  // Achicamos en mobile y restauramos el tamaño completo en desktop.
+  a {
+    width: 26px;
+    height: 26px;
+  }
+
+  span[aria-hidden] {
+    width: 22px;
+    height: 22px;
+  }
+
+  @include respond(desktop) {
+    a {
+      width: 33px;
+      height: 33px;
+    }
+
+    span[aria-hidden] {
+      width: 32px;
+      height: 32px;
+    }
+  }
+}
+
+.iconLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+
+  &:hover { opacity: 1; }
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+}

@@ -1,0 +1,44 @@
+@use "../../../../styles/index.scss" as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @include respond(desktop) {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: 20px;
+    align-items: start;
+  }
+}
+
+.main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @include respond(desktop) {
+    grid-column: 1 / 4;
+    gap: 30px;
+  }
+}
+
+.sidebar {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @include respond(desktop) {
+    grid-column: 4 / 5;
+    align-self: stretch;
+    gap: 24px;
+
+    > *:last-child {
+      position: sticky;
+      top: 100px;
+    }
+  }
+}

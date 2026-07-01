@@ -1,0 +1,91 @@
+@use "../../../styles/index.scss" as *;
+
+// ── Mini player bar (minimalista) ─────────────────────────────────────────────
+
+.bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100% - 32px);
+  background: var(--secondary-color, #0D1333);
+  border-radius: 14px;
+  padding: 7px 10px 7px 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 9999;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+
+// ── Título ────────────────────────────────────────────────────────────────────
+
+.titulo {
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+  margin-right: 4px;
+}
+
+// ── Play / Pause button ───────────────────────────────────────────────────────
+
+.playBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+  color: var(--secondary-color, #0D1333);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.12s;
+
+  &:hover { transform: scale(1.05); }
+}
+
+// ── Botón cerrar ──────────────────────────────────────────────────────────────
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: color 0.15s;
+
+  &:hover { color: rgba(255, 255, 255, 0.95); }
+}
+
+// ── Progress bar ──────────────────────────────────────────────────────────────
+
+.progressTrack {
+  position: absolute;
+  bottom: 0;
+  left: 16px;
+  right: 16px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  cursor: pointer;
+
+  &:hover { height: 4px; }
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--primary-color, #B1043F);
+  border-radius: 2px;
+  transition: width 0.3s linear;
+  pointer-events: none;
+}
