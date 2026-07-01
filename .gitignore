@@ -6,4 +6,5 @@ node_modules/
 dist/
 .idea/
 .vscode/
-CLAUDE.md
+CLAUDE.md.next/
+build/
